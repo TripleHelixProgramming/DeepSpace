@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.models.BobTalonSRX;
 import frc.models.LeaderBobTalonSRX;
 import frc.robot.RobotMap;
-import frc.robot.commands.drivetrain.JoystickDrive;
 import frc.robot.commands.drivetrain.JoystickDriveFactory;
 
 /**
