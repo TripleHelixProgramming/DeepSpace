@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import frc.models.Driver;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -14,6 +16,8 @@ package frc.robot;
  * floating around.
  */
 public class RobotMap {
+  //DRIVER
+  public static Driver currentDriver = Driver.DUSTIN; 
   //DRIVETRAIN
   public static int LEFT_MASTER_ID = 10;
   public static int LEFT_SLAVE_1_ID = 12;

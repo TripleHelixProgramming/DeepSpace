@@ -14,7 +14,7 @@ import frc.robot.subsystems.Drivetrain;
  */
 public class JoystickDrive extends Command {
 
-    public JoystickDrive() {
+    JoystickDrive() {
         // Use requires() here to declare subsystem dependencies
 		requires(Drivetrain.getInstance());
     }

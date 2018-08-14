@@ -18,6 +18,7 @@ import frc.models.BobTalonSRX;
 import frc.models.LeaderBobTalonSRX;
 import frc.robot.RobotMap;
 import frc.robot.commands.drivetrain.JoystickDrive;
+import frc.robot.commands.drivetrain.JoystickDriveFactory;
 
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
@@ -74,7 +75,7 @@ public static final double ticks_per_100ms = (DT_ENCODER_TICKS_PER_REV / (DT_WHE
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new JoystickDrive());
+    setDefaultCommand(JoystickDriveFactory.createJoystickDrive());
   }
 
   /**
