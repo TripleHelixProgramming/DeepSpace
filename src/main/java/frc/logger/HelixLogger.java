@@ -18,12 +18,19 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 public class HelixLogger {
 
+	private static HelixLogger INSTANCE = new HelixLogger();
+
+
+	public static HelixLogger getInstance() {
+		return INSTANCE;
+	}
+
 	private final List<LogSource> dataSources = new ArrayList<>();
 	private Path file;
 	
 	private String loggingLocation = "/home/lvuser/logs/";
 	
-	public HelixLogger() {
+	private HelixLogger() {
 		File usb1 = new File("/media/sda1/");
 		if (usb1.exists()) {
 			loggingLocation = "/media/sda1/logs/";

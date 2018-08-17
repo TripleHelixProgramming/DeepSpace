@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.logger.HelixLogger;
 import frc.models.BobTalonSRX;
 import frc.models.LeaderBobTalonSRX;
 import frc.robot.RobotMap;
@@ -24,7 +25,7 @@ import frc.robot.commands.drivetrain.JoystickDriveFactory;
  */
 public class Drivetrain extends Subsystem {
 
-  private static Drivetrain INSTANCE;
+  private static Drivetrain INSTANCE = new Drivetrain();
 
    /**
    * @return the singleton instance of the Drivetrain subsystem
@@ -36,23 +37,27 @@ public class Drivetrain extends Subsystem {
     return INSTANCE;
   }
 
+  private static final int MOTION_PROFILE_POSITIONAL_SLOT = 0;
+  private static final int MOTION_PROFILE_HEADING_SLOT = 1;
+  private static final int VELOCITY_CONTROL_SLOT = 2;
+
   //Drivetrain geometry constants
 	public static final int DT_ENCODER_TICKS_PER_REV = 480;
   //4 edges * 120 count quadrature encoder
   //units of rate (ticks per encoder revolution)
-public static final int MAX_DRIVESIDE_VELOCITY = 144;
+  public static final int MAX_DRIVESIDE_VELOCITY = 144;
   //adjusted speed from JVN calculator
   //units of velocity (in/s)
-public static final int DT_HALF_TRACK_WIDTH = 13;
+  public static final int DT_HALF_TRACK_WIDTH = 13;
   //distance between the robot centerline and the midpoint of the DT contact patches
   //units of length (in)
-public static final double DT_WHEEL_DIA = 4.0;
+  public static final double DT_WHEEL_DIA = 4.0;
   //diameter of wheel
   //units of length (in)
-public static final double DT_ENCODER_GEAR_RATIO = 42.0 / 48;
+  public static final double DT_ENCODER_GEAR_RATIO = 42.0 / 48;
   //gear ratio between encoder shaft and wheel axle
   //unitless
-public static final double ticks_per_100ms = (DT_ENCODER_TICKS_PER_REV / (DT_WHEEL_DIA * Math.PI * DT_ENCODER_GEAR_RATIO * 10.0));
+  public static final double ticks_per_100ms = (DT_ENCODER_TICKS_PER_REV / (DT_WHEEL_DIA * Math.PI * DT_ENCODER_GEAR_RATIO * 10.0));
   //factor to convert a linear velocity in in/s to units of counts per 100 ms
   //DT_ENCODER_TICKS_PER_REV - units of rate (ticks per encoder revolution)
   //DT_WHEEL_DIA - diameter of wheel - in
@@ -70,6 +75,7 @@ public static final double ticks_per_100ms = (DT_ENCODER_TICKS_PER_REV / (DT_WHE
     setPIDFValues();
     setNeutralMode(NeutralMode.Brake);
     setupSensors();
+    setupLogs();
   }
 
   @Override
@@ -87,13 +93,13 @@ public static final double ticks_per_100ms = (DT_ENCODER_TICKS_PER_REV / (DT_WHE
 	}
 
   private void setPIDFValues() {
-    left.configPIDF(0, 0, 0, 0, 0); // Motion profiling distance slot
-    left.configPIDF(1, 0, 0, 0, 0); // Motion profiling turning slot
-    left.configPIDF(2, 0, 0, 0, 0); // Velocity slot
+    left.configPIDF(MOTION_PROFILE_POSITIONAL_SLOT, 0, 0, 0, 0);
+    left.configPIDF(MOTION_PROFILE_HEADING_SLOT, 0, 0, 0, 0);
+    left.configPIDF(VELOCITY_CONTROL_SLOT, 0, 0, 0, 0);
 
-    right.configPIDF(0, 0, 0, 0, 0); // Motion profiling distance slot
-    right.configPIDF(1, 0, 0, 0, 0); // Motion profiling turning slot
-    right.configPIDF(2, 0, 0, 0, 0); // Velocity slot
+    right.configPIDF(MOTION_PROFILE_POSITIONAL_SLOT, 0, 0, 0, 0); 
+    right.configPIDF(MOTION_PROFILE_HEADING_SLOT, 0, 0, 0, 0);
+    right.configPIDF(VELOCITY_CONTROL_SLOT, 0, 0, 0, 0);
   }
 
   private void setupSensors() {
@@ -101,15 +107,20 @@ public static final double ticks_per_100ms = (DT_ENCODER_TICKS_PER_REV / (DT_WHE
 		right.configSensorSum(FeedbackDevice.RemoteSensor0, FeedbackDevice.CTRE_MagEncoder_Relative);
     right.configPrimaryFeedbackDevice(FeedbackDevice.SensorSum, 0.5);
     
-    right.configRemoteSensor1(1, RemoteSensorSource.GadgeteerPigeon_Yaw);
+    right.configRemoteSensor1(11, RemoteSensorSource.GadgeteerPigeon_Yaw);
 		right.configSecondaryFeedbackDevice(FeedbackDevice.RemoteSensor1, (3600.0 / 8192.0)); 
-		left.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 0);
+    left.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 0);
   }
 
   private void setNeutralMode(NeutralMode neutralMode) {
 		left.setNeutralMode(neutralMode);
 		right.setNeutralMode(neutralMode);
-	}
+  }
+  
+  private void setupLogs() {
+    HelixLogger.getInstance().addSource("LEFT_MASTER_VOLTAGE", left, talon -> "" + ((LeaderBobTalonSRX)talon).getMotorOutputVoltage());
+    HelixLogger.getInstance().addSource("LEFT_VELOCITY", left, talon -> "" + ((LeaderBobTalonSRX)talon).getSelectedSensorVelocity());
+  }
 
   /**
    * @return the left master talon

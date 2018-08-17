@@ -15,6 +15,14 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 
 public class HelixEvents {
+
+	private static HelixEvents INSTANCE = new HelixEvents();
+
+	public static HelixEvents getInstance() {
+		return INSTANCE;
+	}
+
+	private HelixEvents() { }
 	
 	private static final Notifier log = new Notifier(new LogSaver());
 	private static Path file;
@@ -22,7 +30,7 @@ public class HelixEvents {
 	
 	private static final Queue<String> events = new LinkedList<>();
 	
-	public static void startLogging() {
+	public void startLogging() {
 		File usb1 = new File("/media/sda1/");
 		if (usb1.exists()) {
 			loggingLocation = "/media/sda1/logs/";
@@ -31,7 +39,7 @@ public class HelixEvents {
 		log.startPeriodic(1);
 	}
 	
-	public static void addEvent(String subsystem, String event) {
+	public void addEvent(String subsystem, String event) {
 		events.add(
 				new StringBuilder()
 				.append(Instant.now().toString()).append("\t")

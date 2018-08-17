@@ -21,7 +21,7 @@ public class JoystickDrive extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	HelixEvents.addEvent("DRIVETRAIN", "Starting to start joystick drive");
+    	HelixEvents.getInstance().addEvent("DRIVETRAIN", "Starting to start joystick drive");
     	
     }
 
@@ -30,8 +30,8 @@ public class JoystickDrive extends Command {
 
     	//read in joystick values from OI
     	//range [-1, 1]
-    	double throttleInput = OI.getInstance().getThrottle();
-    	double turnInput = OI.getInstance().getTurn();
+    	double throttleInput = OI.getInstance().getThrottle() * getThrottleScalar();
+    	double turnInput = OI.getInstance().getTurn() * getTurnScalar();
  
     	//find the maximum possible value of (throttle + turn)
     	//along the vector that the arcade joystick is pointing
@@ -76,11 +76,19 @@ public class JoystickDrive extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	HelixEvents.addEvent("DRIVETRAIN", "Finished starting joystick drive");
+    	HelixEvents.getInstance().addEvent("DRIVETRAIN", "Finished starting joystick drive");
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    }
+	}
+	
+	protected double getThrottleScalar() {
+		return 1;
+	}
+
+	protected double getTurnScalar() {
+		return 1;
+	}
 }

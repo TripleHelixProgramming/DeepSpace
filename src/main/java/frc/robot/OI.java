@@ -15,9 +15,15 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class OI {
 
-  private static final OI INSTANCE = new OI();
+  private static OI INSTANCE;
 
+  /**
+   * @return retrieves the singleton instance of the Operator Interface
+   */
   public static OI getInstance() {
+    if (INSTANCE == null) {
+      INSTANCE = new OI();
+    }
     return INSTANCE;
   }
 
@@ -26,11 +32,16 @@ public class OI {
   
   private OI() { }
 
+  /**
+   * @return the raw controller throttle
+   */
   public double getThrottle () {
 		return driver.getRawAxis(ControllerMap.LEFT_STICK_Y); 
 	}
 	
-	// turn angle
+	/**
+   * @return the raw controller turn
+   */
 	public double getTurn() {
 		return driver.getRawAxis(ControllerMap.RIGHT_STICK_X);
 	}

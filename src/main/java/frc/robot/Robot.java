@@ -10,6 +10,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.logger.HelixEvents;
+import frc.logger.HelixLogger;
+import frc.models.Driver;
+import frc.robot.subsystems.Drivetrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,12 +28,32 @@ public class Robot extends TimedRobot {
 
   Command autonomousCommand;
 
+  SendableChooser<Driver> drivers = new SendableChooser<>();
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
-  public void robotInit() { }
+  public void robotInit() { 
+    selectDriver();
+    initializeSubsystems();
+
+    HelixEvents.getInstance().startLogging();
+  }
+
+  private void selectDriver() {
+    for (Driver driver : Driver.values()) {
+      drivers.addObject(driver.toString(), driver);
+    }
+    SmartDashboard.putData(drivers);
+    RobotMap.currentDriver = drivers.getSelected();
+  }
+
+  private void initializeSubsystems() {
+    OI.getInstance();
+    Drivetrain.getInstance();
+  }
 
   /**
    * This function is called every robot packet, no matter the mode. Use
@@ -71,6 +97,7 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.start();
     }
+    
   }
 
   /**
@@ -79,6 +106,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    HelixLogger.getInstance().saveLogs();
   }
 
   @Override
@@ -98,6 +126,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    HelixLogger.getInstance().saveLogs();
   }
 
   /**
