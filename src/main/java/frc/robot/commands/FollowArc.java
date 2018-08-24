@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.logger.HelixEvents;
 import frc.models.BobTalonSRX;
 import frc.models.SrxMotionProfile;
 import frc.models.SrxTrajectory;
@@ -22,15 +23,10 @@ public class FollowArc extends Command {
 
 	private int distancePidSlot = 0;
 	private int rotationPidSlot = 1;
-
 	private int kMinPointsInTalon = 5;
-
 	private boolean isFinished = false;
-
 	private SrxTrajectory trajectoryToFollow = null;
-
 	private MotionProfileStatus status = new MotionProfileStatus();
-
 	private boolean hasPathStarted;
 
 	/**
@@ -84,7 +80,7 @@ public class FollowArc extends Command {
 	}
 
 	// Runs the runnable
-	private Notifier loadLeftBuffer;
+	private Notifier buffer;
 
 	public FollowArc(SrxTrajectory trajectoryToFollow) {
 		requires(Drivetrain.getInstance());
@@ -93,6 +89,7 @@ public class FollowArc extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		HelixEvents.getInstance().addEvent("DRIVETRAIN", "Starting to follow arc: " + trajectoryToFollow.getClass().getSimpleName());
 		setUpTalon(leftTalon);
 		setUpTalon(rightTalon);
 
@@ -101,11 +98,11 @@ public class FollowArc extends Command {
 		rightTalon.set(ControlMode.MotionProfileArc, setValue.value);
 		leftTalon.follow(rightTalon, FollowerType.AuxOutput1);
 
-		loadLeftBuffer = new Notifier(
+		buffer = new Notifier(
 				new BufferLoader(rightTalon, trajectoryToFollow.centerProfile, trajectoryToFollow.flipped,
 						Drivetrain.getInstance().getDistance()));
 
-		loadLeftBuffer.startPeriodic(.005);
+		buffer.startPeriodic(.005);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -114,7 +111,7 @@ public class FollowArc extends Command {
 
 		if (status.isUnderrun) {
 			// if either MP has underrun, stop both
-			System.out.println("Motion profile has underrun!");
+			HelixEvents.getInstance().addEvent("DRIVETRAIN", trajectoryToFollow.getClass().getSimpleName() + " has underrun!");
 			setValue = SetValueMotionProfile.Disable;
 		} else if (status.btmBufferCnt > kMinPointsInTalon) {
 			// if we have enough points in the talon, go.
@@ -135,14 +132,14 @@ public class FollowArc extends Command {
 		boolean leftComplete = status.activePointValid && status.isLast;
 		boolean trajectoryComplete = leftComplete;
 		if (trajectoryComplete) {
-			System.out.println("Finished trajectory");
+			HelixEvents.getInstance().addEvent("DRIVETRAIN", "Finished following arc: " + trajectoryToFollow.getClass().getSimpleName());
 		}
 		return trajectoryComplete || isFinished;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
-		loadLeftBuffer.stop();
+		buffer.stop();
 		resetTalon(rightTalon, ControlMode.PercentOutput, 0);
 		resetTalon(leftTalon, ControlMode.PercentOutput, 0);
 	}
@@ -150,7 +147,7 @@ public class FollowArc extends Command {
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		loadLeftBuffer.stop();
+		buffer.stop();
 		resetTalon(rightTalon, ControlMode.PercentOutput, 0);
 		resetTalon(leftTalon, ControlMode.PercentOutput, 0);
 	}

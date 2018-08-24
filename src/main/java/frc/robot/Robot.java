@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.logger.HelixEvents;
 import frc.logger.HelixLogger;
 import frc.models.Driver;
+import frc.robot.commands.FollowArc;
+import frc.robot.commands.autonomous.arcs.scaling_calibrationArc;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -36,7 +38,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() { 
-    selectDriver();
+    // selectDriver();
     initializeSubsystems();
 
     HelixEvents.getInstance().startLogging();
@@ -93,11 +95,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    autonomousCommand = new FollowArc(new scaling_calibrationArc());
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.start();
     }
-    
   }
 
   /**

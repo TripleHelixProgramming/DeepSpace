@@ -36,7 +36,7 @@ public class OI {
    * @return the raw controller throttle
    */
   public double getThrottle () {
-		return driver.getRawAxis(ControllerMap.LEFT_STICK_Y); 
+		return -driver.getRawAxis(ControllerMap.LEFT_STICK_Y); 
 	}
 	
 	/**

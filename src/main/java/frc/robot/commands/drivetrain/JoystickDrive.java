@@ -14,14 +14,14 @@ import frc.robot.subsystems.Drivetrain;
  */
 public class JoystickDrive extends Command {
 
-    JoystickDrive() {
+    public JoystickDrive() {
         // Use requires() here to declare subsystem dependencies
 		requires(Drivetrain.getInstance());
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	HelixEvents.getInstance().addEvent("DRIVETRAIN", "Starting to start joystick drive");
+    	HelixEvents.getInstance().addEvent("DRIVETRAIN", "Starting: " + JoystickDrive.class.getSimpleName());
     	
     }
 
