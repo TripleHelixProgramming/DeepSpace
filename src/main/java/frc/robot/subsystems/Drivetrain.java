@@ -74,13 +74,13 @@ public class Drivetrain extends Subsystem {
 
   private Drivetrain() {
     setPIDFValues();
-    setNeutralMode(NeutralMode.Brake);
+    setBrakeMode(NeutralMode.Brake);
     setupSensors();
     setupLogs();
 
-    left.setInverted(true);
     left.setSensorPhase(false);
     right.setSensorPhase(false);
+    left.setInverted(true);
     right.setInverted(false);
   }
 
@@ -96,34 +96,42 @@ public class Drivetrain extends Subsystem {
    * @param rightVelocity the velocity the right of the drivetrain should be
    *                      moving at
    */
-  public void drive(double leftVelocity, double rightVelocity) {
+  public void drive(double leftVelocity
+  , double rightVelocity) {
     left.set(ControlMode.PercentOutput, leftVelocity);
     right.set(ControlMode.PercentOutput, rightVelocity);
   }
 
   private void setPIDFValues() {
-    left.configPIDF(MOTION_PROFILE_POSITIONAL_SLOT, 7.25, 0, 0, 2);
+    left.configPIDF(MOTION_PROFILE_POSITIONAL_SLOT, 1, 0, 0, 0);
     left.configPIDF(MOTION_PROFILE_HEADING_SLOT, 0, 0, 0, 0);
     left.configPIDF(VELOCITY_CONTROL_SLOT, 0, 0, 0, 0);
 
-    right.configPIDF(MOTION_PROFILE_POSITIONAL_SLOT, 7.25, 0, 0, 2);
+    right.configPIDF(MOTION_PROFILE_POSITIONAL_SLOT, 1, 0, 0, 0);
     right.configPIDF(MOTION_PROFILE_HEADING_SLOT, 0, 0, 0, 0);
     right.configPIDF(VELOCITY_CONTROL_SLOT, 0, 0, 0, 0);
   }
 
   private void setupSensors() {
+    // Set left pid sensor to it's quad encoder
     left.configPrimaryFeedbackDevice(FeedbackDevice.QuadEncoder);
-    left.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 0)s;
+    left.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 0);
 
+    // Set the right talon to look at the left's selected sensor (quad encoder) for it's remote sensor 0
     right.configRemoteSensor0(left.getDeviceID(), RemoteSensorSource.TalonSRX_SelectedSensor);
+    // Set the right talon to look at the pidgeon plugged into the right slave for it's remote sensor 1
     right.configRemoteSensor1(RobotMap.RIGHT_SLAVE_2_ID, RemoteSensorSource.GadgeteerPigeon_Yaw);
 
+    // Configure the sum PID loop to look at remote sensor 0 and it's own quad encoder
     right.configSensorSum(FeedbackDevice.RemoteSensor0, FeedbackDevice.QuadEncoder);
+    // right.configSensorDif(FeedbackDevice.RemoteSensor0, FeedbackDevice.QuadEncoder);
+    // Set the primary PID loop to be the sum loop
     right.configPrimaryFeedbackDevice(FeedbackDevice.SensorSum, 0.5);
+    // Set the secondary PID loop to be the pidgeon
     right.configSecondaryFeedbackDevice(FeedbackDevice.RemoteSensor1, (3600.0 / 8192.0));
   }
 
-  private void setNeutralMode(NeutralMode neutralMode) {
+  private void setBrakeMode(NeutralMode neutralMode) {
     left.setNeutralMode(neutralMode);
     right.setNeutralMode(neutralMode);
   }

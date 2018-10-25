@@ -143,6 +143,11 @@ public class BobTalonSRX extends TalonSRX {
 		this.configSensorTerm(SensorTerm.Sum1, feedbackDevice1);
 	}
 
+	public void configSensorDif(FeedbackDevice feedbackDevice0, FeedbackDevice feedbackDevice1) {
+		this.configSensorTerm(SensorTerm.Diff0, feedbackDevice0);
+		this.configSensorTerm(SensorTerm.Diff1, feedbackDevice1);
+	}
+
 	public void configRemoteSensor0(int remoteDeviceId, RemoteSensorSource remoteSensorSource) {
 		this.configRemoteFeedbackFilter(remoteDeviceId, remoteSensorSource, 0);
 	}
