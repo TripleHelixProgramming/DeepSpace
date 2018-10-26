@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.logger.HelixEvents;
 import frc.logger.HelixLogger;
 import frc.models.BobTalonSRX;
 import frc.models.LeaderBobTalonSRX;
@@ -86,7 +87,7 @@ public class Drivetrain extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new TestDrive());
+    // setDefaultCommand(new TestDrive());
     // setDefaultCommand(JoystickDriveFactory.createJoystickDrive());
   }
 
@@ -103,12 +104,12 @@ public class Drivetrain extends Subsystem {
   }
 
   private void setPIDFValues() {
-    left.configPIDF(MOTION_PROFILE_POSITIONAL_SLOT, 1, 0, 0, 0);
+    left.configPIDF(MOTION_PROFILE_POSITIONAL_SLOT, 1, 0, 0, 1.5);
     left.configPIDF(MOTION_PROFILE_HEADING_SLOT, 0, 0, 0, 0);
     left.configPIDF(VELOCITY_CONTROL_SLOT, 0, 0, 0, 0);
 
-    right.configPIDF(MOTION_PROFILE_POSITIONAL_SLOT, 1, 0, 0, 0);
-    right.configPIDF(MOTION_PROFILE_HEADING_SLOT, 0, 0, 0, 0);
+    right.configPIDF(MOTION_PROFILE_POSITIONAL_SLOT, 1, 0, 0, 1.5);
+    right.configPIDF(MOTION_PROFILE_HEADING_SLOT, 2, 0, 35, 0);
     right.configPIDF(VELOCITY_CONTROL_SLOT, 0, 0, 0, 0);
   }
 
@@ -161,7 +162,14 @@ public class Drivetrain extends Subsystem {
    * @return the average distance of both sides of the drivetrain
    */
   public double getDistance() {
-    return (left.getSensorCollection().getQuadraturePosition() + right.getSensorCollection().getQuadraturePosition())
-        / 2;
+    
+    double distance = right.getPrimarySensorPosition();
+        HelixEvents.getInstance().addEvent("DRIVETRAIN", "Current position: " + distance);
+        return distance;
+  }
+
+  public void resetEncoders() {
+    left.getSensorCollection().setQuadraturePosition(0, 0);
+    right.getSensorCollection().setQuadraturePosition(0, 0);
   }
 }

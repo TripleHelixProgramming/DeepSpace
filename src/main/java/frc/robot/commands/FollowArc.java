@@ -97,7 +97,6 @@ public class FollowArc extends Command {
 
 		rightTalon.set(ControlMode.MotionProfileArc, setValue.value);
 		leftTalon.follow(rightTalon, FollowerType.AuxOutput1);
-
 		buffer = new Notifier(
 				new BufferLoader(rightTalon, trajectoryToFollow.centerProfile, trajectoryToFollow.flipped,
 						Drivetrain.getInstance().getDistance()));
@@ -140,8 +139,8 @@ public class FollowArc extends Command {
 	// Called once after isFinished returns true
 	protected void end() {
 		buffer.stop();
-		resetTalon(rightTalon, ControlMode.PercentOutput, 0);
-		resetTalon(leftTalon, ControlMode.PercentOutput, 0);
+		// resetTalon(rightTalon, ControlMode.PercentOutput, 0);
+		// resetTalon(leftTalon, ControlMode.PercentOutput, 0);
 	}
 
 	// Called when another command which requires one or more of the same
