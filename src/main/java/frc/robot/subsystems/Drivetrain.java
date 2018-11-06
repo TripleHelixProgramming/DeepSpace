@@ -138,10 +138,8 @@ public class Drivetrain extends Subsystem {
   }
 
   private void setupLogs() {
-    HelixLogger.getInstance().addSource("LEFT_MASTER_VOLTAGE", left,
-        talon -> "" + ((LeaderBobTalonSRX) talon).getMotorOutputVoltage());
-    HelixLogger.getInstance().addSource("LEFT_VELOCITY", left,
-        talon -> "" + ((LeaderBobTalonSRX) talon).getSelectedSensorVelocity());
+    HelixLogger.getInstance().addSource("LEFT_MASTER_VOLTAGE", () -> Double.toString(left.getMotorOutputVoltage()));
+    HelixLogger.getInstance().addSource("LEFT_VELOCITY", () -> Double.toString(left.getSelectedSensorVelocity()));
   }
 
   /**
