@@ -1,7 +1,7 @@
 package frc.arcs;
 
-import frc.models.SrxMotionProfile;
-import frc.models.SrxTrajectory;
+import com.team319.follower.SrxMotionProfile;
+import com.team319.follower.SrxTrajectory;
 
 public class TurnScalingArc extends SrxTrajectory {
 	

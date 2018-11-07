@@ -4,8 +4,9 @@ import static frc.robot.subsystems.Drivetrain.DT_HALF_TRACK_WIDTH;
 import static frc.robot.subsystems.Drivetrain.MAX_DRIVESIDE_VELOCITY;
 import static frc.robot.subsystems.Drivetrain.ticks_per_100ms;
 
+import com.team2363.logger.HelixEvents;
+
 import edu.wpi.first.wpilibj.command.Command;
-import frc.logger.HelixEvents;
 import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
 

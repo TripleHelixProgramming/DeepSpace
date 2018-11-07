@@ -7,16 +7,12 @@
 
 package frc.robot;
 
+import com.team2363.logger.HelixEvents;
+import com.team2363.logger.HelixLogger;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.arcs.TurnScalingArc;
-import frc.logger.HelixEvents;
-import frc.logger.HelixLogger;
-import frc.models.Driver;
-import frc.robot.commands.FollowArc;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -30,26 +26,13 @@ public class Robot extends TimedRobot {
 
   Command autonomousCommand;
 
-  SendableChooser<Driver> drivers = new SendableChooser<>();
-
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() { 
-    // selectDriver();
     initializeSubsystems();
-
-    HelixEvents.getInstance().startLogging();
-  }
-
-  private void selectDriver() {
-    for (Driver driver : Driver.values()) {
-      drivers.addObject(driver.toString(), driver);
-    }
-    SmartDashboard.putData(drivers);
-    RobotMap.currentDriver = drivers.getSelected();
   }
 
   private void initializeSubsystems() {
@@ -95,11 +78,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    autonomousCommand = new FollowArc(new TurnScalingArc());
+    // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new TurnScalingArc());
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.start();
     }
+    HelixEvents.getInstance().startLogging();
   }
 
   /**

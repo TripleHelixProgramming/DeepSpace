@@ -12,18 +12,20 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.team2363.logger.HelixEvents;
+import com.team2363.logger.HelixLogger;
+import com.team319.follower.FollowsArc;
+import com.team319.models.BobTalonSRX;
+import com.team319.models.LeaderBobTalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.logger.HelixEvents;
-import frc.logger.HelixLogger;
-import frc.models.BobTalonSRX;
-import frc.models.LeaderBobTalonSRX;
 import frc.robot.RobotMap;
+
 
 /**
  * An example subsystem. You can replace me with your own Subsystem.
  */
-public class Drivetrain extends Subsystem {
+public class Drivetrain extends Subsystem implements FollowsArc {
 
   private static Drivetrain INSTANCE = new Drivetrain();
 
@@ -137,27 +139,21 @@ public class Drivetrain extends Subsystem {
   }
 
   private void setupLogs() {
-    HelixLogger.getInstance().addSource("LEFT_MASTER_VOLTAGE", () -> Double.toString(left.getMotorOutputVoltage()));
-    HelixLogger.getInstance().addSource("LEFT_VELOCITY", () -> Double.toString(left.getSelectedSensorVelocity()));
+    HelixLogger.getInstance().addDoubleSource("LEFT_MASTER_VOLTAGE", left::getMotorOutputVoltage);
+    HelixLogger.getInstance().addIntegerSource("LEFT_VELOCITY", left::getSelectedSensorVelocity);
   }
 
-  /**
-   * @return the left master talon
-   */
-  public LeaderBobTalonSRX getLeft() {
+  @Override
+  public BobTalonSRX getLeft() {
     return left;
   }
 
-  /**
-   * @return the right master talon
-   */
-  public LeaderBobTalonSRX getRight() {
+  @Override
+  public BobTalonSRX getRight() {
     return right;
   }
 
-  /**
-   * @return the average distance of both sides of the drivetrain
-   */
+  @Override
   public double getDistance() {
     
     double distance = right.getPrimarySensorPosition();
@@ -168,5 +164,10 @@ public class Drivetrain extends Subsystem {
   public void resetEncoders() {
     left.getSensorCollection().setQuadraturePosition(0, 0);
     right.getSensorCollection().setQuadraturePosition(0, 0);
+  }
+
+  @Override
+  public Subsystem getRequiredSubsystem() {
+    return this;
   }
 }

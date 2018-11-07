@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import frc.models.Driver;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -16,16 +15,6 @@ import frc.models.Driver;
  * floating around.
  */
 public class RobotMap {
-  //DRIVER
-  public static Driver currentDriver = Driver.DUSTIN; 
-
-  public static void setCurrentDriver(Driver driver) {
-    if (currentDriver == null) {
-      currentDriver = Driver.DEFAULT;
-    } else {
-      currentDriver = driver;
-    }
-  }
 
   //DRIVETRAIN
   public static int LEFT_MASTER_ID = 14;
