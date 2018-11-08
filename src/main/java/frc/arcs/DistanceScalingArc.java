@@ -7,8 +7,8 @@ public class DistanceScalingArc extends SrxTrajectory {
 	
 	// WAYPOINTS:
 	// (X,Y,degrees)
-	// (0.00,0.00,0.00)
-	// (3.00,0.00,0.00)
+	// (2.00,13.50,0.00)
+	// (5.00,13.50,0.00)
 	
     public DistanceScalingArc() {
 		super();

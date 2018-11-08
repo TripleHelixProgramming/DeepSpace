@@ -7,8 +7,8 @@ public class TurnScalingArc extends SrxTrajectory {
 	
 	// WAYPOINTS:
 	// (X,Y,degrees)
-	// (0.00,0.00,0.00)
-	// (3.00,3.00,89.99)
+	// (2.00,13.50,0.00)
+	// (5.00,16.50,89.99)
 	
     public TurnScalingArc() {
 		super();

@@ -5,7 +5,7 @@ plugins {
 
 repositories {
     jcenter()
-     maven { url "https://jitpack.io" }
+    maven { url "https://jitpack.io" }
 }
 
 def ROBOT_CLASS = "frc.robot.Robot"
@@ -38,7 +38,9 @@ dependencies {
     compile ctre()
     compile navx()
     compile 'com.github.notmattlythgoe:HelixUtilities:master-SNAPSHOT'
-    compile 'com.github.TripleHelixProgramming:BobTrajectory:add_multiple_velocities-SNAPSHOT'
+    compile 'com.github.Team319:BobTrajectory:add_multiple_velocities-SNAPSHOT'
+//    compile files('C:/Users/d4lythm/Documents/Robotics/Projects/BobTrajectory/build/libs/BobTrajectory.jar')
+//    compile files('C:/Users/d4lythm/Documents/Robotics/Projects/HelixUtilities/build/libs/HelixUtilities.jar')
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
