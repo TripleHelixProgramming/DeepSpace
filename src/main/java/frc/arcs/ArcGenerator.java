@@ -34,21 +34,26 @@ public class ArcGenerator extends AbstractBobPathCreator {
 		exampleArc.addWaypointRelative(3, 0, 0, 2, 5);
 		// Add the next point to be an additional 5 feet forward and 5 feet to the left with max speed of 2 FPS,
 		// it  will arrive at this locaton going 0 FPS 
-        exampleArc.addWaypointRelative(5, 5, 0, 0, 2);
+		exampleArc.addWaypointRelative(5, 5, 0, 0, 2);
+		
+		BobPath speedTesting = new BobPath(config, "MultiSpeedTest");
+		speedTesting.addWaypoint(new Waypoint(2, 13.5, 0, 0, 0));
+		speedTesting.addWaypointRelative(3, 3, 89.99, 1, 3);
+		speedTesting.addWaypointRelative(-3, 3, 89.99, 0, 1);
         
-        return asList(exampleArc); // return asList(path1, path2, path3, ...);
+        return asList(exampleArc, speedTesting); // return asList(path1, path2, path3, ...);
     }
 
     @Override
     public SrxTranslatorConfig getConfigFile() {
         config = new SrxTranslatorConfig();
-		config.max_acc = 8.0;
+		config.max_acc = 5;
 		config.max_jerk = 60.0;
-		config.max_vel = 10.0; // 8.0
-		config.wheelbase_width_feet = 23.5 / 12.0;// 23.5, then 29.5, 35.5
-		config.wheel_dia_inches = 6.0;
-		config.scale_factor = 7.43; //UNH value is 5.75, practice bot value is 7.42
-		config.encoder_ticks_per_rev = 4096;
+		config.max_vel = 7.0; 
+		config.wheelbase_width_feet = robotWidthInFeet;
+		config.wheel_dia_inches = 5;
+		config.scale_factor = 1.33; 
+		config.encoder_ticks_per_rev = 480;
 		config.robotLength = 39;
         config.robotWidth = 33;
         config.highGear = true;
