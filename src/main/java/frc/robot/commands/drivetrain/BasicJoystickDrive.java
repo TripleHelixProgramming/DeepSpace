@@ -8,13 +8,14 @@
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
 
-public class TestDrive extends Command {
-  public TestDrive() {
+public class BasicJoystickDrive extends Command {
+  public BasicJoystickDrive() {
+    requires(Drivetrain.getInstance());
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Drivetrain.getInstance());
   }
 
   // Called just before this Command runs the first time
@@ -25,7 +26,7 @@ public class TestDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Drivetrain.getInstance().drive(0.3, 0.3);
+    Drivetrain.getInstance().arcadeDrive(OI.getInstance().getThrottle(), OI.getInstance().getTurn(), true);
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -43,6 +43,6 @@ public class OI {
    * @return the raw controller turn
    */
 	public double getTurn() {
-		return driver.getRawAxis(ControllerMap.RIGHT_STICK_X);
+		return -driver.getRawAxis(ControllerMap.RIGHT_STICK_X);
 	}
 }

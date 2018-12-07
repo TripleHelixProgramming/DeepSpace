@@ -14,8 +14,14 @@ import com.team319.follower.FollowArc;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.arcs.DistanceScalingArc;
+import frc.arcs.ExampleArc;
+import frc.arcs.Figure8Arc;
+import frc.arcs.ForwardLeftArc;
 import frc.arcs.MultiSpeedTestArc;
 import frc.arcs.SpeedTestingArc;
+import frc.arcs.Straight10FeetArc;
+import frc.arcs.StraightBack10FeetArc;
 import frc.arcs.TurnScalingArc;
 import frc.robot.subsystems.Drivetrain;
 
@@ -82,7 +88,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    autonomousCommand = new FollowArc(Drivetrain.getInstance(), new MultiSpeedTestArc());
+    Drivetrain.getInstance().resetHeading();
+    // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new Straight10FeetArc());
+    // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new ForwardLeftArc());
+    // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new DistanceScalingArc());
+      autonomousCommand = new FollowArc(Drivetrain.getInstance(), new Figure8Arc());
+
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.start();

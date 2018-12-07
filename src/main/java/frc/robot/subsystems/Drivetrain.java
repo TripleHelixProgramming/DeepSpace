@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team2363.logger.HelixEvents;
 import com.team2363.logger.HelixLogger;
 import com.team319.follower.FollowsArc;
@@ -19,7 +20,9 @@ import com.team319.models.BobTalonSRX;
 import com.team319.models.LeaderBobTalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.commands.drivetrain.BasicJoystickDrive;
 
 
 /**
@@ -74,6 +77,8 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   private LeaderBobTalonSRX right = new LeaderBobTalonSRX(RobotMap.RIGHT_MASTER_ID,
       new BobTalonSRX(RobotMap.RIGHT_SLAVE_1_ID), new BobTalonSRX(RobotMap.RIGHT_SLAVE_2_ID));
 
+  private PigeonIMU pigeon = new PigeonIMU(RobotMap.RIGHT_SLAVE_2_ID);
+
   private Drivetrain() {
     setPIDFValues();
     setBrakeMode(NeutralMode.Brake);
@@ -90,27 +95,58 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   public void initDefaultCommand() {
     // setDefaultCommand(new TestDrive());
     // setDefaultCommand(JoystickDriveFactory.createJoystickDrive());
+    setDefaultCommand(new BasicJoystickDrive());
   }
 
-  /**
-   * @param leftVelocity  the velocity the left of the drivetrain should be moving
-   *                      at
-   * @param rightVelocity the velocity the right of the drivetrain should be
-   *                      moving at
-   */
-  public void drive(double leftVelocity
-  , double rightVelocity) {
-    left.set(ControlMode.PercentOutput, leftVelocity);
-    right.set(ControlMode.PercentOutput, rightVelocity);
-  }
+  public void arcadeDrive(double throttle, double turn, boolean squaredInputs) {
+		
+		double leftMotorSpeed;
+	    double rightMotorSpeed;
+	    
+	    if (squaredInputs) {
+	      // square the inputs (while preserving the sign) to increase fine control
+	      // while permitting full power
+	      if (throttle >= 0.0) {
+	        throttle = throttle * throttle;
+	      } else {
+	        throttle = -(throttle * throttle);
+	      }
+	      if (turn >= 0.0) {
+	        turn = turn * turn;
+	      } else {
+	        turn = -(turn * turn);
+	      }
+	    }
+
+	    if (throttle > 0.0) {
+	      if (turn > 0.0) {
+	        leftMotorSpeed = throttle - turn;
+	        rightMotorSpeed = Math.max(throttle, turn);
+	      } else {
+	        leftMotorSpeed = Math.max(throttle, -turn);
+	        rightMotorSpeed = throttle + turn;
+	      }
+	    } else {
+	      if (turn > 0.0) {
+	        leftMotorSpeed = -Math.max(-throttle, turn);
+	        rightMotorSpeed = throttle + turn;
+	      } else {
+	        leftMotorSpeed = throttle - turn;
+	        rightMotorSpeed = -Math.max(-throttle, -turn);
+	      }
+	    }
+
+	    left.set(ControlMode.PercentOutput, leftMotorSpeed);
+	    right.set(ControlMode.PercentOutput, rightMotorSpeed);
+	}
 
   private void setPIDFValues() {
-    left.configPIDF(MOTION_PROFILE_POSITIONAL_SLOT, 1, 0, 0, 1.5);
+    left.configPIDF(MOTION_PROFILE_POSITIONAL_SLOT, 7.17, 0, 0, 2);
     left.configPIDF(MOTION_PROFILE_HEADING_SLOT, 0, 0, 0, 0);
     left.configPIDF(VELOCITY_CONTROL_SLOT, 0, 0, 0, 0);
 
-    right.configPIDF(MOTION_PROFILE_POSITIONAL_SLOT, 1, 0, 0, 1.5);
-    right.configPIDF(MOTION_PROFILE_HEADING_SLOT, 2, 0, 35, 0);
+    right.configPIDF(MOTION_PROFILE_POSITIONAL_SLOT, 7.16, 0, 0, 2);
+    right.configPIDF(MOTION_PROFILE_HEADING_SLOT, 2, 0, 55, 0);
     right.configPIDF(VELOCITY_CONTROL_SLOT, 0, 0, 0, 0);
   }
 
@@ -169,5 +205,18 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   @Override
   public Subsystem getRequiredSubsystem() {
     return this;
+  }
+
+  public void resetHeading() {
+    pigeon.setYaw(0, 0);
+  }
+
+  @Override
+  public void periodic() {
+    double averageVelocity = (right.getSensorCollection().getQuadratureVelocity() + left.getSensorCollection().getQuadratureVelocity()) / 2.0;
+    SmartDashboard.putNumber("Drivetrain Velocity", right.getPrimarySensorVelocity());
+    // double [] yaw = {0, 0, 0};
+    // pigeon.getYawPitchRoll(yaw);
+    // SmartDashboard.putNumber("Drivetrain Heading", yaw[0]);
   }
 }

@@ -67,7 +67,7 @@ public class JoystickDrive extends Command {
     	double left = (radialVelocityAtMidpoint + radialVelocityAtDriveside) * ticks_per_100ms;
     	double right = (radialVelocityAtMidpoint - radialVelocityAtDriveside) * ticks_per_100ms;
     	
-	    Drivetrain.getInstance().drive(left, right);
+	    // Drivetrain.getInstance().drive(left, right);
     }
 
     // Make this return true when this Command no longer needs to run execute()
