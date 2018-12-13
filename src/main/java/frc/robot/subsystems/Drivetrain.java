@@ -7,7 +7,7 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
+import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
@@ -98,46 +98,21 @@ public class Drivetrain extends Subsystem implements FollowsArc {
     setDefaultCommand(new BasicJoystickDrive());
   }
 
+  public void tankDrive(double leftVelocity, double rightVelocity) {
+    left.set(PercentOutput, leftVelocity);
+    right.set(PercentOutput, rightVelocity);
+  }
+
   public void arcadeDrive(double throttle, double turn, boolean squaredInputs) {
-		
-		double leftMotorSpeed;
-	    double rightMotorSpeed;
-	    
-	    if (squaredInputs) {
-	      // square the inputs (while preserving the sign) to increase fine control
-	      // while permitting full power
-	      if (throttle >= 0.0) {
-	        throttle = throttle * throttle;
-	      } else {
-	        throttle = -(throttle * throttle);
-	      }
-	      if (turn >= 0.0) {
-	        turn = turn * turn;
-	      } else {
-	        turn = -(turn * turn);
-	      }
-	    }
+    if (squaredInputs) {
+      // square the inputs (while preserving the sign) to increase fine control
+      // while permitting full power
+      throttle = Math.abs(throttle) * throttle;
+      turn = Math.abs(turn) * turn;
+    }
 
-	    if (throttle > 0.0) {
-	      if (turn > 0.0) {
-	        leftMotorSpeed = throttle - turn;
-	        rightMotorSpeed = Math.max(throttle, turn);
-	      } else {
-	        leftMotorSpeed = Math.max(throttle, -turn);
-	        rightMotorSpeed = throttle + turn;
-	      }
-	    } else {
-	      if (turn > 0.0) {
-	        leftMotorSpeed = -Math.max(-throttle, turn);
-	        rightMotorSpeed = throttle + turn;
-	      } else {
-	        leftMotorSpeed = throttle - turn;
-	        rightMotorSpeed = -Math.max(-throttle, -turn);
-	      }
-	    }
-
-	    left.set(ControlMode.PercentOutput, leftMotorSpeed);
-	    right.set(ControlMode.PercentOutput, rightMotorSpeed);
+    left.set(PercentOutput, throttle - turn);
+    right.set(PercentOutput, throttle + turn);
 	}
 
   private void setPIDFValues() {
@@ -177,6 +152,7 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   private void setupLogs() {
     HelixLogger.getInstance().addDoubleSource("LEFT_MASTER_VOLTAGE", left::getMotorOutputVoltage);
     HelixLogger.getInstance().addIntegerSource("LEFT_VELOCITY", left::getSelectedSensorVelocity);
+    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN_VELOCITY", right::getPrimarySensorVelocity);
   }
 
   @Override

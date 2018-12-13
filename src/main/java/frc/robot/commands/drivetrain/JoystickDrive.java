@@ -44,8 +44,7 @@ public class JoystickDrive extends Command {
     	if (greaterInput > 0.0) {
     		saturatedInput = (lesserInput / greaterInput) + 1.0;
        		//range [1, 2]
-    	}
-    	else {
+    	} else {
     		saturatedInput = 1.0;
     	}
      	
@@ -67,7 +66,7 @@ public class JoystickDrive extends Command {
     	double left = (radialVelocityAtMidpoint + radialVelocityAtDriveside) * ticks_per_100ms;
     	double right = (radialVelocityAtMidpoint - radialVelocityAtDriveside) * ticks_per_100ms;
     	
-	    // Drivetrain.getInstance().drive(left, right);
+	    Drivetrain.getInstance().tankDrive(left, right);
     }
 
     // Make this return true when this Command no longer needs to run execute()
