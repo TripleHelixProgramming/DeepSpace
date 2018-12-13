@@ -63,9 +63,11 @@ public class JoystickDrive extends Command {
     		//range [-full linear speed, full linear speed]
 			//units of linear speed (in/s); 
       	
-    	double left = (radialVelocityAtMidpoint + radialVelocityAtDriveside) * ticks_per_100ms;
-    	double right = (radialVelocityAtMidpoint - radialVelocityAtDriveside) * ticks_per_100ms;
-    	
+    	//double left = (radialVelocityAtMidpoint + radialVelocityAtDriveside) * ticks_per_100ms;
+    	//double right = (radialVelocityAtMidpoint - radialVelocityAtDriveside) * ticks_per_100ms;
+		
+		double left = throttleInput + turnInput;
+		double right = throttleInput - turnInput;
 	    Drivetrain.getInstance().tankDrive(left, right);
     }
 
