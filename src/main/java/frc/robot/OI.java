@@ -36,13 +36,14 @@ public class OI {
    * @return the raw controller throttle
    */
   public double getThrottle () {
-		return -driver.getRawAxis(ControllerMap.LEFT_STICK_Y); 
+    // return -driver.getRawAxis(ControllerMap.LEFT_STICK_Y); 
+    return -driver.getRawAxis(ControllerMap.LEFT_TRIGGER) + driver.getRawAxis(ControllerMap.RIGHT_TRIGGER);
 	}
 	
 	/**
    * @return the raw controller turn
    */
 	public double getTurn() {
-		return -driver.getRawAxis(ControllerMap.RIGHT_STICK_X);
+		return driver.getRawAxis(ControllerMap.RIGHT_STICK_X);
 	}
 }

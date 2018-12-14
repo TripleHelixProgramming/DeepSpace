@@ -32,7 +32,10 @@ public class JoystickDrive extends Command {
     	//read in joystick values from OI
     	//range [-1, 1]
     	double throttleInput = OI.getInstance().getThrottle() * getThrottleScalar();
-    	double turnInput = OI.getInstance().getTurn() * getTurnScalar();
+		double turnInput = OI.getInstance().getTurn() * getTurnScalar();
+		
+		// double throttleInput = OI.getInstance().getThrottle();
+    	// double turnInput = OI.getInstance().getTurn();
  
     	//find the maximum possible value of (throttle + turn)
     	//along the vector that the arcade joystick is pointing
@@ -49,9 +52,11 @@ public class JoystickDrive extends Command {
     	}
      	
     	//scale down the joystick input values
-    	//such that (throttle + turn) always has a range [-1, 1]
+		//such that (throttle + turn) always has a range [-1, 1]
     	throttleInput = throttleInput / saturatedInput;
-    	turnInput = turnInput / saturatedInput;
+		turnInput = turnInput / saturatedInput;
+		// throttleInput = throttleInput / saturatedInput * getThrottleScalar();
+    	// turnInput = turnInput / saturatedInput * getTurnScalar();
      	
     	double radialVelocityAtMidpoint = throttleInput * MAX_DRIVESIDE_VELOCITY;
     		//range [-full linear speed, full linear speed]

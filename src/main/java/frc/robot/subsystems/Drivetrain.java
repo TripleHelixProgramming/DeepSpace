@@ -23,6 +23,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.drivetrain.BasicJoystickDrive;
+import frc.robot.commands.drivetrain.DustinDrive;
+import frc.robot.commands.drivetrain.JoshDrive;
+import frc.robot.commands.drivetrain.JoystickDrive;
 
 
 /**
@@ -95,7 +98,7 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   public void initDefaultCommand() {
     // setDefaultCommand(new TestDrive());
     // setDefaultCommand(JoystickDriveFactory.createJoystickDrive());
-    setDefaultCommand(new BasicJoystickDrive());
+    setDefaultCommand(new JoshDrive());
   }
 
   public void tankDrive(double leftVelocity, double rightVelocity) {
