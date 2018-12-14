@@ -7,14 +7,15 @@
 
 package frc.robot.commands.drivetrain;
 
-public class DustinDrive extends JoystickDrive {
+public class DustinDrive extends NormalizedArcadeDrive {
+
   @Override
-  public double getThrottleScalar() {
-    return -1;
+  public double throttleInputProcessing(double throttle) {
+    return -throttle;
   }
 
   @Override
-  public double getTurnScalar() {
-    return 0.6;
+  public double turnInputProcessing(double turn) {
+    return turn * 0.6;
   }
 }

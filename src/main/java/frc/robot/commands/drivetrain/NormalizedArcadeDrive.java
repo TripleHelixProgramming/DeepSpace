@@ -1,28 +1,21 @@
 package frc.robot.commands.drivetrain;
 
-import static frc.robot.subsystems.Drivetrain.DT_HALF_TRACK_WIDTH;
-import static frc.robot.subsystems.Drivetrain.MAX_DRIVESIDE_VELOCITY;
-import static frc.robot.subsystems.Drivetrain.ticks_per_100ms;
-
 import com.team2363.logger.HelixEvents;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
 
-/**
- *
- */
-public class JoystickDrive extends Command {
+public class NormalizedArcadeDrive extends Command {
 
-    public JoystickDrive() {
+    public NormalizedArcadeDrive() {
         // Use requires() here to declare subsystem dependencies
 		requires(Drivetrain.getInstance());
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	HelixEvents.getInstance().addEvent("DRIVETRAIN", "Starting: " + JoystickDrive.class.getSimpleName());
+    	HelixEvents.getInstance().addEvent("DRIVETRAIN", "Starting: " + NormalizedArcadeDrive.class.getSimpleName());
     	
     }
 
@@ -31,8 +24,8 @@ public class JoystickDrive extends Command {
 
     	//read in joystick values from OI
     	//range [-1, 1]
-    	double throttleInput = OI.getInstance().getThrottle() * getThrottleScalar();
-		double turnInput = OI.getInstance().getTurn() * getTurnScalar();
+    	double throttleInput = throttleInputProcessing(OI.getInstance().getThrottle());
+		double turnInput = turnInputProcessing(OI.getInstance().getTurn());
 		
 		// double throttleInput = OI.getInstance().getThrottle();
     	// double turnInput = OI.getInstance().getTurn();
@@ -55,24 +48,10 @@ public class JoystickDrive extends Command {
 		//such that (throttle + turn) always has a range [-1, 1]
     	throttleInput = throttleInput / saturatedInput;
 		turnInput = turnInput / saturatedInput;
-		// throttleInput = throttleInput / saturatedInput * getThrottleScalar();
-    	// turnInput = turnInput / saturatedInput * getTurnScalar();
-     	
-    	double radialVelocityAtMidpoint = throttleInput * MAX_DRIVESIDE_VELOCITY;
-    		//range [-full linear speed, full linear speed]
-    		//units of linear speed (in/s)
-    	double angularVelocity =  turnInput * MAX_DRIVESIDE_VELOCITY / DT_HALF_TRACK_WIDTH; 
-    		//range [-full rotational speed, full rotational speed]
-    		//units of rotational speed (rad/s);
-    	double radialVelocityAtDriveside = angularVelocity * DT_HALF_TRACK_WIDTH;
-    		//range [-full linear speed, full linear speed]
-			//units of linear speed (in/s); 
-      	
-    	//double left = (radialVelocityAtMidpoint + radialVelocityAtDriveside) * ticks_per_100ms;
-    	//double right = (radialVelocityAtMidpoint - radialVelocityAtDriveside) * ticks_per_100ms;
 		
-		double left = throttleInput + turnInput;
-		double right = throttleInput - turnInput;
+		double left = leftOutputProcessing(throttleInput + turnInput);
+		double right = rightOutputProcessing(throttleInput - turnInput);
+
 	    Drivetrain.getInstance().tankDrive(left, right);
     }
 
@@ -85,17 +64,32 @@ public class JoystickDrive extends Command {
     protected void end() {
     	HelixEvents.getInstance().addEvent("DRIVETRAIN", "Finished starting joystick drive");
     }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-	}
 	
-	protected double getThrottleScalar() {
-		return 1;
+	/**
+	 * Post processing on the left output value prior to sending to drivetrain
+	 */
+	protected double leftOutputProcessing(double left) {
+		return left;
 	}
 
-	protected double getTurnScalar() {
-		return 1;
+	/**
+	 * Post processing on the left output value prior to sending to drivetrain
+	 */
+	protected double rightOutputProcessing(double right) {
+		return right;
+	}
+
+	/**
+	 * Pre processing on the throttle input value prior to normalizing
+	 */
+	protected double throttleInputProcessing(double throttle) {
+		return throttle;
+	}
+
+	/**
+	 * Pre processing on the turn input value prior to normalizing
+	 */
+	protected double turnInputProcessing(double turn) {
+		return turn;
 	}
 }

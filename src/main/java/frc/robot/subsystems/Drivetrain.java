@@ -22,10 +22,7 @@ import com.team319.models.LeaderBobTalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
-import frc.robot.commands.drivetrain.BasicJoystickDrive;
-import frc.robot.commands.drivetrain.DustinDrive;
 import frc.robot.commands.drivetrain.JoshDrive;
-import frc.robot.commands.drivetrain.JoystickDrive;
 
 
 /**
@@ -48,32 +45,6 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   private static final int MOTION_PROFILE_POSITIONAL_SLOT = 0;
   private static final int MOTION_PROFILE_HEADING_SLOT = 1;
   private static final int VELOCITY_CONTROL_SLOT = 2;
-
-  // Drivetrain geometry constants
-  public static final int DT_ENCODER_TICKS_PER_REV = 480;
-  // 4 edges * 120 count quadrature encoder
-  // units of rate (ticks per encoder revolution)
-  public static final int MAX_DRIVESIDE_VELOCITY = 144;
-  // adjusted speed from JVN calculator
-  // units of velocity (in/s)
-  public static final int DT_HALF_TRACK_WIDTH = 13;
-  // distance between the robot centerline and the midpoint of the DT contact
-  // patches
-  // units of length (in)
-  public static final double DT_WHEEL_DIA = 4.0;
-  // diameter of wheel
-  // units of length (in)
-  public static final double DT_ENCODER_GEAR_RATIO = 42.0 / 48;
-  // gear ratio between encoder shaft and wheel axle
-  // unitless
-  public static final double ticks_per_100ms = (DT_ENCODER_TICKS_PER_REV
-      / (DT_WHEEL_DIA * Math.PI * DT_ENCODER_GEAR_RATIO * 10.0));
-  // factor to convert a linear velocity in in/s to units of counts per 100 ms
-  // DT_ENCODER_TICKS_PER_REV - units of rate (ticks per encoder revolution)
-  // DT_WHEEL_DIA - diameter of wheel - in
-  // DT_ENCODER_GEAR_RATIO - gear ratio between encoder shaft and wheel axle -
-  // unitless
-  // ticks_per_100ms - factor - (counts * s) / (in * 100 ms)
 
   private LeaderBobTalonSRX left = new LeaderBobTalonSRX(RobotMap.LEFT_MASTER_ID,
       new BobTalonSRX(RobotMap.LEFT_SLAVE_1_ID), new BobTalonSRX(RobotMap.LEFT_SLAVE_2_ID));

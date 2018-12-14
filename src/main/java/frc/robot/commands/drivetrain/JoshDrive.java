@@ -7,14 +7,15 @@
 
 package frc.robot.commands.drivetrain;
 
-public class JoshDrive extends JoystickDrive {
+public class JoshDrive extends NormalizedArcadeDrive {
+
   @Override
-  public double getThrottleScalar() {
-    return 1;
+  public double throttleInputProcessing(double throttle) {
+    return throttle;
   }
 
   @Override
-  public double getTurnScalar() {
-    return 1;
+  public double turnInputProcessing(double turn) {
+    return turn;
   }
 }
