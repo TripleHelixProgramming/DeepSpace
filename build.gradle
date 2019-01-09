@@ -40,6 +40,8 @@ def includeDesktopSupport = false
 // Maven central needed for JUnit
 repositories {
     mavenCentral()
+    jcenter()
+    maven { url "https://jitpack.io" }
 }
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
@@ -52,8 +54,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     //compile ctre()
     //compile navx()
-    //compile 'com.github.notmattlythgoe:HelixUtilities:master-SNAPSHOT'
-    //compile 'com.github.Team319:BobTrajectory:v1.0.0'
+    compile 'com.github.notmattlythgoe:HelixUtilities:master-SNAPSHOT'
+    compile 'com.github.Team319:BobTrajectory:v1.0.0'
 //    compile files('C:/Users/d4lythm/Documents/Robotics/Projects/BobTrajectory/build/libs/BobTrajectory.jar')
 //    compile files('C:/Users/d4lythm/Documents/Robotics/Projects/HelixUtilities/build/libs/HelixUtilities.jar')
 
