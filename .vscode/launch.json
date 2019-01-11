@@ -8,6 +8,13 @@
       "type": "java",
       "name": "CodeLens (Launch) - ArcGenerator",
       "request": "launch",
+      "mainClass": "frc.arcs.ArcGenerator",
+      "projectName": "DeepSpace"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - ArcGenerator",
+      "request": "launch",
       "cwd": "${workspaceFolder}",
       "console": "internalConsole",
       "stopOnEntry": false,
