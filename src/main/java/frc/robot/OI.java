@@ -8,6 +8,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.Camera.driveByVision;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -30,7 +32,9 @@ public class OI {
   private final Joystick driver = new Joystick(ControllerMap.DRIVER_PORT);
   private final Joystick operator = new Joystick(ControllerMap.OPERATOR_PORT);
   
-  private OI() { }
+  private OI() { 
+    new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByVision());
+  }
 
   /**
    * @return the raw controller throttle
@@ -45,5 +49,7 @@ public class OI {
    */
 	public double getTurn() {
 		return driver.getRawAxis(ControllerMap.RIGHT_STICK_X);
-	}
+  }
+  
+
 }
