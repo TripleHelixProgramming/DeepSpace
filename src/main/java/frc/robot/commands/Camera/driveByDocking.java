@@ -32,6 +32,7 @@ public class driveByDocking extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Camera.getInstance().setDockingMode();
     double txFront = Camera.getInstance().getdegRotationToTargetFront();
     double txBack = Camera.getInstance().getdegRotationToTargetBack();
     double tyFront = Camera.getInstance().getdegVerticalToTargetFront();
