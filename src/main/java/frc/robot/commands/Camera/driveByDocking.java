@@ -9,9 +9,16 @@ package frc.robot.commands.Camera;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Camera;
+import frc.robot.subsystems.Drivetrain;
 
-public class driveByVision extends Command {
-  public driveByVision() {
+public class driveByDocking extends Command {
+
+    private double kpAim = 0.05;
+    private double kpDistance = 0.05;
+    private double moveValue;
+    private double rotateValue;
+
+  public driveByDocking() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Camera.getInstance());
@@ -25,13 +32,36 @@ public class driveByVision extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Camera.getInstance().setDockingMode();
+    double txFront = Camera.getInstance().getdegRotationToTargetFront();
+    double txBack = Camera.getInstance().getdegRotationToTargetBack();
+    double tyFront = Camera.getInstance().getdegVerticalToTargetFront();
+    double tyBack = Camera.getInstance().getdegVerticalToTargetBack();
+    boolean TargetFoundFront = Camera.getInstance().getIsTargetFoundFront();
+    boolean TargetFoundBack = Camera.getInstance().getIsTargetFoundBack();
 
+    if(TargetFoundFront){
+      moveValue = tyFront * kpDistance;
+      rotateValue = txFront * kpAim;
+    }else{
+      moveValue = 0;
+      rotateValue = 0;
+    }
+
+    if(TargetFoundBack){
+      moveValue = tyBack * kpDistance;
+      rotateValue = txBack * kpAim;
+    }else{
+      moveValue = 0;
+      rotateValue = 0;
+    }
+    
+    Drivetrain.getInstance().arcadeDrive(moveValue, rotateValue, false);   //Remove the boolean value from arcadeDrive?
+    
   }
+
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    Camera.getInstance().setCameraMode();
     return false;
   }
 

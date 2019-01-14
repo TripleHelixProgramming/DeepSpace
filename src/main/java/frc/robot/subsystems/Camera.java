@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
 // import sun.security.jca.GetInstance;
@@ -41,6 +42,7 @@ public class Camera extends Subsystem {
  
   }
 
+
   private static NetworkTable getCamera(CAMERA Camera) {
     if (Camera == CAMERA.FRONT) {
       if (frontCamera == null) {
@@ -64,6 +66,51 @@ public class Camera extends Subsystem {
     frontCamera.getEntry("camMode").setNumber(0);
     backCamera.getEntry("camMode").setNumber(0);
   }
+
+  public boolean getIsTargetFoundFront() {
+    NetworkTableEntry tv = frontCamera.getEntry("tv");
+    double v = tv.getDouble(0);
+    if (v == 0.0f){
+        return false;
+    }else {
+        return true;
+    }
+}
+
+public boolean getIsTargetFoundBack() {
+  NetworkTableEntry tv = backCamera.getEntry("tv");
+  double v = tv.getDouble(0);
+  if (v == 0.0f){
+      return false;
+  }else {
+      return true;
+  }
+}
+
+public double getdegRotationToTargetFront() {
+  NetworkTableEntry txFront = frontCamera.getEntry("tx");
+  double x = txFront.getDouble(0.0);
+  return x;
+}
+
+public double getdegRotationToTargetBack() {
+  NetworkTableEntry txBack = backCamera.getEntry("tx");
+  double x = txBack.getDouble(0.0);
+  return x;
+}
+
+public double getdegVerticalToTargetFront() {
+  NetworkTableEntry tyFront = frontCamera.getEntry("ty");
+  double y = tyFront.getDouble(0.0);
+  return y;
+}
+
+public double getdegVerticalToTargetBack() {
+  NetworkTableEntry tyBack = backCamera.getEntry("ty");
+  double y = tyBack.getDouble(0.0);
+  return y;
+}
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
