@@ -35,7 +35,7 @@ public class OI {
   private final Joystick operator = new Joystick(ControllerMap.OPERATOR_PORT);
   
   private OI() { 
-    new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByVision());
+    new JoystickButton(driver, ControllerMap.X).whenPressed(new driveByVision());
     new JoystickButton(driver, ControllerMap.A).whenPressed(new driveByDocking());
     new JoystickButton(driver, ControllerMap.B).whenPressed(new driveByCamera());
   }

@@ -46,12 +46,12 @@ public class Camera extends Subsystem {
   private static NetworkTable getCamera(CAMERA Camera) {
     if (Camera == CAMERA.FRONT) {
       if (frontCamera == null) {
-        frontCamera = NetworkTableInstance.getDefault().getTable("front"); 
+        frontCamera = NetworkTableInstance.getDefault().getTable("limelight-front"); 
       }
       return frontCamera;
     } else { 
       if (backCamera == null) {
-        backCamera = NetworkTableInstance.getDefault().getTable("back");
+        backCamera = NetworkTableInstance.getDefault().getTable("limelight-back");
       }
       return backCamera;
     }
@@ -60,16 +60,27 @@ public class Camera extends Subsystem {
   public void setCameraMode() {
     frontCamera.getEntry("camMode").setNumber(1);
     backCamera.getEntry("camMode").setNumber(1);
+    frontCamera.getEntry("ledMode").setNumber(1);
   }
 
   public void setDockingMode() {
     frontCamera.getEntry("camMode").setNumber(0);
     backCamera.getEntry("camMode").setNumber(0);
+    frontCamera.getEntry("ledMode").setNumber(0);
+    frontCamera.getEntry("pipeline").setNumber(0);
+
+  }
+
+  public void setVisionMode() {
+    frontCamera.getEntry("camMode").setNumber(1);
+    backCamera.getEntry("camMode").setNumber(1);
+    frontCamera.getEntry("ledMode").setNumber(0);
+    frontCamera.getEntry("pipeline").setNumber(0);
   }
 
   public boolean getIsTargetFoundFront() {
-    NetworkTableEntry tv = frontCamera.getEntry("tv");
-    double v = tv.getDouble(0);
+    NetworkTableEntry tvFront = frontCamera.getEntry("tv");
+    double v = tvFront.getDouble(0);
     if (v == 0.0f){
         return false;
     }else {
@@ -78,8 +89,8 @@ public class Camera extends Subsystem {
 }
 
 public boolean getIsTargetFoundBack() {
-  NetworkTableEntry tv = backCamera.getEntry("tv");
-  double v = tv.getDouble(0);
+  NetworkTableEntry tvBack = backCamera.getEntry("tv");
+  double v = tvBack.getDouble(0);
   if (v == 0.0f){
       return false;
   }else {

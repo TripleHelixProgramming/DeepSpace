@@ -13,10 +13,12 @@ import frc.robot.subsystems.Drivetrain;
 
 public class driveByDocking extends Command {
 
-    private double kpAim = 0.05;
-    private double kpDistance = 0.05;
+    private double kpAim = 1;
+    private double kpDistance = 1;
     private double moveValue;
-    private double rotateValue;
+    private double rotateValue ;
+    private double left_command = 0.0;
+    private double right_command = 0.0;
 
   public driveByDocking() {
     // Use requires() here to declare subsystem dependencies
@@ -27,6 +29,8 @@ public class driveByDocking extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    
+
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -40,21 +44,37 @@ public class driveByDocking extends Command {
     boolean TargetFoundFront = Camera.getInstance().getIsTargetFoundFront();
     boolean TargetFoundBack = Camera.getInstance().getIsTargetFoundBack();
 
-    if(TargetFoundFront){
-      moveValue = tyFront * kpDistance;
-      rotateValue = txFront * kpAim;
-    }else{
-      moveValue = 0;
-      rotateValue = 0;
+    // if(TargetFoundFront){
+    //   moveValue = tyFront * kpDistance;
+    //   rotateValue = txFront * kpAim;
+    // }else{
+    //   moveValue = 0;
+    //   rotateValue = 0;
+    // }
+
+    // if(TargetFoundBack){
+    //   moveValue = tyBack * kpDistance;
+    //   rotateValue = txBack * kpAim;
+    // }else{
+    //   moveValue = 0;
+    //   rotateValue = 0;
+    // }
+
+    double steering_adjust = 0.0;
+    
+    if (txFront > 1.0)
+    {
+            rotateValue = kpAim * rotateValue - txFront;
+    }
+    else if (txFront < 1.0)
+    {
+            rotateValue = kpAim * rotateValue + txFront;
     }
 
-    if(TargetFoundBack){
-      moveValue = tyBack * kpDistance;
-      rotateValue = txBack * kpAim;
-    }else{
-      moveValue = 0;
-      rotateValue = 0;
-    }
+    double distance_adjust = kpDistance * tyFront;
+    
+    left_command += steering_adjust + distance_adjust;
+    right_command -= steering_adjust + distance_adjust;
     
     Drivetrain.getInstance().arcadeDrive(moveValue, rotateValue, false);   //Remove the boolean value from arcadeDrive?
     
