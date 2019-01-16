@@ -64,11 +64,11 @@ public class driveByDocking extends Command {
     
     if (txFront > 1.0)
     {
-            rotateValue = kpAim * rotateValue - txFront;
+            rotateValue = kpAim * rotateValue + txFront;
     }
     else if (txFront < 1.0)
     {
-            rotateValue = kpAim * rotateValue + txFront;
+            rotateValue = kpAim * rotateValue - txFront;
     }
 
     double distance_adjust = kpDistance * tyFront;
