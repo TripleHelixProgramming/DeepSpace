@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.Camera.aimByVision;
 import frc.robot.commands.Camera.driveByCamera;
 import frc.robot.commands.Camera.driveByDocking;
 import frc.robot.commands.Camera.driveByVision;
@@ -35,7 +36,7 @@ public class OI {
   private final Joystick operator = new Joystick(ControllerMap.OPERATOR_PORT);
   
   private OI() { 
-    new JoystickButton(driver, ControllerMap.X).whenPressed(new driveByVision());
+    new JoystickButton(driver, ControllerMap.X).whenPressed(new aimByVision());
     new JoystickButton(driver, ControllerMap.A).whenPressed(new driveByDocking());
     new JoystickButton(driver, ControllerMap.B).whenPressed(new driveByCamera());
   }
