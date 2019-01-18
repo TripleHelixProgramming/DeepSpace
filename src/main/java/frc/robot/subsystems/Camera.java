@@ -68,19 +68,20 @@ public class Camera extends Subsystem {
     backCamera.getEntry("camMode").setNumber(0);
     frontCamera.getEntry("ledMode").setNumber(0);
     frontCamera.getEntry("pipeline").setNumber(0);
+    frontCamera.getEntry("stream").setNumber(0);
 
   }
 
   public void setVisionMode() {
-    frontCamera.getEntry("camMode").setNumber(1);
-    backCamera.getEntry("camMode").setNumber(1);
+    frontCamera.getEntry("camMode").setNumber(0);
+    backCamera.getEntry("camMode").setNumber(0);
     frontCamera.getEntry("ledMode").setNumber(0);
     frontCamera.getEntry("pipeline").setNumber(0);
   }
 
   public boolean getIsTargetFoundFront() {
-    NetworkTableEntry tvFront = frontCamera.getEntry("tv");
-    double v = tvFront.getDouble(0);
+    NetworkTableEntry tv = frontCamera.getEntry("tv");
+    double v = tv.getDouble(0.0);
     if (v == 0.0f){
         return false;
     }else {
@@ -121,6 +122,11 @@ public double getdegVerticalToTargetBack() {
   double y = tyBack.getDouble(0.0);
   return y;
 }
+
+// public double getCameraStream() {
+//   NetworkTableEntry stream = frontCamera.getEntry("stream");
+//   return stream;
+// }
 
   @Override
   public void initDefaultCommand() {

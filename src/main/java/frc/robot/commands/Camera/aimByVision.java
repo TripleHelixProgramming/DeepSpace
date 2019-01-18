@@ -13,13 +13,14 @@ import frc.robot.subsystems.Drivetrain;
 
 public class aimByVision extends Command {
   private double kpAim = 0.05;
-  private double moveValue;
-  private double rotateValue ;
-  private double left_command = 0.0;
-  private double right_command = 0.0;
+  private double throttleInput;
+  private double turnInput ;
+  // private double left_command = 0.0;
+  // private double right_command = 0.0;
+  
   public aimByVision() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+    requires(Camera.getInstance());
+    requires(Drivetrain.getInstance());
   }
 
   // Called just before this Command runs the first time
@@ -30,25 +31,38 @@ public class aimByVision extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Camera.getInstance().setDockingMode();
-    double txFront = Camera.getInstance().getdegRotationToTargetFront();
-    double steering_adjust = 0.0;
+      double tx = Camera.getInstance().getdegRotationToTargetFront();
+      boolean targetFound = Camera.getInstance().getIsTargetFoundFront();
+  
+      if(targetFound){
+        throttleInput = 0;
+        turnInput = tx * kpAim;
+      }else{
+        throttleInput = 0;
+        turnInput = 0;
+      }
+  
+      Drivetrain.getInstance().arcadeDrive(throttleInput, turnInput, true);
+    // Camera.getInstance().setDockingMode();
+    // double txFront = Camera.getInstance().getdegRotationToTargetFront();
+    // double steering_adjust = 0.0;
     
-    if (txFront < 1.0)
-    {
-            rotateValue = kpAim * rotateValue + txFront;
-    }
-    else if (txFront > 1.0)
-    {
-            rotateValue = kpAim * rotateValue - txFront;
-    }
+    // if (txFront < 1.0)
+    // {
+    //         rotateValue = kpAim * rotateValue + txFront;
+    // }
+    // else if (txFront > 1.0)
+    // {
+    //         rotateValue = kpAim * rotateValue - txFront;
+    // }
 
-    Drivetrain.getInstance().arcadeDrive(moveValue, rotateValue, false);
+    // Drivetrain.getInstance().arcadeDrive(moveValue, rotateValue, false);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    Camera.getInstance().setCameraMode();
     return false;
   }
 

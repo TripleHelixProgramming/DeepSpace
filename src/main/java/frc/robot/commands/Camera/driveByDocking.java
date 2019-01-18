@@ -24,6 +24,7 @@ public class driveByDocking extends Command {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Camera.getInstance());
+    requires(Drivetrain.getInstance());
   }
 
   // Called just before this Command runs the first time
@@ -62,11 +63,11 @@ public class driveByDocking extends Command {
 
     double steering_adjust = 0.0;
     
-    if (txFront < 1.0)
+    if (txFront > 1.0)
     {
-            rotateValue = kpAim * rotateValue + txFront;
+            steering_adjust = kpAim * rotateValue + txFront;
     }
-    else if (txFront > 1.0)
+    else if (txFront < 1.0)
     {
             rotateValue = kpAim * rotateValue - txFront;
     }
@@ -76,7 +77,7 @@ public class driveByDocking extends Command {
     left_command += steering_adjust + distance_adjust;
     right_command -= steering_adjust + distance_adjust;
     
-    Drivetrain.getInstance().arcadeDrive(moveValue, rotateValue, false);   //Remove the boolean value from arcadeDrive?
+    Drivetrain.getInstance().tankDrive(left_command, right_command);   //Remove the boolean value from arcadeDrive?
     
   }
 
