@@ -19,8 +19,9 @@ public class driveByDocking extends Command {
     // private double rotateValue ;
     // private double left_command = 0.0;
     // private double right_command = 0.0;
-    double Kp = -0.03;
-    double min_command = 0.05;
+    double Kp = 0.017;
+    double kpDistance = 0.015;
+    double min_command = 0.0;
     double left_command;
     double right_command;
     private boolean finished = false;
@@ -52,18 +53,32 @@ public class driveByDocking extends Command {
     boolean TargetFoundBack = Camera.getInstance().getIsTargetFoundBack();
     double heading_error = -txFront;
     double steering_adjust = 0.0;
+    double distance_error = -tyFront; //subtracting 2 due to range error on camera on back of the robot.
 
-    if(Math.abs(txFront) < 3) {
+    
+
+    if(Math.abs(txFront) < 1) {
       finished = true;
     }
 
     if (txFront > 0.0) {
-        steering_adjust = Kp*-txFront - min_command;
+        steering_adjust = Kp*txFront - min_command;
     }else if (txFront < 0.0){
-        steering_adjust = Kp*-txFront + min_command;
+        steering_adjust = Kp*txFront + min_command;
     }
-    left_command += steering_adjust;
-    right_command -= steering_adjust;
+
+    // if(tyFront < 0.0){
+    //   left_command = 0.25;
+    //   right_command = 0.25;
+    
+    // }else if(tyFront >0.0){
+    //   left_command = 0.0;
+    //   right_command =0.0;
+    // }
+    double distance_adjust = (kpDistance * distance_error);
+
+    left_command += steering_adjust - distance_adjust;
+    right_command -= steering_adjust + distance_adjust; //changed from "-"
     
     // Drivetrain.getInstance().tankDrive(left_command, right_command);   //Remove the boolean value from arcadeDrive?
     Drivetrain.getInstance().tankDrive(left_command, right_command);
