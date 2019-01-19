@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.Camera.aimByVision;
 import frc.robot.commands.Camera.driveByCamera;
 import frc.robot.commands.Camera.driveByDocking;
-import frc.robot.commands.Camera.driveByVision;
+// import frc.robot.commands.Camera.driveByVision;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -37,7 +37,7 @@ public class OI {
   private final Joystick operator = new Joystick(ControllerMap.OPERATOR_PORT);
   
   private OI() { 
-    new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByVision());
+    // new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByVision());
     new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByDocking());
     new JoystickButton(driver, ControllerMap.B).whenPressed(new driveByCamera());
     new JoystickButton(driver, ControllerMap.Y).whileHeld(new aimByVision());

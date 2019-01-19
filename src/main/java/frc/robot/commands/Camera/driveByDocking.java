@@ -13,12 +13,17 @@ import frc.robot.subsystems.Drivetrain;
 
 public class driveByDocking extends Command {
 
-    private double kpAim = 0.05;
-    private double kpDistance = 0.05;
-    private double moveValue;
-    private double rotateValue ;
-    private double left_command = 0.0;
-    private double right_command = 0.0;
+    // private double kpAim = 0.05;
+    // private double kpDistance = 0.05;
+    // private double throttleInput;
+    // private double rotateValue ;
+    // private double left_command = 0.0;
+    // private double right_command = 0.0;
+    double Kp = -0.03;
+    double min_command = 0.05;
+    double left_command;
+    double right_command;
+    private boolean finished = false;
 
   public driveByDocking() {
     // Use requires() here to declare subsystem dependencies
@@ -30,7 +35,8 @@ public class driveByDocking extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    
+    left_command = 0.0;
+    right_command = 0.0;
 
   }
 
@@ -44,47 +50,30 @@ public class driveByDocking extends Command {
     double tyBack = Camera.getInstance().getdegVerticalToTargetBack();
     boolean TargetFoundFront = Camera.getInstance().getIsTargetFoundFront();
     boolean TargetFoundBack = Camera.getInstance().getIsTargetFoundBack();
-
-    // if(TargetFoundFront){
-    //   moveValue = tyFront * kpDistance;
-    //   rotateValue = txFront * kpAim;
-    // }else{
-    //   moveValue = 0;
-    //   rotateValue = 0;
-    // }
-
-    // if(TargetFoundBack){
-    //   moveValue = tyBack * kpDistance;
-    //   rotateValue = txBack * kpAim;
-    // }else{
-    //   moveValue = 0;
-    //   rotateValue = 0;
-    // }
-
+    double heading_error = -txFront;
     double steering_adjust = 0.0;
-    
-    if (txFront > 1.0)
-    {
-            steering_adjust = kpAim * rotateValue + txFront;
-    }
-    else if (txFront < 1.0)
-    {
-            rotateValue = kpAim * rotateValue - txFront;
+
+    if(Math.abs(txFront) < 3) {
+      finished = true;
     }
 
-    double distance_adjust = kpDistance * tyFront;
+    if (txFront > 0.0) {
+        steering_adjust = Kp*-txFront - min_command;
+    }else if (txFront < 0.0){
+        steering_adjust = Kp*-txFront + min_command;
+    }
+    left_command += steering_adjust;
+    right_command -= steering_adjust;
     
-    left_command += steering_adjust + distance_adjust;
-    right_command -= steering_adjust + distance_adjust;
-    
-    Drivetrain.getInstance().tankDrive(left_command, right_command);   //Remove the boolean value from arcadeDrive?
-    
+    // Drivetrain.getInstance().tankDrive(left_command, right_command);   //Remove the boolean value from arcadeDrive?
+    Drivetrain.getInstance().tankDrive(left_command, right_command);
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return finished;
   }
 
   // Called once after isFinished returns true
