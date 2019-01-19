@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -36,8 +37,7 @@ public class OI {
    * @return the raw controller throttle
    */
   public double getThrottle () {
-    // return -driver.getRawAxis(ControllerMap.LEFT_STICK_Y); 
-    return -driver.getRawAxis(ControllerMap.LEFT_TRIGGER) + driver.getRawAxis(ControllerMap.RIGHT_TRIGGER);
+		return driver.getRawAxis(ControllerMap.LEFT_STICK_Y); 
 	}
 	
 	/**
@@ -45,5 +45,23 @@ public class OI {
    */
 	public double getTurn() {
 		return driver.getRawAxis(ControllerMap.RIGHT_STICK_X);
+  }
+  /**
+	 * Turns on and off the rumble function on the driver and operator controllers
+	 * @param set true to turn on rumble
+	 */
+	public void setControllerRumble(boolean state) {
+		if (state == true) {
+			driver.setRumble(RumbleType.kLeftRumble, 1);
+			driver.setRumble(RumbleType.kRightRumble, 1);  
+			operator.setRumble(RumbleType.kLeftRumble, 1);
+			operator.setRumble(RumbleType.kRightRumble, 1);
+		} else {
+			driver.setRumble(RumbleType.kLeftRumble, 0);
+			driver.setRumble(RumbleType.kRightRumble, 0);
+			operator.setRumble(RumbleType.kLeftRumble, 0);
+			operator.setRumble(RumbleType.kRightRumble, 0);
+		}
 	}
+
 }
