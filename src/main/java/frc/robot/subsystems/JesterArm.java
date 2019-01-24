@@ -14,16 +14,25 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2363.logger.HelixLogger;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.jester_arm.DriveArmByJoystick;
 
 public class JesterArm extends Subsystem {
 
     private TalonSRX armMotor;
+    public static int ARM_ACCELERATION = 100;
+    public static int ARM_CRUISE = 300;
 
     public enum ArmPos {
-        FRONT_LIMIT(700), FRONT_LOWER(700), FRONT_MIDDLE(600), FRONT_UPPER(500), BACK_LOWER(200), BACK_MIDDLE(300),
-        BACK_UPPER(400), BACK_LIMIT(200);
+        FRONT_LIMIT(700), 
+        FRONT_LOWER(700), 
+        FRONT_MIDDLE(600), 
+        FRONT_UPPER(500), 
+        BACK_LOWER(200), 
+        BACK_MIDDLE(300),
+        BACK_UPPER(400), 
+        BACK_LIMIT(200);
 
         public final int pos;
 
@@ -63,7 +72,7 @@ public class JesterArm extends Subsystem {
         armMotor.setNeutralMode(NeutralMode.Coast);
 
         setArmSoftLimits(ArmPos.BACK_LIMIT.pos, ArmPos.FRONT_LIMIT.pos);
-        setArmSoftLimits(100, 300);
+        setArmMotionProfile(ARM_ACCELERATION, ARM_CRUISE);
     }
 
     private void setupLogs() {
@@ -102,9 +111,19 @@ public class JesterArm extends Subsystem {
         armMotor.configForwardSoftLimitThreshold(forwardSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
     }
 
-    public void setHeightMotionProfile(int acceleration, int cruise) {
+    public void setArmMotionProfile(int acceleration, int cruise) {
         armMotor.configMotionAcceleration(acceleration, RobotMap.CTRE_TIMEOUT_INIT);
         armMotor.configMotionCruiseVelocity(cruise, RobotMap.CTRE_TIMEOUT_INIT);
+    }
+
+    // Put items in here that you want updated on SmartDash during disableperiodic()
+    public void updateSmartDash() {
+        SmartDashboard.putNumber("Arm Pos", getArmPos());
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Arm Pos", getArmPos());
     }
 
     @Override

@@ -22,6 +22,8 @@ import frc.robot.subsystems.JesterArm.ArmPos;
 public class JesterWrist extends Subsystem {
 
     private TalonSRX wristMotor;
+    public static int WRIST_ACCELERATION = 100;
+    public static int WRIST_CRUISE = 300;
 
     // Standard wrist positions.
     private enum Wrist {
@@ -73,7 +75,7 @@ public class JesterWrist extends Subsystem {
         wristMotor.setNeutralMode(NeutralMode.Coast);
 
         setWristSoftLimits(Wrist.FRONT_LIMIT.pos, Wrist.BACK_LIMIT.pos);
-        setWristMotionProfile(100, 300);
+        setWristMotionProfile(WRIST_ACCELERATION, WRIST_CRUISE);
 
         wristMotor.configAllowableClosedloopError(0, 2, RobotMap.CTRE_TIMEOUT_INIT);
     }
@@ -113,7 +115,7 @@ public class JesterWrist extends Subsystem {
     }
 
     // Calculate the wrist position based on the arm position.
-    public void setWristPos(double arm_pos) {
+    public void setWristPos(int arm_pos) {
         SmartDashboard.putNumber("Arm Pos", arm_pos);
 
         // Caclualate Wrist Pos
@@ -129,6 +131,11 @@ public class JesterWrist extends Subsystem {
     public void setWristMotionMagic(int pos) {
         SmartDashboard.putNumber("Wrist Pos", pos);
         // wristMotor.set(ControlMode.MotionMagic, pos);
+    }
+
+    // Put items in here that you want updated on SmartDash during disableperiodic()
+    public void updateSmartDash() {
+        SmartDashboard.putNumber("Wrist Pos", getWristPos());
     }
 
     @Override
