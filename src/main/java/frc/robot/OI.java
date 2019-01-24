@@ -29,21 +29,35 @@ public class OI {
 
   private final Joystick driver = new Joystick(ControllerMap.DRIVER_PORT);
   private final Joystick operator = new Joystick(ControllerMap.OPERATOR_PORT);
-  
-  private OI() { }
+
+  private OI() {
+  }
 
   /**
    * @return the raw controller throttle
    */
-  public double getThrottle () {
-    // return -driver.getRawAxis(ControllerMap.LEFT_STICK_Y); 
+  public double getThrottle() {
+    // return -driver.getRawAxis(ControllerMap.LEFT_STICK_Y);
     return -driver.getRawAxis(ControllerMap.LEFT_TRIGGER) + driver.getRawAxis(ControllerMap.RIGHT_TRIGGER);
-	}
-	
-	/**
+  }
+
+  /**
    * @return the raw controller turn
    */
-	public double getTurn() {
-		return driver.getRawAxis(ControllerMap.RIGHT_STICK_X);
-	}
+  public double getTurn() {
+    return driver.getRawAxis(ControllerMap.RIGHT_STICK_X);
+  }
+
+  public double getArmPower() {
+    double stick = -operator.getRawAxis(ControllerMap.LEFT_STICK_Y);
+    stick *= Math.abs(stick);
+    if (Math.abs(stick) < 0.05) {
+      stick = 0;
+    }
+    return stick;
+  }
+
+  public double getGMPOV() {
+    return operator.getPOV();
+  }
 }
