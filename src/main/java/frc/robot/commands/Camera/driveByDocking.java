@@ -21,7 +21,7 @@ public class driveByDocking extends Command {
     // private double right_command = 0.0;
     double Kp = 0.017;
     double kpDistance = 0.015;
-    double min_command = 0.0;
+    double min_command = 0.05;
     double left_command;
     double right_command;
     private boolean finished = false;
