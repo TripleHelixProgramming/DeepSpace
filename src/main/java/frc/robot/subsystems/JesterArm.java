@@ -24,15 +24,17 @@ public class JesterArm extends Subsystem {
     public static int ARM_ACCELERATION = 100;
     public static int ARM_CRUISE = 300;
 
+
+
     public enum ArmPos {
-        FRONT_LIMIT(700), 
-        FRONT_LOWER(700), 
-        FRONT_MIDDLE(600), 
-        FRONT_UPPER(500), 
-        BACK_LOWER(200), 
-        BACK_MIDDLE(300),
-        BACK_UPPER(400), 
-        BACK_LIMIT(200);
+        START(200),
+        FRONT_LOWER(ArmPos.START.pos+100),
+        FRONT_MIDDLE(ArmPos.START.pos+200),
+        FRONT_UPPER(ArmPos.START.pos+300),
+        BACK_UPPER(ArmPos.START.pos+400),
+        BACK_MIDDLE(ArmPos.START.pos+500),
+        BACK_LOWER(ArmPos.START.pos+600),
+        BACK_LIMIT(ArmPos.START.pos+650);
 
         public final int pos;
 
@@ -42,6 +44,7 @@ public class JesterArm extends Subsystem {
     }
 
     private static JesterArm INSTANCE = new JesterArm();
+    public ArmPos currentArmPreset = ArmPos.START;
 
     /**
      * @return the singleton instance of the JesterArm subsystem
@@ -57,6 +60,8 @@ public class JesterArm extends Subsystem {
         super("Jester Arm Subsystem");
         setupLogs();
 
+        currentArmPreset = ArmPos.START;
+
         armMotor = new TalonSRX(RobotMap.SHOULDER_MASTER_TALON_ID);
 
         armMotor.configContinuousCurrentLimit(40, 0);
@@ -71,8 +76,12 @@ public class JesterArm extends Subsystem {
 
         armMotor.setNeutralMode(NeutralMode.Coast);
 
-        setArmSoftLimits(ArmPos.BACK_LIMIT.pos, ArmPos.FRONT_LIMIT.pos);
+        setArmSoftLimits(ArmPos.START.pos, ArmPos.BACK_LIMIT.pos);
         setArmMotionProfile(ARM_ACCELERATION, ARM_CRUISE);
+
+        // The arm starts the match in a one-time docked position.  Move arm from
+        // docked position to front lower scoring position.
+        unDockArm();
     }
 
     private void setupLogs() {
@@ -83,8 +92,69 @@ public class JesterArm extends Subsystem {
         armMotor.set(ControlMode.Position, pos);
     }
 
+    
+    // Move arm from docked position (at start of match) to front lower scoring position.
+    public void unDockArm() {
+        setArmMotionMagic(ArmPos.FRONT_LOWER.pos);
+        currentArmPreset = ArmPos.FRONT_LOWER;
+    }
+
+    // Swing arm to opposite side keeping current arm height.
+    public void toggleArm() {
+
+        switch (currentArmPreset) {
+            case FRONT_LOWER:
+                setArmMotionMagic(ArmPos.BACK_LOWER.pos);
+                currentArmPreset = ArmPos.BACK_LOWER;
+                break;
+            case BACK_LOWER: 
+                setArmMotionMagic(ArmPos.FRONT_LOWER.pos);
+                currentArmPreset = ArmPos.FRONT_LOWER;
+                break;
+            case FRONT_MIDDLE: 
+                setArmMotionMagic(ArmPos.BACK_MIDDLE.pos);
+                currentArmPreset = ArmPos.BACK_MIDDLE;
+                break;
+            case BACK_MIDDLE: 
+                setArmMotionMagic(ArmPos.FRONT_MIDDLE.pos);
+                currentArmPreset = ArmPos.FRONT_MIDDLE;
+                break;
+            default:
+                setArmMotionMagic(ArmPos.FRONT_LOWER.pos);
+                currentArmPreset = ArmPos.FRONT_LOWER;
+                break;
+        }
+    }
+
+    // Swap to opposite height on current arm side. Later will us up & down
+    public void toggleHeight() {
+
+        switch (currentArmPreset) {
+            case FRONT_LOWER:
+                setArmMotionMagic(ArmPos.FRONT_MIDDLE.pos);
+                currentArmPreset = ArmPos.FRONT_MIDDLE;
+                break;
+            case FRONT_MIDDLE:
+                setArmMotionMagic(ArmPos.FRONT_LOWER.pos);
+                currentArmPreset = ArmPos.FRONT_LOWER;
+                break;               
+            case BACK_LOWER:
+                setArmMotionMagic(ArmPos.BACK_MIDDLE.pos);
+                currentArmPreset = ArmPos.BACK_MIDDLE;
+                break;
+            case BACK_MIDDLE:
+                setArmMotionMagic(ArmPos.BACK_LOWER.pos);
+                currentArmPreset = ArmPos.BACK_LOWER;
+                break;
+            default:
+                setArmMotionMagic(ArmPos.FRONT_LOWER.pos);
+                currentArmPreset = ArmPos.FRONT_LOWER;
+                break;
+        }
+    }
+
     public void setArmMotionMagic(int pos) {
-        armMotor.set(ControlMode.MotionMagic, pos);
+        // armMotor.set(ControlMode.MotionMagic, pos);
     }
 
     public void driveArmPercentOut(double percent) {
@@ -92,11 +162,7 @@ public class JesterArm extends Subsystem {
     }
 
     public void goTo(ArmPos armPos) {
-        goTo(armPos.pos);
-    }
-
-    public void goTo(int pos) {
-        armMotor.set(ControlMode.MotionMagic, pos);
+        setArmMotionMagic(armPos.pos);
     }
 
     public int getArmPos() {

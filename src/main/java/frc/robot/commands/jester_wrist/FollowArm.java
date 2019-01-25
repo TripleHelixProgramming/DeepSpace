@@ -10,8 +10,11 @@ package frc.robot.commands.jester_wrist;
 import com.team2363.logger.HelixEvents;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.JesterArm;
+import frc.robot.subsystems.JesterArm.ArmPos;
 import frc.robot.subsystems.JesterWrist;
+import frc.robot.subsystems.JesterWrist.Wrist;
 
 public class FollowArm extends Command {
   public FollowArm() {
@@ -30,7 +33,28 @@ public class FollowArm extends Command {
   @Override
   protected void execute() {
     // Set the wrist position based of the arm position.
-    JesterWrist.getInstance().setWristPos(JesterArm.getInstance().getArmPos());
+
+    int arm_pos = JesterArm.getInstance().getArmPos();
+    int new_wrist_pos;
+    
+    SmartDashboard.putNumber("Arm Pos", arm_pos);
+
+    // Caclualate next wrist Pos
+    if (arm_pos <= ArmPos.START.pos) { 
+        new_wrist_pos = Wrist.START.pos;
+
+    } else if ((arm_pos > ArmPos.START.pos ) && (arm_pos <= ArmPos.FRONT_UPPER.pos)) {
+        new_wrist_pos = Wrist.FRONT.pos;
+
+    } else if ((arm_pos > ArmPos.FRONT_UPPER.pos) && (arm_pos < ArmPos.BACK_UPPER.pos)) {
+        new_wrist_pos = Wrist.TRANSITION.pos;
+
+    } else {
+        new_wrist_pos = Wrist.BACK.pos;
+    }
+
+    SmartDashboard.putNumber("Wrist Pos", new_wrist_pos);
+    JesterWrist.getInstance().setWristPos(new_wrist_pos);
   }
 
   // Make this return true when this Command no longer needs to run execute()

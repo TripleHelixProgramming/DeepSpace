@@ -25,16 +25,17 @@ public class JesterWrist extends Subsystem {
     public static int WRIST_ACCELERATION = 100;
     public static int WRIST_CRUISE = 300;
 
-    // Standard wrist positions.
-    private enum Wrist {
-        START(100), // Wrist starting position
-        FRONT_LIMIT(150), // True Limit given to PID control
-        FRONT(200), // Normal Position when arm is to the front
-        TRANSITION(500), // Position to in when above the highest hatch level
-        BACK(800), // Normal Position when arm is to back
-        BACK_LIMIT(850); // Ture Limit given to PID Control
+    // Standard wrist positions.  This assumes the pot is mounted such that lower values 
+    // correspond to front arm positions.
+    public enum Wrist {
+        START(100),                             // Wrist starting position
+        FRONT_LIMIT(Wrist.START.pos + 100),      // True Limit given to PID control
+        FRONT(Wrist.START.pos + 300),           // Normal Position when arm is to the front
+        TRANSITION(Wrist.START.pos + 400),      // Position to in when above the highest hatch level
+        BACK(Wrist.START.pos + 500),            // Normal Position when arm is to back
+        BACK_LIMIT(Wrist.START.pos + 700);      // Ture Limit given to PID Control
 
-        private final int pos;
+        public final int pos;
 
         Wrist(int pos) {
             this.pos = pos;
@@ -72,8 +73,6 @@ public class JesterWrist extends Subsystem {
         wristMotor.config_kP(0, 1, RobotMap.CTRE_TIMEOUT_INIT);
         wristMotor.config_kI(0, 0.01, RobotMap.CTRE_TIMEOUT_INIT);
 
-        wristMotor.setNeutralMode(NeutralMode.Coast);
-
         setWristSoftLimits(Wrist.FRONT_LIMIT.pos, Wrist.BACK_LIMIT.pos);
         setWristMotionProfile(WRIST_ACCELERATION, WRIST_CRUISE);
 
@@ -105,30 +104,21 @@ public class JesterWrist extends Subsystem {
         return wristMotor.getSelectedSensorPosition(0);
     }
 
-    public void setWristMotionProfile(int acceleration, int cruise) {
-        wristMotor.configMotionAcceleration(acceleration, RobotMap.CTRE_TIMEOUT_INIT);
-        wristMotor.configMotionCruiseVelocity(cruise, RobotMap.CTRE_TIMEOUT_INIT);
-    }
-
     public int getWristError() {
         return wristMotor.getClosedLoopError(0);
     }
 
     // Calculate the wrist position based on the arm position.
-    public void setWristPos(int arm_pos) {
-        SmartDashboard.putNumber("Arm Pos", arm_pos);
-
-        // Caclualate Wrist Pos
-        if ((arm_pos >= 0) && (arm_pos <= ArmPos.FRONT_UPPER.pos)) {
-            setWristMotionMagic(Wrist.FRONT.pos);
-        } else if ((arm_pos > ArmPos.FRONT_UPPER.pos) && (arm_pos < ArmPos.BACK_UPPER.pos)) {
-            setWristMotionMagic(Wrist.TRANSITION.pos);
-        } else {
-            setWristMotionMagic(Wrist.BACK.pos);
-        }
+    public void setWristPos(int pos) {
+        setWristMotionMagic(pos);
     }
 
-    public void setWristMotionMagic(int pos) {
+    private void setWristMotionProfile(int acceleration, int cruise) {
+        wristMotor.configMotionAcceleration(acceleration, RobotMap.CTRE_TIMEOUT_INIT);
+        wristMotor.configMotionCruiseVelocity(cruise, RobotMap.CTRE_TIMEOUT_INIT);
+    }
+
+    private void setWristMotionMagic(int pos) {
         SmartDashboard.putNumber("Wrist Pos", pos);
         // wristMotor.set(ControlMode.MotionMagic, pos);
     }

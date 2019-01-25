@@ -84,8 +84,8 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
 
-    JesterArm.getInstance().updateSmartDash();
-    JesterWrist.getInstance().updateSmartDash();
+    // JesterArm.getInstance().updateSmartDash();
+    // JesterWrist.getInstance().updateSmartDash();
   }
 
   /**

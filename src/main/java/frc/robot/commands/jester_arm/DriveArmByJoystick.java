@@ -11,9 +11,6 @@ import frc.robot.subsystems.JesterArm.ArmPos;
 
 public class DriveArmByJoystick extends Command {
 
-    private static final double DEADZONE = 0.1;
-    private static final double POS_RATE_OF_CHANGE = 50;
-
     private JesterArm jesterArm = JesterArm.getInstance();
     private JesterWrist jesterWrist = JesterWrist.getInstance();
 
@@ -43,7 +40,7 @@ public class DriveArmByJoystick extends Command {
             position = 0;
         }
 
-        jesterArm.goTo(position);
+        jesterArm.setArmMotionMagic(position);
 
         error = position - jesterArm.getArmPos();
         SmartDashboard.putNumber("Arm Manual Position", position);

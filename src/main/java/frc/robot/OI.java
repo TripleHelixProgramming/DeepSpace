@@ -8,6 +8,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.jester_arm.ToggleArmCommand;
+import frc.robot.commands.jester_arm.ToggleHeightCommand;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -31,6 +34,8 @@ public class OI {
   private final Joystick operator = new Joystick(ControllerMap.OPERATOR_PORT);
 
   private OI() {
+      new JoystickButton(driver, ControllerMap.A).whenPressed(new ToggleArmCommand());
+      new JoystickButton(driver, ControllerMap.Y).whenPressed(new ToggleHeightCommand());
   }
 
   /**
