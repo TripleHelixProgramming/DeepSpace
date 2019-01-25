@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -22,4 +23,13 @@ public class RobotMap {
   public static int RIGHT_MASTER_ID = 15;
   public static int RIGHT_SLAVE_1_ID = 13;
   public static int RIGHT_SLAVE_2_ID = 11;
+
+
+  // robot lifter declorations
+public static int ROBOT_LIFTER_MASTER = 20;
+public static int ROBOT_LIFTER_SLAVE = 40;
+
+
+
+
 }
