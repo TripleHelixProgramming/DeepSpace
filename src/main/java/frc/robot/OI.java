@@ -9,8 +9,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.Camera.driveByAssist;
 import frc.robot.commands.jester_arm.ToggleArmCommand;
 import frc.robot.commands.jester_arm.ToggleHeightCommand;
+import frc.robot.subsystems.Camera.CAMERA;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -36,6 +38,7 @@ public class OI {
   private OI() {
       new JoystickButton(driver, ControllerMap.A).whenPressed(new ToggleArmCommand());
       new JoystickButton(driver, ControllerMap.Y).whenPressed(new ToggleHeightCommand());
+      new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByAssist(CAMERA.FRONT));
   }
 
   /**
@@ -51,6 +54,10 @@ public class OI {
    */
   public double getTurn() {
     return driver.getRawAxis(ControllerMap.RIGHT_STICK_X);
+  }
+
+  public double getDriverY() {
+    return -driver.getRawAxis(ControllerMap.LEFT_STICK_Y);
   }
 
   public double getArmPower() {
