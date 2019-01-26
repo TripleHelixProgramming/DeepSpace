@@ -25,6 +25,7 @@ import frc.arcs.StraightBack10FeetArc;
 import frc.arcs.TurnScalingArc;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.HatchGrabber;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.commands.ExampleCommand;
@@ -56,6 +57,9 @@ public class Robot extends TimedRobot {
     OI.getInstance();
     Drivetrain.getInstance();
     Camera.getInstance();
+    
+   // CargoGrabber.getInstance();
+   // HatchGrabber.getInstance();
   }
 
   /**

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.Camera.aimByVision;
 import frc.robot.commands.Camera.driveByCamera;
 import frc.robot.commands.Camera.driveByDocking;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 // import frc.robot.commands.Camera.driveByVision;
 
 /**
@@ -57,6 +58,23 @@ public class OI {
 	public double getTurn() {
 		return driver.getRawAxis(ControllerMap.RIGHT_STICK_X);
   }
-  
 
+  /**
+	 * Turns on and off the rumble function on the driver and operator controllers
+	 * @param set true to turn on rumble
+	 */
+	public void setControllerRumble(boolean state) {
+		if (state == true) {
+			driver.setRumble(RumbleType.kLeftRumble, 1);
+			driver.setRumble(RumbleType.kRightRumble, 1);  
+			operator.setRumble(RumbleType.kLeftRumble, 1);
+			operator.setRumble(RumbleType.kRightRumble, 1);
+		} else {
+			driver.setRumble(RumbleType.kLeftRumble, 0);
+			driver.setRumble(RumbleType.kRightRumble, 0);
+			operator.setRumble(RumbleType.kLeftRumble, 0);
+			operator.setRumble(RumbleType.kRightRumble, 0);
+		}
+	}
 }
+
