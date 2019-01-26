@@ -38,7 +38,7 @@ public class Camera extends Subsystem {
   }
 
   private Camera() {
-    frontCamera = NetworkTableInstance.getDefault().getTable("limelight-front");
+    currentCamera = frontCamera = NetworkTableInstance.getDefault().getTable("limelight-front");
     backCamera = NetworkTableInstance.getDefault().getTable("limelight-back");
   }
 
@@ -69,7 +69,7 @@ public class Camera extends Subsystem {
 
   }
 
-  public void setDockingMode() {
+  public void setDockingMode() { 
       currentCamera.getEntry("camMode").setNumber(0);
       currentCamera.getEntry("ledMode").setNumber(0);
       currentCamera.getEntry("pipeline").setNumber(0);
@@ -77,12 +77,12 @@ public class Camera extends Subsystem {
 
   }
 
-  public void setVisionMode() {
-      currentCamera.getEntry("camMode").setNumber(0);
-      currentCamera.getEntry("ledMode").setNumber(0);
-      currentCamera.getEntry("pipeline").setNumber(0);
-      currentCamera.getEntry("stream").setNumber(0);
-  }
+  // public void setVisionMode() {
+  //     currentCamera.getEntry("camMode").setNumber(0);
+  //     currentCamera.getEntry("ledMode").setNumber(0);
+  //     currentCamera.getEntry("pipeline").setNumber(0);
+  //     currentCamera.getEntry("stream").setNumber(0);
+  // }
 
   public boolean IsTargetFound() {
     double v = currentCamera.getEntry("tx").getDouble(0.0);

@@ -14,13 +14,6 @@ import frc.robot.subsystems.Camera.CAMERA;
 
 public class driveByDocking extends Command {
 
-  // private double kpAim = 0.05;
-  // private double kpDistance = 0.05;
-  // private double throttleInput;
-  // private double rotateValue ;
-  // private double left_command = 0.0;
-  // private double right_command = 0.0;
-
   double Kp = 0.0305;
   double kpDistance = 0.0205;
   double min_command = 0.02;
@@ -31,8 +24,6 @@ public class driveByDocking extends Command {
   private CAMERA location;
 
   public driveByDocking(CAMERA location) {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
     requires(Camera.getInstance());
     requires(Drivetrain.getInstance());
 
@@ -42,23 +33,22 @@ public class driveByDocking extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    
     left_command = 0.0;
     right_command = 0.0;
-
+    Camera.getInstance().setCamera(location);
+   
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Camera.getInstance().setCamera(location);
-    Camera.getInstance().setDockingMode();
+     Camera.getInstance().setDockingMode();
 
     double tx = Camera.getInstance().RotationalDegreesToTarget();
     double ty = Camera.getInstance().VerticalDegreesToTarget();
 
     double steering_adjust = 0.0;
-    double distance_error = -ty; // subtracting 2 due to range error on camera on back of the robot.
+    double distance_error = -ty; 
 
     if (Math.abs(tx) < 1) {
       finished = true;
@@ -70,21 +60,16 @@ public class driveByDocking extends Command {
       steering_adjust = Kp * tx + min_command;
     }
 
-    // if (ty < 0.0) {
-    //    left_command = 0.25;
-    //    right_command = 0.25;
-    // } else if (ty > 0.0) {
-    //    left_command = 0.0;
-    //    right_command =0.0;
-    // }
-
     double distance_adjust = (kpDistance * distance_error);
 
-    left_command += steering_adjust - distance_adjust;
-    right_command -= steering_adjust + distance_adjust; // changed from "-"
+    if (location == CAMERA.FRONT) {
+      left_command += steering_adjust - distance_adjust;
+      right_command -= steering_adjust + distance_adjust; // changed from "-"
+    } else {
+      left_command += steering_adjust + distance_adjust;
+      right_command -= steering_adjust - distance_adjust;
+    }
 
-    // Drivetrain.getInstance().tankDrive(left_command, right_command); //Remove the
-    // boolean value from arcadeDrive?
     Drivetrain.getInstance().tankDrive(left_command, right_command);
 
   }
