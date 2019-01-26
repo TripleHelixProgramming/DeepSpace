@@ -37,8 +37,7 @@ public class OI {
    * @return the raw controller throttle
    */
   public double getThrottle () {
-    // return -driver.getRawAxis(ControllerMap.LEFT_STICK_Y); 
-    return -driver.getRawAxis(ControllerMap.LEFT_TRIGGER) + driver.getRawAxis(ControllerMap.RIGHT_TRIGGER);
+		return driver.getRawAxis(ControllerMap.LEFT_STICK_Y); 
 	}
 	
 	/**
@@ -47,7 +46,9 @@ public class OI {
 	public double getTurn() {
 		return driver.getRawAxis(ControllerMap.RIGHT_STICK_X);
   }
-   /**
+
+  /**
+
 	 * Turns on and off the rumble function on the driver and operator controllers
 	 * @param set true to turn on rumble
 	 */
@@ -64,5 +65,5 @@ public class OI {
 			operator.setRumble(RumbleType.kRightRumble, 0);
 		}
 	}
-
 }
+
