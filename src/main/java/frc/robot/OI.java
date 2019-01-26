@@ -14,6 +14,7 @@ import frc.robot.commands.Camera.aimByVision;
 import frc.robot.commands.Camera.driveByCamera;
 import frc.robot.commands.Camera.driveByDocking;
 // import frc.robot.commands.Camera.driveByVision;
+import frc.robot.commands.Camera.driveByDockingPID;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -40,6 +41,7 @@ public class OI {
     new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByDocking());
     new JoystickButton(driver, ControllerMap.B).whenPressed(new driveByCamera());
     new JoystickButton(driver, ControllerMap.Y).whileHeld(new aimByVision());
+    new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByDockingPID());
 
   }
 
