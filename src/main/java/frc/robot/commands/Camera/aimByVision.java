@@ -12,9 +12,13 @@ import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
 
 public class aimByVision extends Command {
-  private double kpAim = 0.05;
+  double Kp = 0.0305;
+  double kpDistance = 0.0205;
+  double min_command = 0.02; 
   private double throttleInput;
   private double turnInput ;
+  private boolean finished = false;
+
   // private double left_command = 0.0;
   // private double right_command = 0.0;
   
@@ -32,15 +36,19 @@ public class aimByVision extends Command {
   @Override
   protected void execute() {
     Camera.getInstance().setDockingMode();
-      double tx = Camera.getInstance().getdegRotationToTargetFront();
+      double txFront = Camera.getInstance().getdegRotationToTargetFront();
       boolean targetFound = Camera.getInstance().getIsTargetFoundFront();
+      double heading_error = -txFront;
+      double steering_adjust = 0.0;
+
+      if(Math.abs(txFront) < 1) {
+        finished = true;
+      }
   
-      if(targetFound){
-        throttleInput = 0;
-        turnInput = tx * kpAim;
-      }else{
-        throttleInput = 0;
-        turnInput = 0;
+      if (txFront > 0.0) {
+          steering_adjust = Kp*txFront - min_command;
+      }else if (txFront < 0.0){
+          steering_adjust = Kp*txFront + min_command;
       }
   
       Drivetrain.getInstance().arcadeDrive(throttleInput, turnInput, true);
