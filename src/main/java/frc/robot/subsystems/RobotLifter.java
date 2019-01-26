@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.team2363.logger.HelixLogger;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -21,6 +22,15 @@ public class RobotLifter extends Subsystem {
   private TalonSRX leftMaster = new TalonSRX(RobotMap.ROBOT_LIFTER_MASTER);
   private TalonSRX rightSlave = new TalonSRX(RobotMap.ROBOT_LIFTER_SLAVE);
 
+  private static RobotLifter INSTANCE = new RobotLifter();
+
+  public static RobotLifter getInstance() {
+    if (INSTANCE == null) {
+      INSTANCE = new RobotLifter();
+    }
+    return INSTANCE;
+  }
+
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
@@ -29,7 +39,9 @@ public class RobotLifter extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
-  public RobotLifter(){
+  public RobotLifter(){ 
+    setupLogs();
+
     rightSlave.follow(leftMaster);
     rightSlave.setNeutralMode(NeutralMode.Brake);
     rightSlave.configContinuousCurrentLimit(40, 0);
@@ -40,11 +52,16 @@ public class RobotLifter extends Subsystem {
     leftMaster.configContinuousCurrentLimit(40, 0);
 		leftMaster.configPeakCurrentLimit(60, 0);
 		leftMaster.configPeakCurrentDuration(100, 0);
-		leftMaster.enableCurrentLimit(true);
+    leftMaster.enableCurrentLimit(true);
   }
   public void setPower(double power){
     leftMaster.set(ControlMode.PercentOutput,power);
     rightSlave.set(ControlMode.PercentOutput, power);
   }
+
+  private void setupLogs() {
+    HelixLogger.getInstance().addDoubleSource("LEFT_MASTER_CURRENT", leftMaster::getOutputCurrent);
+    HelixLogger.getInstance().addDoubleSource("RIGHT_SLAVE_CURRENT", rightSlave::getOutputCurrent);
+   }
 }
 
