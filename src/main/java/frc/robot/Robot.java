@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
   private void initializeSubsystems() {
     OI.getInstance();
     Drivetrain.getInstance();
-    HatchGrabber.getInstance();
+    //HatchGrabber.getInstance();
   }
 
   /**
