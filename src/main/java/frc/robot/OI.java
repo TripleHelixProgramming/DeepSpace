@@ -8,7 +8,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.Camera.aimByVision;
+import frc.robot.commands.Camera.driveByCamera;
+import frc.robot.commands.Camera.driveByDocking;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+// import frc.robot.commands.Camera.driveByVision;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -31,13 +37,19 @@ public class OI {
   private final Joystick driver = new Joystick(ControllerMap.DRIVER_PORT);
   private final Joystick operator = new Joystick(ControllerMap.OPERATOR_PORT);
   
-  private OI() { }
+  private OI() { 
+    new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByDocking());
+    new JoystickButton(driver, ControllerMap.B).whenPressed(new driveByCamera());
+    new JoystickButton(driver, ControllerMap.Y).whileHeld(new aimByVision());
+
+  }
 
   /**
    * @return the raw controller throttle
    */
-  public double getThrottle () {
-		return driver.getRawAxis(ControllerMap.LEFT_STICK_Y); 
+  public double getThrottle() {
+    return -driver.getRawAxis(ControllerMap.LEFT_STICK_Y); 
+    // return -driver.getRawAxis(ControllerMap.LEFT_TRIGGER) + driver.getRawAxis(ControllerMap.RIGHT_TRIGGER);
 	}
 	
 	/**
@@ -48,7 +60,6 @@ public class OI {
   }
 
   /**
-
 	 * Turns on and off the rumble function on the driver and operator controllers
 	 * @param set true to turn on rumble
 	 */

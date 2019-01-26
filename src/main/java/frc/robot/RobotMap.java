@@ -16,9 +16,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
  * floating around.
  */
 public class RobotMap {
-  //DRIVER
-  //public static Driver currentDriver = Driver.DUSTIN; 
-  //DRIVETRAIN
+
   public static int LEFT_MASTER_ID = 10;
   public static int LEFT_SLAVE_1_ID = 12;
   public static int LEFT_SLAVE_2_ID = 14;
