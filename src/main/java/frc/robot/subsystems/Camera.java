@@ -44,15 +44,15 @@ public class Camera extends Subsystem {
 
   public static NetworkTable getCamera(CAMERA location) {
     if (location == CAMERA.FRONT) {
-      if (frontCamera == null) {
-        frontCamera = NetworkTableInstance.getDefault().getTable("limelight-front");
+      if (currentCamera == null) {
+        currentCamera = NetworkTableInstance.getDefault().getTable("limelight-front");
       }
-      return frontCamera;
+      return currentCamera;
     } else {
-      if (backCamera == null) {
-        backCamera = NetworkTableInstance.getDefault().getTable("limelight-back");
+      if (currentCamera == null) {
+        currentCamera = NetworkTableInstance.getDefault().getTable("limelight-back");
       }
-      return backCamera;
+      return currentCamera;
     }
   }
 

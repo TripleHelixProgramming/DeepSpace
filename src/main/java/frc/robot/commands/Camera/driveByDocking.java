@@ -35,13 +35,14 @@ public class driveByDocking extends Command {
   protected void initialize() {
     left_command = 0.0;
     right_command = 0.0;
-    Camera.getInstance().setCamera(location);
+    
    
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Camera.getInstance().setCamera(location);
      Camera.getInstance().setDockingMode();
 
     double tx = Camera.getInstance().RotationalDegreesToTarget();

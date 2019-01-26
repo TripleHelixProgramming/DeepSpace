@@ -39,7 +39,7 @@ public class OI {
   private OI() {
       // new JoystickButton(operator, ControllerMap.A).whenPressed(new ToggleArmCommand());
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new ToggleHeightCommand());
-      new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByAssist(CAMERA.FRONT));
+      new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByDocking(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.B).whileHeld(new driveByDocking(CAMERA.BACK));
 
   }
