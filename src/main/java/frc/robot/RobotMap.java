@@ -7,7 +7,7 @@
 
 package frc.robot;
 
-import java.sql.Driver;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -32,4 +32,12 @@ public class RobotMap {
 
   public static final int CARGO_LEFT_WHEEL = 20;
 	public static final int CARGO_RIGHT_WHEEL = 21;
+  
+  //HATCHGRABBER
+  public static final int HATCH_GRAB = 2;
+  public static final int HATCH_RELEASE = 3;
+  
+  //LIMIT SWITCHES
+  public static final int HATCH_LIMIT_CHANNEL = 2;
+
 }
