@@ -22,7 +22,7 @@ public class driveByDockingPID extends Command {
     double Kp = 0.015;
     double Ki = 0.0;
     double Kd = 0.0275;
-    double kpDistance = 0.021;
+    double kpDistance = 0.0215;
     double min_command = 0.0;
     double left_command;
     double right_command;
