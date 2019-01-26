@@ -9,10 +9,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.Camera.driveByAssist;
+// import frc.robot.commands.Camera.driveByAssist;
 import frc.robot.commands.Camera.driveByDocking;
-import frc.robot.commands.jester_arm.ToggleArmCommand;
-import frc.robot.commands.jester_arm.ToggleHeightCommand;
+// import frc.robot.commands.jester_arm.ToggleArmCommand;
+// import frc.robot.commands.jester_arm.ToggleHeightCommand;
 import frc.robot.subsystems.Camera.CAMERA;
 
 /**

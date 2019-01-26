@@ -38,21 +38,22 @@ public class Camera extends Subsystem {
   }
 
   private Camera() {
-    currentCamera = frontCamera = NetworkTableInstance.getDefault().getTable("limelight-front");
+    currentCamera = NetworkTableInstance.getDefault().getTable("Limelight-front");
+    frontCamera = NetworkTableInstance.getDefault().getTable("limelight-front");
     backCamera = NetworkTableInstance.getDefault().getTable("limelight-back");
   }
 
   public static NetworkTable getCamera(CAMERA location) {
     if (location == CAMERA.FRONT) {
-      if (currentCamera == null) {
-        currentCamera = NetworkTableInstance.getDefault().getTable("limelight-front");
-      }
-      return currentCamera;
+      // if (currentCamera == null) {
+        currentCamera = frontCamera;
+      
+        return currentCamera;
     } else {
-      if (currentCamera == null) {
-        currentCamera = NetworkTableInstance.getDefault().getTable("limelight-back");
-      }
-      return currentCamera;
+     
+        currentCamera = backCamera;
+      
+       return currentCamera;
     }
   }
 
@@ -61,11 +62,11 @@ public class Camera extends Subsystem {
   }
 
   public void setCameraMode() {
-    frontCamera.getEntry("camMode").setNumber(1);
-    backCamera.getEntry("camMode").setNumber(1);
+    currentCamera.getEntry("camMode").setNumber(1);
+    // backCamera.getEntry("camMode").setNumber(1);
 
-    frontCamera.getEntry("ledMode").setNumber(1);
-    backCamera.getEntry("ledMode").setNumber(1);
+    currentCamera.getEntry("ledMode").setNumber(1);
+    // backCamera.getEntry("ledMode").setNumber(1);
 
   }
 
@@ -102,5 +103,6 @@ public class Camera extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
     setDefaultCommand(new driveByCamera(CAMERA.FRONT));
+    setDefaultCommand(new driveByCamera(CAMERA.BACK));
   }
 }

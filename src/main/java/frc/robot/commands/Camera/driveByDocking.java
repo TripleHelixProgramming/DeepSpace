@@ -24,6 +24,7 @@ public class driveByDocking extends Command {
   private CAMERA location;
 
   public driveByDocking(CAMERA location) {
+    Camera.getInstance().setCamera(location);
     requires(Camera.getInstance());
     requires(Drivetrain.getInstance());
 
@@ -42,7 +43,7 @@ public class driveByDocking extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Camera.getInstance().setCamera(location);
+    // Camera.getInstance().setCamera(location);
      Camera.getInstance().setDockingMode();
 
     double tx = Camera.getInstance().RotationalDegreesToTarget();
