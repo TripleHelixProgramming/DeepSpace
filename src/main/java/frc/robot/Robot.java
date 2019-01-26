@@ -56,8 +56,8 @@ public class Robot extends TimedRobot {
   private void initializeSubsystems() {
     OI.getInstance();
     Drivetrain.getInstance();
-    JesterArm.getInstance();
-    JesterWrist.getInstance();
+    // JesterArm.getInstance();
+    // JesterWrist.getInstance();
   }
 
   /**

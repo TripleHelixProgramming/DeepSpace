@@ -9,12 +9,17 @@ package frc.robot.commands.Camera;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Camera;
+import frc.robot.subsystems.Camera.CAMERA;
 
 public class driveByCamera extends Command {
-  public driveByCamera() {
+
+  private CAMERA location;
+
+  public driveByCamera(CAMERA location) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Camera.getInstance());
+    this.location = location;
 
   }
 
@@ -26,6 +31,7 @@ public class driveByCamera extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Camera.getInstance().setCamera(location);
     Camera.getInstance().setCameraMode();
   }
 

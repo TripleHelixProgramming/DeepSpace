@@ -38,7 +38,8 @@ public class Camera extends Subsystem {
   }
 
   private Camera() {
-
+    frontCamera = NetworkTableInstance.getDefault().getTable("limelight-front");
+    backCamera = NetworkTableInstance.getDefault().getTable("limelight-back");
   }
 
   public static NetworkTable getCamera(CAMERA location) {
@@ -60,8 +61,12 @@ public class Camera extends Subsystem {
   }
 
   public void setCameraMode() {
-    currentCamera.getEntry("camMode").setNumber(1);
-    currentCamera.getEntry("ledMode").setNumber(1);
+    frontCamera.getEntry("camMode").setNumber(1);
+    backCamera.getEntry("camMode").setNumber(1);
+
+    frontCamera.getEntry("ledMode").setNumber(1);
+    backCamera.getEntry("ledMode").setNumber(1);
+
   }
 
   public void setDockingMode() {
@@ -96,6 +101,6 @@ public class Camera extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new driveByCamera());
+    setDefaultCommand(new driveByCamera(CAMERA.FRONT));
   }
 }
