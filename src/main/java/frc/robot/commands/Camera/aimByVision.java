@@ -52,20 +52,7 @@ public class aimByVision extends Command {
       }
   
       Drivetrain.getInstance().arcadeDrive(throttleInput, turnInput, true);
-    // Camera.getInstance().setDockingMode();
-    // double txFront = Camera.getInstance().getdegRotationToTargetFront();
-    // double steering_adjust = 0.0;
-    
-    // if (txFront < 1.0)
-    // {
-    //         rotateValue = kpAim * rotateValue + txFront;
-    // }
-    // else if (txFront > 1.0)
-    // {
-    //         rotateValue = kpAim * rotateValue - txFront;
-    // }
-
-    // Drivetrain.getInstance().arcadeDrive(moveValue, rotateValue, false);
+ 
   }
 
   // Make this return true when this Command no longer needs to run execute()
