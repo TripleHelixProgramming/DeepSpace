@@ -19,15 +19,15 @@ public enum CAMERA {
     }
 
     public void setCameraMode() {
-        NetworkTableInstance.getDefault().getTable(CAMERA.FRONT.name()).getEntry("camMode").getDouble(1);
+        NetworkTableInstance.getDefault().getTable(CAMERA.FRONT.name()).getEntry("camMode").setNumber(1);
         NetworkTableInstance.getDefault().getTable(CAMERA.FRONT.name()).getEntry("ledMode").setNumber(1);
-        NetworkTableInstance.getDefault().getTable(CAMERA.BACK.name()).getEntry("camMode").getDouble(1);
+        NetworkTableInstance.getDefault().getTable(CAMERA.BACK.name()).getEntry("camMode").setNumber(1);
         NetworkTableInstance.getDefault().getTable(CAMERA.BACK.name()).getEntry("ledMode").setNumber(1);
 
     }
 
     public void setDockingMode() {
-        NetworkTableInstance.getDefault().getTable(name).getEntry("camMode").getDouble(0);
+        NetworkTableInstance.getDefault().getTable(name).getEntry("camMode").setNumber(0);
         NetworkTableInstance.getDefault().getTable(name).getEntry("ledMode").setNumber(0);
         NetworkTableInstance.getDefault().getTable(name).getEntry("pipeline").setNumber(0);
         NetworkTableInstance.getDefault().getTable(name).getEntry("stream").setNumber(0);
@@ -35,12 +35,12 @@ public enum CAMERA {
     }
 
     public boolean IsTargetFound() {
-        double v = NetworkTableInstance.getDefault().getTable(name).getEntry("tx").getDouble(0.0);
+        double v = NetworkTableInstance.getDefault().getTable(name).getEntry("tx").getDouble(0);
         return ((v == 0.0) ? false : true);
     }
 
     public double RotationalDegreesToTarget() {
-        return NetworkTableInstance.getDefault().getTable(name).getEntry("tx").getDouble(0.0);
+        return NetworkTableInstance.getDefault().getTable(name).getEntry("tx").getDouble(0);
     }
 
     public double VerticalDegreesToTarget() {
