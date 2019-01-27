@@ -10,6 +10,7 @@ package frc.robot.commands.Camera;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Camera.CAMERA;
 
 public class aimByVision extends Command {
   double Kp = 0.0305;
@@ -19,10 +20,13 @@ public class aimByVision extends Command {
   private double turnInput ;
   private boolean finished = false;
 
+  private CAMERA location;
   // private double left_command = 0.0;
   // private double right_command = 0.0;
   
   public aimByVision() {
+
+    Camera.getInstance().setCamera(location);
     requires(Camera.getInstance());
     requires(Drivetrain.getInstance());
   }
@@ -35,9 +39,10 @@ public class aimByVision extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Camera.getInstance().setDockingMode();
-      double txFront = Camera.getInstance().getdegRotationToTargetFront();
-      boolean targetFound = Camera.getInstance().getIsTargetFoundFront();
+
+      Camera.getInstance().setDockingMode();
+      double txFront = Camera.getInstance().RotationalDegreesToTarget();
+      boolean targetFound = Camera.getInstance().IsTargetFound();
       double heading_error = -txFront;
       double steering_adjust = 0.0;
 

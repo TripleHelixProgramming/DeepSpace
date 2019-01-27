@@ -10,32 +10,32 @@ package frc.robot.commands.Camera;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Camera.CAMERA;
 
 public class driveByDockingPID extends Command {
 
-    // private double kpAim = 0.05;
-    // private double kpDistance = 0.05;
-    // private double throttleInput;
-    // private double rotateValue ;
-    // private double left_command = 0.0;
-    // private double right_command = 0.0;
-    double Kp = 0.015;
-    double Ki = 0.0;
-    double Kd = 0.0275;
-    double kpDistance = 0.0215;
-    double min_command = 0.0;
-    double left_command;
-    double right_command;
-    double integral;
-    double derivative;
-    double last_error;
-    double result;
-    double error;
-    private boolean finished = false;
+  // private double kpAim = 0.05;
+  // private double kpDistance = 0.05;
+
+  double Kp = 0.015;
+  double Ki = 0.0;
+  double Kd = 0.0275;
+  double kpDistance = 0.0215;
+  double min_command = 0.0;
+  double left_command;
+  double right_command;
+  double integral;
+  double derivative;
+  double last_error;
+  double result;
+  double error;
+  private boolean finished = false;
+  private CAMERA location;
 
   public driveByDockingPID() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    Camera.getInstance().setCamera(location);
     requires(Camera.getInstance());
     requires(Drivetrain.getInstance());
   }
@@ -52,30 +52,28 @@ public class driveByDockingPID extends Command {
   @Override
   protected void execute() {
     Camera.getInstance().setDockingMode();
-    double txFront = Camera.getInstance().getdegRotationToTargetFront();
-    double txBack = Camera.getInstance().getdegRotationToTargetBack();
-    double tyFront = Camera.getInstance().getdegVerticalToTargetFront();
-    double tyBack = Camera.getInstance().getdegVerticalToTargetBack();
-    boolean TargetFoundFront = Camera.getInstance().getIsTargetFoundFront();
-    boolean TargetFoundBack = Camera.getInstance().getIsTargetFoundBack();
-    double heading_error = -txFront;
+    double tx = Camera.getInstance().RotationalDegreesToTarget();
+    double ty = Camera.getInstance().VerticalDegreesToTarget();
+    // boolean TargetFoundFront = Camera.getInstance().IsTargetFound();
+    // boolean TargetFoundBack = Camera.getInstance().getIsTargetFoundBack();
+    // double heading_error = -tx;
     double steering_adjust = 0.0;
-    double distance_error = -tyFront; //subtracting 2 due to range error on camera on back of the robot.
+    double distance_error = -ty; // subtracting 2 due to range error on camera on back of the robot.
 
-    if(Math.abs(txFront) < 0.1) {
+    if (Math.abs(tx) < 0.1) {
       finished = true;
     }
 
-    steering_adjust = PIDCalc2(txFront);
+    steering_adjust = PIDCalc2(tx);
 
-    
     double distance_adjust = (kpDistance * distance_error);
 
     left_command = -distance_adjust + steering_adjust;
     right_command = -distance_adjust - steering_adjust;
-    
-    // Drivetrain.getInstance().tankDrive(left_command, right_command);   //Remove the boolean value from arcadeDrive?
-    Drivetrain.getInstance().tankDrive (left_command, right_command);
+
+    // Drivetrain.getInstance().tankDrive(left_command, right_command); //Remove the
+    // boolean value from arcadeDrive?
+    Drivetrain.getInstance().tankDrive(left_command, right_command);
 
   }
 
@@ -96,7 +94,7 @@ public class driveByDockingPID extends Command {
   protected void interrupted() {
   }
 
-  public double PIDCalc2(double error){
+  public double PIDCalc2(double error) {
     integral += error * .2;
     derivative = error - last_error;
     last_error = error;
