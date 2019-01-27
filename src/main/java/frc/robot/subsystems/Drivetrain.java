@@ -22,6 +22,7 @@ import com.team319.models.LeaderBobTalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.commands.drivetrain.DustinDrive;
 import frc.robot.commands.drivetrain.JoshDrive;
 
 
@@ -69,7 +70,7 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   public void initDefaultCommand() {
     // setDefaultCommand(new TestDrive());
     // setDefaultCommand(JoystickDriveFactory.createJoystickDrive());
-    setDefaultCommand(new JoshDrive());
+    setDefaultCommand(new DustinDrive());
   }
 
   public void tankDrive(double leftVelocity, double rightVelocity) {

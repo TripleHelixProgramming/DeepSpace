@@ -5,22 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Camera;
+package frc.robot.commands.hatch;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.Camera;
+import frc.robot.subsystems.HatchGrabber;
 
-import frc.robot.subsystems.Camera.CAMERA;
-
-public class driveByCamera extends Command {
-
-  private CAMERA location;
-
-  public driveByCamera(CAMERA location) {
+public class GrabHatch extends Command {
+  public GrabHatch() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Camera.getInstance());
-    this.location = location;
+    requires(HatchGrabber.getInstance());
   }
 
   // Called just before this Command runs the first time
@@ -31,17 +25,14 @@ public class driveByCamera extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Camera.getInstance().getCamera(location);
-    Camera.getInstance().setCamera(location);
-    Camera.getInstance().setCameraMode();
+    HatchGrabber.getInstance().hatchGrab();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return HatchGrabber.getInstance().hasHatch();
   }
-
   // Called once after isFinished returns true
   @Override
   protected void end() {
@@ -53,4 +44,3 @@ public class driveByCamera extends Command {
   protected void interrupted() {
   }
 }
-

@@ -5,52 +5,41 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Camera;
+package frc.robot.commands.cargo_grabber;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.Camera;
+import frc.robot.OI;
 
-import frc.robot.subsystems.Camera.CAMERA;
+public class RumbleController extends Command {
 
-public class driveByCamera extends Command {
 
-  private CAMERA location;
-
-  public driveByCamera(CAMERA location) {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Camera.getInstance());
-    this.location = location;
+  public RumbleController() {
+      // Use requires() here to declare subsystem dependencies
+      // eg. requires(chassis);
   }
 
   // Called just before this Command runs the first time
-  @Override
   protected void initialize() {
+    setTimeout(2);
   }
 
   // Called repeatedly when this Command is scheduled to run
-  @Override
   protected void execute() {
-    Camera.getInstance().getCamera(location);
-    Camera.getInstance().setCamera(location);
-    Camera.getInstance().setCameraMode();
+    OI.getInstance().setControllerRumble(true);
   }
 
   // Make this return true when this Command no longer needs to run execute()
-  @Override
   protected boolean isFinished() {
-    return false;
+      return isTimedOut();
   }
 
   // Called once after isFinished returns true
-  @Override
   protected void end() {
+    OI.getInstance().setControllerRumble(false);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
-  @Override
   protected void interrupted() {
   }
 }
-

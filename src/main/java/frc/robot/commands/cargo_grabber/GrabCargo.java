@@ -5,35 +5,48 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Camera;
+package frc.robot.commands.cargo_grabber;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.Camera;
+import frc.robot.subsystems.CargoGrabber;
 
-import frc.robot.subsystems.Camera.CAMERA;
+public class GrabCargo extends Command {
 
-public class driveByCamera extends Command {
-
-  private CAMERA location;
-
-  public driveByCamera(CAMERA location) {
+  private int stalledCount = 0;
+	
+  Command rumbleCommand = new RumbleController();
+  
+  public GrabCargo() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Camera.getInstance());
-    this.location = location;
+   // requires(HatchGrabber.getInstance());
+    requires(CargoGrabber.getInstance());
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+       // HatchGrabber.getInstance().hatchGrab();
+   CargoGrabber.getInstance().closeGrabber();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Camera.getInstance().getCamera(location);
-    Camera.getInstance().setCamera(location);
-    Camera.getInstance().setCameraMode();
+   //when we retrieve cargo, extend hatch grabber
+   if (CargoGrabber.getInstance().isOverCurrent()) {
+    stalledCount++;
+  } else {
+    stalledCount = 0;
+  }
+  CargoGrabber.getInstance().intake();
+
+if (stalledCount > 20) {
+  if (!rumbleCommand.isRunning()) {
+    rumbleCommand.start();
+  }
+}
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -53,4 +66,3 @@ public class driveByCamera extends Command {
   protected void interrupted() {
   }
 }
-

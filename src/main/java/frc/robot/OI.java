@@ -10,11 +10,17 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.Camera.driveByCamera;
-// import frc.robot.commands.Camera.driveByAssist;
+import frc.robot.subsystems.Camera.CAMERA;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.Camera.driveByDocking;
+import frc.robot.commands.Camera.driveByDockingPID;
+import frc.robot.commands.Camera.aimByVision;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+
+// import frc.robot.commands.Camera.driveByVision;
 // import frc.robot.commands.jester_arm.ToggleArmCommand;
 // import frc.robot.commands.jester_arm.ToggleHeightCommand;
-import frc.robot.subsystems.Camera.CAMERA;
+// import frc.robot.commands.Camera.driveByAssist;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -38,12 +44,16 @@ public class OI {
   private final Joystick operator = new Joystick(ControllerMap.OPERATOR_PORT);
 
   private OI() {
-      // new JoystickButton(operator, ControllerMap.A).whenPressed(new ToggleArmCommand());
-      // new JoystickButton(operator, ControllerMap.Y).whenPressed(new ToggleHeightCommand());
+    
       new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByDocking(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.B).whileHeld(new driveByDocking(CAMERA.BACK));
       new JoystickButton(driver, ControllerMap.A).whenPressed(new driveByCamera(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.A).whenPressed(new driveByCamera(CAMERA.BACK));
+    
+      // new JoystickButton(operator, ControllerMap.A).whenPressed(new ToggleArmCommand());
+      // new JoystickButton(operator, ControllerMap.Y).whenPressed(new ToggleHeightCommand());
+      // new JoystickButton(driver, ControllerMap.Y).whileHeld(new aimByVision());
+      // new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByDockingPID());
 
   }
 
@@ -51,9 +61,10 @@ public class OI {
    * @return the raw controller throttle
    */
   public double getThrottle() {
-    return -driver.getRawAxis(ControllerMap.LEFT_STICK_Y);
-  }
-
+    return -driver.getRawAxis(ControllerMap.LEFT_STICK_Y); 
+    // return -driver.getRawAxis(ControllerMap.LEFT_TRIGGER) + driver.getRawAxis(ControllerMap.RIGHT_TRIGGER);
+	}
+  
   /**
    * @return the raw controller turn
    */
@@ -77,4 +88,23 @@ public class OI {
   public double getGMPOV() {
     return operator.getPOV();
   }
+
+  /**
+	 * Turns on and off the rumble function on the driver and operator controllers
+	 * @param set true to turn on rumble
+	 */
+	public void setControllerRumble(boolean state) {
+		if (state == true) {
+			driver.setRumble(RumbleType.kLeftRumble, 1);
+			driver.setRumble(RumbleType.kRightRumble, 1);  
+			operator.setRumble(RumbleType.kLeftRumble, 1);
+			operator.setRumble(RumbleType.kRightRumble, 1);
+		} else {
+			driver.setRumble(RumbleType.kLeftRumble, 0);
+			driver.setRumble(RumbleType.kRightRumble, 0);
+			operator.setRumble(RumbleType.kLeftRumble, 0);
+			operator.setRumble(RumbleType.kRightRumble, 0);
+		}
+	}
 }
+
