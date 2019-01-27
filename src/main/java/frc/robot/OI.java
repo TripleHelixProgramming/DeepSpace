@@ -71,11 +71,7 @@ public class OI {
   public double getTurn() {
     return driver.getRawAxis(ControllerMap.RIGHT_STICK_X);
   }
-
-  public double getDriverY() {
-    return -driver.getRawAxis(ControllerMap.LEFT_STICK_Y);
-  }
-
+  
   public double getArmPower() {
     double stick = -operator.getRawAxis(ControllerMap.LEFT_STICK_Y);
     stick *= Math.abs(stick);
