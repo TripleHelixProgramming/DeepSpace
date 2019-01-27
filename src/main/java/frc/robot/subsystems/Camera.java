@@ -61,7 +61,7 @@ public class Camera extends Subsystem {
   public void setCameraMode() {
     // currentCamera.getEntry("camMode").setNumber(1);
     backCamera.getEntry("camMode").setNumber(1);
-    frontCamera.getEntry("LedMode").setNumber(1);
+    frontCamera.getEntry("camMode").setNumber(1);
     // currentCamera.getEntry("ledMode").setNumber(1);
     backCamera.getEntry("ledMode").setNumber(1);
     frontCamera.getEntry("ledMode").setNumber(1);
