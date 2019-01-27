@@ -38,7 +38,7 @@ public class Camera extends Subsystem {
   }
 
   private Camera() {
-    currentCamera = NetworkTableInstance.getDefault().getTable("Limelight-front");
+    // currentCamera = NetworkTableInstance.getDefault().getTable("Limelight-front");
     frontCamera = NetworkTableInstance.getDefault().getTable("limelight-front");
     backCamera = NetworkTableInstance.getDefault().getTable("limelight-back");
   }
@@ -47,13 +47,10 @@ public class Camera extends Subsystem {
     if (location == CAMERA.FRONT) {
       // if (currentCamera == null) {
         currentCamera = NetworkTableInstance.getDefault().getTable("limelight-front");
-      
-        return currentCamera;
+        return NetworkTableInstance.getDefault().getTable("limelight-front");
     } else {
-     
         currentCamera = NetworkTableInstance.getDefault().getTable("limelight-back");
-      
-       return currentCamera;
+         return NetworkTableInstance.getDefault().getTable("limelight-back");
     }
   }
 
@@ -62,11 +59,12 @@ public class Camera extends Subsystem {
   }
 
   public void setCameraMode() {
-    currentCamera.getEntry("camMode").setNumber(1);
-    // backCamera.getEntry("camMode").setNumber(1);
-
-    currentCamera.getEntry("ledMode").setNumber(1);
-    // backCamera.getEntry("ledMode").setNumber(1);
+    // currentCamera.getEntry("camMode").setNumber(1);
+    backCamera.getEntry("camMode").setNumber(1);
+    frontCamera.getEntry("LedMode").setNumber(1);
+    // currentCamera.getEntry("ledMode").setNumber(1);
+    backCamera.getEntry("ledMode").setNumber(1);
+    frontCamera.getEntry("ledMode").setNumber(1);
 
   }
 
@@ -102,7 +100,8 @@ public class Camera extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new driveByCamera(CAMERA.FRONT));
+    // setDefaultCommand(new driveByCamera());
     setDefaultCommand(new driveByCamera(CAMERA.BACK));
+    setDefaultCommand(new driveByCamera(CAMERA.FRONT));
   }
 }

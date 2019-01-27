@@ -31,6 +31,7 @@ public class driveByCamera extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Camera.getInstance().getCamera(location);
     Camera.getInstance().setCamera(location);
     Camera.getInstance().setCameraMode();
   }

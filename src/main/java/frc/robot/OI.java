@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.Camera.driveByCamera;
 // import frc.robot.commands.Camera.driveByAssist;
 import frc.robot.commands.Camera.driveByDocking;
 // import frc.robot.commands.jester_arm.ToggleArmCommand;
@@ -41,6 +42,8 @@ public class OI {
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new ToggleHeightCommand());
       new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByDocking(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.B).whileHeld(new driveByDocking(CAMERA.BACK));
+      new JoystickButton(driver, ControllerMap.A).whenPressed(new driveByCamera(CAMERA.FRONT));
+      new JoystickButton(driver, ControllerMap.A).whenPressed(new driveByCamera(CAMERA.BACK));
 
   }
 
