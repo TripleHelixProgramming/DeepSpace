@@ -36,7 +36,6 @@ public class driveByDocking extends Command {
   protected void initialize() {
     left_command = 0.0;
     right_command = 0.0;
-    
    
   }
 
@@ -44,7 +43,7 @@ public class driveByDocking extends Command {
   @Override
   protected void execute() {
     // Camera.getInstance().setCamera(location);
-     Camera.getInstance().setDockingMode();
+    Camera.getInstance().setDockingMode();
 
     double tx = Camera.getInstance().RotationalDegreesToTarget();
     double ty = Camera.getInstance().VerticalDegreesToTarget();
@@ -85,7 +84,7 @@ public class driveByDocking extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-      Camera.getInstance().setCameraMode();
+      // Camera.getInstance().setCameraMode();
   }
 
   // Called when another command which requires one or more of the same
