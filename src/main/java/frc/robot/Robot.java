@@ -25,7 +25,10 @@ import frc.arcs.StraightBack10FeetArc;
 import frc.arcs.TurnScalingArc;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.JesterArm;
+import frc.robot.subsystems.JesterWrist;
 import frc.robot.subsystems.HatchGrabber;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.commands.ExampleCommand;
@@ -57,9 +60,11 @@ public class Robot extends TimedRobot {
     OI.getInstance();
     Drivetrain.getInstance();
     Camera.getInstance();
-    
-   // CargoGrabber.getInstance();
-   // HatchGrabber.getInstance();
+    // JesterArm.getInstance();
+    // JesterWrist.getInstance();
+    // CargoGrabber.getInstance();
+    // HatchGrabber.getInstance();
+
   }
 
   /**
@@ -85,6 +90,9 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
+
+    // JesterArm.getInstance().updateSmartDash();
+    // JesterWrist.getInstance().updateSmartDash();
   }
 
   /**
@@ -104,8 +112,9 @@ public class Robot extends TimedRobot {
     // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new Straight10FeetArc());
     // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new ForwardLeftArc());
     // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new DistanceScalingArc());
-      autonomousCommand = new FollowArc(Drivetrain.getInstance(), new Figure8Arc());
+    // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new Figure8Arc());
 
+    autonomousCommand = null;
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.start();

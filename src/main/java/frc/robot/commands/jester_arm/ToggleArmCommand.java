@@ -5,22 +5,15 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Camera;
+package frc.robot.commands.jester_arm;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.Camera;
+import frc.robot.subsystems.JesterArm;
 
-import frc.robot.subsystems.Camera.CAMERA;
-
-public class driveByCamera extends Command {
-
-  private CAMERA location;
-
-  public driveByCamera(CAMERA location) {
+public class ToggleArmCommand extends Command {
+  public ToggleArmCommand() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Camera.getInstance());
-    this.location = location;
   }
 
   // Called just before this Command runs the first time
@@ -31,15 +24,13 @@ public class driveByCamera extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Camera.getInstance().getCamera(location);
-    Camera.getInstance().setCamera(location);
-    Camera.getInstance().setCameraMode();
+    JesterArm.getInstance().toggleArm();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true
@@ -53,4 +44,3 @@ public class driveByCamera extends Command {
   protected void interrupted() {
   }
 }
-

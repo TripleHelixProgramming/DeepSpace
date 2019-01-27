@@ -9,13 +9,18 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.Camera.aimByVision;
 import frc.robot.commands.Camera.driveByCamera;
+import frc.robot.subsystems.Camera.CAMERA;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.Camera.driveByDocking;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-// import frc.robot.commands.Camera.driveByVision;
 import frc.robot.commands.Camera.driveByDockingPID;
+import frc.robot.commands.Camera.aimByVision;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+
+// import frc.robot.commands.Camera.driveByVision;
+// import frc.robot.commands.jester_arm.ToggleArmCommand;
+// import frc.robot.commands.jester_arm.ToggleHeightCommand;
+// import frc.robot.commands.Camera.driveByAssist;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -37,12 +42,18 @@ public class OI {
 
   private final Joystick driver = new Joystick(ControllerMap.DRIVER_PORT);
   private final Joystick operator = new Joystick(ControllerMap.OPERATOR_PORT);
-  
-  private OI() { 
-    new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByDocking());
-    new JoystickButton(driver, ControllerMap.B).whenPressed(new driveByCamera());
-    new JoystickButton(driver, ControllerMap.Y).whileHeld(new aimByVision());
-    new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByDockingPID());
+
+  private OI() {
+    
+      new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByDocking(CAMERA.FRONT));
+      new JoystickButton(driver, ControllerMap.B).whileHeld(new driveByDocking(CAMERA.BACK));
+      new JoystickButton(driver, ControllerMap.A).whenPressed(new driveByCamera(CAMERA.FRONT));
+      new JoystickButton(driver, ControllerMap.A).whenPressed(new driveByCamera(CAMERA.BACK));
+    
+      // new JoystickButton(operator, ControllerMap.A).whenPressed(new ToggleArmCommand());
+      // new JoystickButton(operator, ControllerMap.Y).whenPressed(new ToggleHeightCommand());
+      // new JoystickButton(driver, ControllerMap.Y).whileHeld(new aimByVision());
+      // new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByDockingPID());
 
   }
 
@@ -53,12 +64,29 @@ public class OI {
     return -driver.getRawAxis(ControllerMap.LEFT_STICK_Y); 
     // return -driver.getRawAxis(ControllerMap.LEFT_TRIGGER) + driver.getRawAxis(ControllerMap.RIGHT_TRIGGER);
 	}
-	
-	/**
+  
+  /**
    * @return the raw controller turn
    */
-	public double getTurn() {
-		return driver.getRawAxis(ControllerMap.RIGHT_STICK_X);
+  public double getTurn() {
+    return driver.getRawAxis(ControllerMap.RIGHT_STICK_X);
+  }
+
+  public double getDriverY() {
+    return -driver.getRawAxis(ControllerMap.LEFT_STICK_Y);
+  }
+
+  public double getArmPower() {
+    double stick = -operator.getRawAxis(ControllerMap.LEFT_STICK_Y);
+    stick *= Math.abs(stick);
+    if (Math.abs(stick) < 0.05) {
+      stick = 0;
+    }
+    return stick;
+  }
+
+  public double getGMPOV() {
+    return operator.getPOV();
   }
 
   /**

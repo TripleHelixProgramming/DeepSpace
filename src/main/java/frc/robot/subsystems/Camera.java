@@ -8,10 +8,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
-// import sun.security.jca.GetInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Camera.driveByCamera;
 
@@ -20,13 +18,15 @@ import frc.robot.commands.Camera.driveByCamera;
  */
 public class Camera extends Subsystem {
 
-  enum CAMERA {
+  public enum CAMERA {
     FRONT, BACK;
   }
-  
+
   private static Camera INSTANCE = new Camera();
+
   private static NetworkTable frontCamera = getCamera(CAMERA.FRONT);
   private static NetworkTable backCamera = getCamera(CAMERA.BACK);
+  public static NetworkTable currentCamera;
 
   /**
    * @return the singleton instance of the LimeLight subsystem
@@ -39,99 +39,70 @@ public class Camera extends Subsystem {
   }
 
   private Camera() {
- 
+    // currentCamera = NetworkTableInstance.getDefault().getTable("Limelight-front");
+    frontCamera = NetworkTableInstance.getDefault().getTable("limelight-front");
+    backCamera = NetworkTableInstance.getDefault().getTable("limelight-back");
   }
 
-
-  private static NetworkTable getCamera(CAMERA Camera) {
-    if (Camera == CAMERA.FRONT) {
-      if (frontCamera == null) {
-        frontCamera = NetworkTableInstance.getDefault().getTable("limelight-front"); 
-      }
-      return frontCamera;
-    } else { 
-      if (backCamera == null) {
-        backCamera = NetworkTableInstance.getDefault().getTable("limelight-back");
-      }
-      return backCamera;
+  public static NetworkTable getCamera(CAMERA location) {
+    if (location == CAMERA.FRONT) {
+      // if (currentCamera == null) {
+        currentCamera = NetworkTableInstance.getDefault().getTable("limelight-front");
+        return NetworkTableInstance.getDefault().getTable("limelight-front");
+    } else {
+        currentCamera = NetworkTableInstance.getDefault().getTable("limelight-back");
+         return NetworkTableInstance.getDefault().getTable("limelight-back");
     }
-  } 
+  }
+
+  public void setCamera(CAMERA location) {
+    currentCamera = getCamera(location);
+  }
 
   public void setCameraMode() {
-    frontCamera.getEntry("camMode").setNumber(1);
+    // currentCamera.getEntry("camMode").setNumber(1);
     backCamera.getEntry("camMode").setNumber(1);
+    frontCamera.getEntry("camMode").setNumber(1);
+    // currentCamera.getEntry("ledMode").setNumber(1);
+    backCamera.getEntry("ledMode").setNumber(1);
     frontCamera.getEntry("ledMode").setNumber(1);
-  }
-
-  public void setDockingMode() {
-    frontCamera.getEntry("camMode").setNumber(0);
-    backCamera.getEntry("camMode").setNumber(0);
-    frontCamera.getEntry("ledMode").setNumber(0);
-    frontCamera.getEntry("pipeline").setNumber(0);
-    frontCamera.getEntry("stream").setNumber(0);
 
   }
 
-  public void setVisionMode() {
-    frontCamera.getEntry("camMode").setNumber(0);
-    backCamera.getEntry("camMode").setNumber(0);
-    frontCamera.getEntry("ledMode").setNumber(0);
-    frontCamera.getEntry("pipeline").setNumber(0);
+  public void setDockingMode() { 
+      currentCamera.getEntry("camMode").setNumber(0);
+      currentCamera.getEntry("ledMode").setNumber(0);
+      currentCamera.getEntry("pipeline").setNumber(0);
+      currentCamera.getEntry("stream").setNumber(0);
+
   }
 
-  public boolean getIsTargetFoundFront() {
-    NetworkTableEntry tv = frontCamera.getEntry("tv");
-    double v = tv.getDouble(0.0);
-    if (v == 0.0f){
-        return false;
-    }else {
-        return true;
-    }
-}
+  // public void setVisionMode() {
+  //     currentCamera.getEntry("camMode").setNumber(0);
+  //     currentCamera.getEntry("ledMode").setNumber(0);
+  //     currentCamera.getEntry("pipeline").setNumber(0);
+  //     currentCamera.getEntry("stream").setNumber(0);
+  // }
 
-public boolean getIsTargetFoundBack() {
-  NetworkTableEntry tvBack = backCamera.getEntry("tv");
-  double v = tvBack.getDouble(0);
-  if (v == 0.0f){
-      return false;
-  }else {
-      return true;
+  public boolean IsTargetFound() {
+    double v = currentCamera.getEntry("tx").getDouble(0.0);
+    return ((v == 0.0)? false: true);
   }
-}
 
-public double getdegRotationToTargetFront() {
-  NetworkTableEntry txFront = frontCamera.getEntry("tx");
-  double x = txFront.getDouble(0.0);
-  return x;
-}
+  public double RotationalDegreesToTarget() {
+    return currentCamera.getEntry("tx").getDouble(0.0);
+  }
 
-public double getdegRotationToTargetBack() {
-  NetworkTableEntry txBack = backCamera.getEntry("tx");
-  double x = txBack.getDouble(0.0);
-  return x;
-}
-
-public double getdegVerticalToTargetFront() {
-  NetworkTableEntry tyFront = frontCamera.getEntry("ty");
-  double y = tyFront.getDouble(0.0);
-  return y;
-}
-
-public double getdegVerticalToTargetBack() {
-  NetworkTableEntry tyBack = backCamera.getEntry("ty");
-  double y = tyBack.getDouble(0.0);
-  return y;
-}
-
-// public double getCameraStream() {
-//   NetworkTableEntry stream = frontCamera.getEntry("stream");
-//   return stream;
-// }
+  public double VerticalDegreesToTarget() {
+    return currentCamera.getEntry("ty").getDouble(0.0);
+  }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new driveByCamera());
+    // setDefaultCommand(new driveByCamera());
+    setDefaultCommand(new driveByCamera(CAMERA.BACK));
+    setDefaultCommand(new driveByCamera(CAMERA.FRONT));
   }
 }

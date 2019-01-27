@@ -7,85 +7,77 @@
 
 package frc.robot.commands.Camera;
 
-import edu.wpi.first.wpilibj.command.Command;
+
+import edu.wpi.first.wpilibj.command.PIDCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.OI;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
-
 import frc.robot.subsystems.Camera.CAMERA;
 
-public class driveByDocking extends Command {
-
-  double Kp = 0.0305;
-  double kpDistance = 0.0205;
-  double min_command = 0.02;
-  double left_command;
-  double right_command;
-  private boolean finished = false;
+public class driveByAssist extends PIDCommand {
 
   private CAMERA location;
 
-  public driveByDocking(CAMERA location) {
-    Camera.getInstance().setCamera(location);
-    requires(Camera.getInstance());
+  public driveByAssist(CAMERA location) {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+
+    super(0.01, 0.001, 0.001);   // P,I,D values to use on Aiming.
+
     requires(Drivetrain.getInstance());
+    requires(Camera.getInstance());
 
     this.location = location;
+
+    getPIDController().setAbsoluteTolerance(1.5);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    left_command = 0.0;
-    right_command = 0.0;
+          // Always set which camera you are using. This is passed into the command 
+      // from OI.java.
+
+      setSetpoint(0.0);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
-    Camera.getInstance().getCamera(location);
     Camera.getInstance().setCamera(location);
     Camera.getInstance().setDockingMode();
+  }
 
-    double tx = Camera.getInstance().RotationalDegreesToTarget();
-    double ty = Camera.getInstance().VerticalDegreesToTarget();
+  @Override
+  protected double returnPIDInput() {
+    // perfrom PID controller on X -- rotational degrees.
+    return (Camera.getInstance().RotationalDegreesToTarget());
+  }
 
-    double steering_adjust = 0.0;
-    double distance_error = -ty; 
+  @Override
+  protected void usePIDOutput(double output) {
+    SmartDashboard.putNumber("PID Output: ", output);
 
-    if (Math.abs(tx) < 1) {
-      finished = true;
-    }
+    // Output is the PID controllers output for tx -- rotational degrees
+    // Forward is just driver Y stick value.
+    
+    double distance_adjust = OI.getInstance().getDriverY();  // forward throttle
 
-    if (tx > 0.0) {
-      steering_adjust = Kp * tx - min_command;
-    } else if (tx < 0.0) {
-      steering_adjust = Kp * tx + min_command;
-    }
-
-    double distance_adjust = (kpDistance * distance_error);
-
-    if (location == CAMERA.FRONT) {
-      left_command += steering_adjust - distance_adjust;
-      right_command -= steering_adjust + distance_adjust; // changed from "-"
-    } else {
-      left_command += steering_adjust + distance_adjust;
-      right_command -= steering_adjust - distance_adjust;
-    }
-
-    Drivetrain.getInstance().tankDrive(left_command, right_command);
-
+    // output is steering adjustment
+    Drivetrain.getInstance().tankDrive(distance_adjust + output, -(distance_adjust - output));
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return finished;
+    return (Camera.getInstance().IsTargetFound() == false);
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Camera.getInstance().setCameraMode();
   }
 
   // Called when another command which requires one or more of the same
@@ -93,5 +85,5 @@ public class driveByDocking extends Command {
   @Override
   protected void interrupted() {
   }
-}
 
+}
