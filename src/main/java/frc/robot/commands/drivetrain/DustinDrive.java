@@ -11,7 +11,7 @@ public class DustinDrive extends NormalizedArcadeDrive {
 
   @Override
   public double throttleInputProcessing(double throttle) {
-    return -throttle;
+    return -throttle * 0.85;
   }
 
   @Override

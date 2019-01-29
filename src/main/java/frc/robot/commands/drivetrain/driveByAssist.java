@@ -70,7 +70,7 @@ public class driveByAssist extends Command {
 
     if (camera == CAMERA.FRONT) {
       left_command += steering_adjust - distance_adjust;
-      right_command -= steering_adjust + distance_adjust; // changed from "-"
+      right_command -= steering_adjust + distance_adjust;
     } else {
       left_command += steering_adjust + distance_adjust;
       right_command -= steering_adjust - distance_adjust;
@@ -80,7 +80,7 @@ public class driveByAssist extends Command {
 
   }
 
-  // Make this return true when this Command no longer needs to run execute()
+ 
   @Override
   protected boolean isFinished() {
     return finished;
