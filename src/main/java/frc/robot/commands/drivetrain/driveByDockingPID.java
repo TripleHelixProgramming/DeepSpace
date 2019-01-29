@@ -9,6 +9,7 @@ package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.OI;
 import frc.robot.camera.CAMERA;
 
 public class driveByDockingPID extends Command {
@@ -61,7 +62,7 @@ public class driveByDockingPID extends Command {
 
     steering_adjust = PIDCalc2(tx);
 
-    double distance_adjust = (kpDistance * distance_error);
+    double distance_adjust = OI.getInstance().getThrottle() * .8; //(kpDistance * distance_error);
 
     left_command = -distance_adjust + steering_adjust;
     right_command = -distance_adjust - steering_adjust;
@@ -81,6 +82,7 @@ public class driveByDockingPID extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    camera.setCameraMode();
   }
 
   // Called when another command which requires one or more of the same
