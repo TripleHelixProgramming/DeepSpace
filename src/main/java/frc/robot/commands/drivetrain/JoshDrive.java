@@ -11,7 +11,7 @@ public class JoshDrive extends NormalizedArcadeDrive {
 
   @Override
   public double throttleInputProcessing(double throttle) {
-    return throttle;
+    return throttle * 0.5;
   }
 
   @Override

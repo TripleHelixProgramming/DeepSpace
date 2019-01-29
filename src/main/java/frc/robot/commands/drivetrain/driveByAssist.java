@@ -7,36 +7,41 @@
 
 package frc.robot.commands.drivetrain;
 
-import edu.wpi.first.wpilibj.command.PIDCommand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.OI;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.OI;
 import frc.robot.camera.CAMERA;
 
-public class driveByAssist extends PIDCommand {
+public class driveByAssist extends Command {
 
-  private CAMERA camera;
+  double Kp = 0.03;
+  double Ki = 0.0;
+  double Kd = 0.50;
+  double kpDistance = 0.0215;
+  double min_command = 0.0;
+  double left_command;
+  double right_command;
+  double integral;
+  double derivative;
+  double last_error;
+  double result;
+  double error;
   private boolean finished = false;
 
+  private CAMERA camera;
+
   public driveByAssist(CAMERA camera) {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-
-    super(0.01, 0.001, 0.001); // P,I,D values to use on Aiming.
-    getPIDController().setAbsoluteTolerance(1.5);
-
-    this.camera = camera;
 
     requires(Drivetrain.getInstance());
+
+    this.camera = camera;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // Always set which camera you are using. This is passed into the command
-    // from OI.java.
-
-    setSetpoint(0.0);
+    left_command = 0.0;
+    right_command = 0.0;
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -45,46 +50,34 @@ public class driveByAssist extends PIDCommand {
 
     camera.setDockingMode();
 
-    if (Math.abs(camera.RotationalDegreesToTarget()) < 1) {
+    double tx = camera.RotationalDegreesToTarget();
+    double ty = camera.VerticalDegreesToTarget();
+
+    double steering_adjust = 0.0;
+    double distance_error = -ty;
+
+    if (Math.abs(tx) < 1) {
       finished = true;
     }
-  }
 
-  @Override
-  protected double returnPIDInput() {
-    // perfrom PID controller on X -- rotational degrees.
-    return (camera.RotationalDegreesToTarget());
-  }
-
-  @Override
-  protected void usePIDOutput(double output) {
-    double throttleInput, saturatedInput, greaterInput, lesserInput, left, right;
-
-    SmartDashboard.putNumber("PID Output: ", output);
-
-    //  Do same thing Normalized Arcade Drive does to throttle and turn.
-    throttleInput = OI.getInstance().getThrottle(); // forward throttle
-    greaterInput = Math.max(Math.abs(throttleInput), Math.abs(output));
-    // range [0, 1]
-    lesserInput = Math.abs(throttleInput) + Math.abs(output) - greaterInput;
-    // range [0, 1]
-    if (greaterInput > 0.0) {
-      saturatedInput = (lesserInput / greaterInput) + 1.0;
-      // range [1, 2]
-    } else {
-      saturatedInput = 1.0;
+    if (tx > 0.0) {
+      steering_adjust = Kp * tx - min_command;
+    } else if (tx < 0.0) {
+      steering_adjust = Kp * tx + min_command;
     }
 
-    // scale down the joystick input values
-    // such that (throttle + turn) always has a range [-1, 1]
-    throttleInput = throttleInput / saturatedInput;
-    output = output / saturatedInput;
+    double distance_adjust = OI.getInstance().getThrottle() * 0.8;
 
-    left = throttleInput + output;
-    right = throttleInput - output;
+    if (camera == CAMERA.FRONT) {
+      left_command += steering_adjust - distance_adjust;
+      right_command -= steering_adjust + distance_adjust; // changed from "-"
+    } else {
+      left_command += steering_adjust + distance_adjust;
+      right_command -= steering_adjust - distance_adjust;
+    }
 
-    // output is steering adjustment
-    Drivetrain.getInstance().tankDrive(left, right);
+    Drivetrain.getInstance().tankDrive(left_command, right_command);
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -102,6 +95,14 @@ public class driveByAssist extends PIDCommand {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+  }
+
+  public double PIDCalc2(double error) {
+    integral += error * .2;
+    derivative = error - last_error;
+    last_error = error;
+    result = Kp * error + Ki * integral + Kd * derivative;
+    return result;
   }
 
 }

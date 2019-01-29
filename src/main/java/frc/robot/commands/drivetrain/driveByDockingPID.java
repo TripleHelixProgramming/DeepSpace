@@ -17,7 +17,7 @@ public class driveByDockingPID extends Command {
   double Kp = 0.015;
   double Ki = 0.0;
   double Kd = 0.0275;
-  double kpDistance = 0.0215;
+  double kpDistance = 0.0275;
   double min_command = 0.0;
   double left_command;
   double right_command;
@@ -32,12 +32,10 @@ public class driveByDockingPID extends Command {
 
   public driveByDockingPID(CAMERA camera) {
 
-    // Use requires() here to declare subsystem dependencies
     requires(Drivetrain.getInstance());
     this.camera = camera;
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     left_command = 0.0;
@@ -45,7 +43,6 @@ public class driveByDockingPID extends Command {
 
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
 
@@ -54,7 +51,7 @@ public class driveByDockingPID extends Command {
     double ty = camera.VerticalDegreesToTarget();
 
     double steering_adjust = 0.0;
-    double distance_error = -ty; // subtracting 2 due to range error on camera on back of the robot.
+    double distance_error = -ty;
 
     if (Math.abs(tx) < 0.1) {
       finished = true;
@@ -62,13 +59,15 @@ public class driveByDockingPID extends Command {
 
     steering_adjust = PIDCalc2(tx);
 
-    double distance_adjust = OI.getInstance().getThrottle() * .8; //(kpDistance * distance_error);
+    double distance_adjust = (kpDistance * distance_error);
 
-    left_command = -distance_adjust + steering_adjust;
-    right_command = -distance_adjust - steering_adjust;
-
-    // Drivetrain.getInstance().tankDrive(left_command, right_command); //Remove the
-    // boolean value from arcadeDrive?
+     if (camera == CAMERA.FRONT) {
+      left_command += steering_adjust - distance_adjust;
+      right_command -= steering_adjust + distance_adjust; 
+    } else {
+      left_command += steering_adjust + distance_adjust;
+      right_command -= steering_adjust - distance_adjust;
+    }
     Drivetrain.getInstance().tankDrive(left_command, right_command);
 
   }
@@ -82,7 +81,7 @@ public class driveByDockingPID extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    camera.setCameraMode();
+    // camera.setCameraMode();
   }
 
   // Called when another command which requires one or more of the same
