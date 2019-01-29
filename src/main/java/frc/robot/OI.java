@@ -15,6 +15,7 @@ import frc.robot.camera.CAMERA;
 
 import frc.robot.commands.drivetrain.driveByCamera;
 import frc.robot.commands.drivetrain.driveByDocking;
+import frc.robot.commands.drivetrain.driveByDockingPID;
 
 // import frc.robot.commands.drivetrain.driveByDockingPID;
 // import frc.robot.commands.drivetrain.aimByVision;
@@ -50,6 +51,7 @@ public class OI {
       new JoystickButton(driver, ControllerMap.B).whileHeld(new driveByDocking(CAMERA.BACK));
       new JoystickButton(driver, ControllerMap.A).whenPressed(new driveByCamera(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.A).whenPressed(new driveByCamera(CAMERA.BACK));
+      new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByDockingPID(CAMERA.FRONT));
     
       // new JoystickButton(operator, ControllerMap.A).whenPressed(new ToggleArmCommand());
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new ToggleHeightCommand());
