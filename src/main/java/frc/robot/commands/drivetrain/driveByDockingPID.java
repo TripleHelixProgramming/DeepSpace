@@ -5,31 +5,35 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Camera;
+package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.camera.CAMERA;
 
-import frc.robot.subsystems.Camera.CAMERA;
+public class driveByDockingPID extends Command {
 
-public class driveByDocking extends Command {
-
-  double Kp = 0.0305;
-  double kpDistance = 0.0205;
-  double min_command = 0.02;
+  double Kp = 0.015;
+  double Ki = 0.0;
+  double Kd = 0.0275;
+  double kpDistance = 0.0215;
+  double min_command = 0.0;
   double left_command;
   double right_command;
+  double integral;
+  double derivative;
+  double last_error;
+  double result;
+  double error;
+
   private boolean finished = false;
+  private CAMERA camera;
 
-  private CAMERA location;
+  public driveByDockingPID(CAMERA camera) {
 
-  public driveByDocking(CAMERA location) {
-    Camera.getInstance().setCamera(location);
-    requires(Camera.getInstance());
+    // Use requires() here to declare subsystem dependencies
     requires(Drivetrain.getInstance());
-
-    this.location = location;
+    this.camera = camera;
   }
 
   // Called just before this Command runs the first time
@@ -37,42 +41,33 @@ public class driveByDocking extends Command {
   protected void initialize() {
     left_command = 0.0;
     right_command = 0.0;
+
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
 
-    Camera.getInstance().getCamera(location);
-    Camera.getInstance().setCamera(location);
-    Camera.getInstance().setDockingMode();
-
-    double tx = Camera.getInstance().RotationalDegreesToTarget();
-    double ty = Camera.getInstance().VerticalDegreesToTarget();
+    camera.setDockingMode();
+    double tx = camera.RotationalDegreesToTarget();
+    double ty = camera.VerticalDegreesToTarget();
 
     double steering_adjust = 0.0;
-    double distance_error = -ty; 
+    double distance_error = -ty; // subtracting 2 due to range error on camera on back of the robot.
 
-    if (Math.abs(tx) < 1) {
+    if (Math.abs(tx) < 0.1) {
       finished = true;
     }
 
-    if (tx > 0.0) {
-      steering_adjust = Kp * tx - min_command;
-    } else if (tx < 0.0) {
-      steering_adjust = Kp * tx + min_command;
-    }
+    steering_adjust = PIDCalc2(tx);
 
     double distance_adjust = (kpDistance * distance_error);
 
-    if (location == CAMERA.FRONT) {
-      left_command += steering_adjust - distance_adjust;
-      right_command -= steering_adjust + distance_adjust; // changed from "-"
-    } else {
-      left_command += steering_adjust + distance_adjust;
-      right_command -= steering_adjust - distance_adjust;
-    }
+    left_command = -distance_adjust + steering_adjust;
+    right_command = -distance_adjust - steering_adjust;
 
+    // Drivetrain.getInstance().tankDrive(left_command, right_command); //Remove the
+    // boolean value from arcadeDrive?
     Drivetrain.getInstance().tankDrive(left_command, right_command);
 
   }
@@ -93,5 +88,12 @@ public class driveByDocking extends Command {
   @Override
   protected void interrupted() {
   }
-}
 
+  public double PIDCalc2(double error) {
+    integral += error * .2;
+    derivative = error - last_error;
+    last_error = error;
+    result = Kp * error + Ki * integral + Kd * derivative;
+    return result;
+  }
+}

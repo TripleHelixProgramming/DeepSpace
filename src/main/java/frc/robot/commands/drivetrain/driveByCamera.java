@@ -5,22 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Camera;
+package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.Camera;
 
-import frc.robot.subsystems.Camera.CAMERA;
+import frc.robot.camera.CAMERA;
 
 public class driveByCamera extends Command {
 
-  private CAMERA location;
+  private CAMERA camera;
 
-  public driveByCamera(CAMERA location) {
+  public driveByCamera(CAMERA camera) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Camera.getInstance());
-    this.location = location;
+    this.camera = camera;
   }
 
   // Called just before this Command runs the first time
@@ -31,9 +29,7 @@ public class driveByCamera extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Camera.getInstance().getCamera(location);
-    Camera.getInstance().setCamera(location);
-    Camera.getInstance().setCameraMode();
+    camera.setCameraMode();
   }
 
   // Make this return true when this Command no longer needs to run execute()

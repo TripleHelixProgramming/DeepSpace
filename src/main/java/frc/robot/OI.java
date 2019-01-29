@@ -9,14 +9,15 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.Camera.driveByCamera;
-import frc.robot.subsystems.Camera.CAMERA;
-import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.Camera.driveByDocking;
-import frc.robot.commands.Camera.driveByDockingPID;
-import frc.robot.commands.Camera.aimByVision;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
+import frc.robot.camera.CAMERA;
+
+import frc.robot.commands.drivetrain.driveByCamera;
+import frc.robot.commands.drivetrain.driveByDocking;
+
+// import frc.robot.commands.drivetrain.driveByDockingPID;
+// import frc.robot.commands.drivetrain.aimByVision;
 // import frc.robot.commands.Camera.driveByVision;
 // import frc.robot.commands.jester_arm.ToggleArmCommand;
 // import frc.robot.commands.jester_arm.ToggleHeightCommand;

@@ -5,32 +5,29 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Camera;
+package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
-import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Camera.CAMERA;
+import frc.robot.camera.CAMERA;
 
 public class driveByAssist extends PIDCommand {
 
-  private CAMERA location;
+  private CAMERA camera;
   private boolean finished = false;
 
-  public driveByAssist(CAMERA location) {
+  public driveByAssist(CAMERA camera) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
 
     super(0.01, 0.001, 0.001); // P,I,D values to use on Aiming.
     getPIDController().setAbsoluteTolerance(1.5);
 
-    this.location = location;
-    Camera.getInstance().setCamera(location);
+    this.camera = camera;
 
     requires(Drivetrain.getInstance());
-    requires(Camera.getInstance());
   }
 
   // Called just before this Command runs the first time
@@ -45,10 +42,10 @@ public class driveByAssist extends PIDCommand {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Camera.getInstance().setCamera(location);
-    Camera.getInstance().setDockingMode();
 
-    if (Math.abs(Camera.getInstance().RotationalDegreesToTarget()) < 1) {
+    camera.setDockingMode();
+
+    if (Math.abs(camera.RotationalDegreesToTarget()) < 1) {
       finished = true;
     }
   }
@@ -56,7 +53,7 @@ public class driveByAssist extends PIDCommand {
   @Override
   protected double returnPIDInput() {
     // perfrom PID controller on X -- rotational degrees.
-    return (Camera.getInstance().RotationalDegreesToTarget());
+    return (camera.RotationalDegreesToTarget());
   }
 
   @Override

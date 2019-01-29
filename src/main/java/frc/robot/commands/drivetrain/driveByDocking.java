@@ -5,66 +5,77 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Camera;
+package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Camera.CAMERA;
+import frc.robot.camera.CAMERA;
 
-public class aimByVision extends Command {
+public class driveByDocking extends Command {
+
   double Kp = 0.0305;
   double kpDistance = 0.0205;
-  double min_command = 0.02; 
-  private double throttleInput;
-  private double turnInput ;
+  double min_command = 0.02;
+  double left_command;
+  double right_command;
   private boolean finished = false;
 
-  private CAMERA location;
-  // private double left_command = 0.0;
-  // private double right_command = 0.0;
-  
-  public aimByVision() {
+  private CAMERA camera;
 
-    Camera.getInstance().setCamera(location);
-    requires(Camera.getInstance());
+  public driveByDocking(CAMERA camera) {
+
     requires(Drivetrain.getInstance());
+
+    this.camera = camera;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    left_command = 0.0;
+    right_command = 0.0;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
 
-      Camera.getInstance().setDockingMode();
-      double txFront = Camera.getInstance().RotationalDegreesToTarget();
-      boolean targetFound = Camera.getInstance().IsTargetFound();
-      double heading_error = -txFront;
-      double steering_adjust = 0.0;
+    camera.setDockingMode();
 
-      if(Math.abs(txFront) < 1) {
-        finished = true;
-      }
-  
-      if (txFront > 0.0) {
-          steering_adjust = Kp*txFront - min_command;
-      }else if (txFront < 0.0){
-          steering_adjust = Kp*txFront + min_command;
-      }
-  
-      Drivetrain.getInstance().arcadeDrive(throttleInput, turnInput, true);
- 
+    double tx = camera.RotationalDegreesToTarget();
+    double ty = camera.VerticalDegreesToTarget();
+
+    double steering_adjust = 0.0;
+    double distance_error = -ty;
+
+    if (Math.abs(tx) < 1) {
+      finished = true;
+    }
+
+    if (tx > 0.0) {
+      steering_adjust = Kp * tx - min_command;
+    } else if (tx < 0.0) {
+      steering_adjust = Kp * tx + min_command;
+    }
+
+    double distance_adjust = (kpDistance * distance_error);
+
+    if (camera == CAMERA.FRONT) {
+      left_command += steering_adjust - distance_adjust;
+      right_command -= steering_adjust + distance_adjust; // changed from "-"
+    } else {
+      left_command += steering_adjust + distance_adjust;
+      right_command -= steering_adjust - distance_adjust;
+    }
+
+    Drivetrain.getInstance().tankDrive(left_command, right_command);
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    Camera.getInstance().setCameraMode();
-    return false;
+    return finished;
   }
 
   // Called once after isFinished returns true
