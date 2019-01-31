@@ -59,7 +59,7 @@ public class driveByDocking extends Command {
       steering_adjust = Kp * tx + min_command;
     }
 
-    double distance_adjust = OI.getInstance().getThrottle() * .8;
+    double distance_adjust = (kpDistance * distance_error);
 
     if (camera == CAMERA.FRONT) {
       left_command += steering_adjust - distance_adjust;
