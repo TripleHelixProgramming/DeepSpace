@@ -9,8 +9,6 @@ import com.team319.follower.FollowsArc;
 import com.team319.follower.SrxMotionProfile;
 import com.team319.follower.SrxTrajectory;
 
-import org.junit.Test;
-
 import edu.wpi.first.wpilibj.command.Command;
 
 public class FollowArc extends Command {
