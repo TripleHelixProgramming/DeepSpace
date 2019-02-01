@@ -9,6 +9,8 @@ import com.team319.follower.FollowsArc;
 import com.team319.follower.SrxMotionProfile;
 import com.team319.follower.SrxTrajectory;
 
+import org.junit.Test;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 public class FollowArc extends Command {
@@ -91,7 +93,6 @@ public class FollowArc extends Command {
 		double direction = flipRobot ? -1 : 1;
 		double flippedLeftAndRight = flipLeftAndRight ? -1 : 1;
 		double[][] path = flipPath ? reversePath(profile.points) : profile.points;
-
         /* Insert every point into buffer, no limit on size */
         for (int i = 0; i < profile.numPoints; ++i) {
             /* for each point, fill our structure and pass it to API */
@@ -117,8 +118,8 @@ public class FollowArc extends Command {
         }
 	}
 	
-	private double[][] reversePath(double[][] path) {
-		for(int i = 0; i < path.length; i++) {
+	private static double[][] reversePath(double[][] path) {
+		for(int i = 0; i < path.length / 2; i++) {
 			double[] temp = path[i];
 			path[i] = path[path.length - i - 1];
 			path[path.length - i - 1] = temp;
