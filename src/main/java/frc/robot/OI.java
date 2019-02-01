@@ -10,9 +10,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import frc.arcs.DistanceScalingArc;
+import frc.arcs.SpeedTestingArc;
 import frc.arcs.Straight10FeetArc;
+import frc.arcs.TurnScalingArc;
 import frc.robot.camera.CAMERA;
 import frc.robot.commands.FollowArc;
+import frc.robot.commands.Auto.FollowArcTesting;
 import frc.robot.commands.drivetrain.driveByCamera;
 import frc.robot.commands.drivetrain.driveByDocking;
 import frc.robot.commands.drivetrain.driveByDockingPID;
@@ -53,7 +57,7 @@ public class OI {
       new JoystickButton(driver, ControllerMap.A).whenPressed(new driveByCamera(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.A).whenPressed(new driveByCamera(CAMERA.BACK));
       new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByDockingPID(CAMERA.FRONT));
-      new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArc(Drivetrain.getInstance(), new Straight10FeetArc(), false, false, false));
+      new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArcTesting());
     
       // new JoystickButton(operator, ControllerMap.A).whenPressed(new ToggleArmCommand());
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new ToggleHeightCommand());
