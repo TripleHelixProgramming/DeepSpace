@@ -99,7 +99,7 @@ public class FollowArc extends Command {
 
             /* drive part */
             point.position = direction * path[i][0] + startPosition;
-            point.velocity = direction * path[i][1] / 600.0; 
+            point.velocity = direction * path[i][1]; 
             point.arbFeedFwd = 0; 
 
             /* turn part */
