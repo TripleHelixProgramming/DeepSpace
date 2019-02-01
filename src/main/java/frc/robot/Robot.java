@@ -9,7 +9,8 @@ package frc.robot;
 
 import com.team2363.logger.HelixEvents;
 import com.team2363.logger.HelixLogger;
-import com.team319.follower.FollowArc;
+// import com.team319.follower.FollowArc;
+import frc.robot.commands.FollowArc;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -112,8 +113,9 @@ public class Robot extends TimedRobot {
     // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new ForwardLeftArc());
     // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new DistanceScalingArc());
     // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new Figure8Arc());
+    autonomousCommand = new FollowArc(Drivetrain.getInstance(), new Straight10FeetArc(), false, false, false);
 
-    autonomousCommand = null;
+    // autonomousCommand = null;
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.start();

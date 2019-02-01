@@ -62,7 +62,7 @@ public class driveByDockingPID extends Command {
 
     steering_adjust = PIDCalc2(tx);
 
-    double distance_adjust = OI.getInstance().getThrottle() * .8; //(kpDistance * distance_error);
+    double distance_adjust = (kpDistance * distance_error);
 
     left_command = -distance_adjust + steering_adjust;
     right_command = -distance_adjust - steering_adjust;

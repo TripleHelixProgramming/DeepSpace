@@ -99,11 +99,11 @@ public class ArcGenerator extends AbstractBobPathCreator {
 	private List<BobPath> getConfigArcs() {
 		BobPath distanceScaling = new BobPath(config, "DistanceScaling");
 		distanceScaling.addWaypoint(new Waypoint(2, 13.5, 0, 0, 0));
-		distanceScaling.addWaypointRelative(3, 0, 0, 0, 3);
+		distanceScaling.addWaypointRelative(2, 0, 0, 0, 2);
 
 		BobPath turnScaling = new BobPath(config, "TurnScaling");
 		turnScaling.addWaypoint(new Waypoint(2, 13.5, 0, 0, 0));
-		turnScaling.addWaypointRelative(3, 3, 89.99, 0, 3);
+		turnScaling.addWaypointRelative(3, 3, 89.99, 0, 1);
 
 		BobPath speedTesting = new BobPath(config, "SpeedTesting");
 		speedTesting.addWaypoint(new Waypoint(2, 13.5, 0, 0, 0));
