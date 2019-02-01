@@ -9,6 +9,7 @@ package frc.robot.commands.cargo_grabber;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.CargoGrabber;
+import com.team2363.logger.HelixEvents;
 
 public class GrabCargo extends Command {
 
@@ -28,6 +29,7 @@ public class GrabCargo extends Command {
   protected void initialize() {
        // HatchGrabber.getInstance().hatchGrab();
    CargoGrabber.getInstance().closeGrabber();
+   HelixEvents.getInstance().addEvent("GRAB_CARGO", "Starting to grab cargo");
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -58,6 +60,7 @@ if (stalledCount > 20) {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    HelixEvents.getInstance().addEvent("GRAB_CARGO", "Ending grab cargo");
   }
 
   // Called when another command which requires one or more of the same

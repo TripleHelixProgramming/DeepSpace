@@ -7,6 +7,8 @@
 
 package frc.robot.commands.hatch;
 
+import com.team2363.logger.HelixEvents;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.HatchGrabber;
 
@@ -20,6 +22,7 @@ public class ReleaseHatch extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    HelixEvents.getInstance().addEvent("RELEASE_HATCH", "Starting to release hatch");
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -37,6 +40,7 @@ public class ReleaseHatch extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    HelixEvents.getInstance().addEvent("RELEASE_HATCH", "Ending release hatch");
   }
 
   // Called when another command which requires one or more of the same

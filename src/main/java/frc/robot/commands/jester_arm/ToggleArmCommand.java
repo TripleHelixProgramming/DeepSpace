@@ -7,6 +7,8 @@
 
 package frc.robot.commands.jester_arm;
 
+import com.team2363.logger.HelixEvents;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.JesterArm;
 
@@ -19,6 +21,7 @@ public class ToggleArmCommand extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    HelixEvents.getInstance().addEvent("TOGGLE_ARM", "Starting to toggle arm");
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -36,6 +39,7 @@ public class ToggleArmCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    HelixEvents.getInstance().addEvent("TOGGLE_ARM", "Ending toggle arm");
   }
 
   // Called when another command which requires one or more of the same
