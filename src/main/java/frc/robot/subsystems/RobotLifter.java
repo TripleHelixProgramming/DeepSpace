@@ -19,8 +19,8 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class RobotLifter extends Subsystem {
-  private TalonSRX leftMaster = new TalonSRX(RobotMap.ROBOT_LIFTER_MASTER);
-  private TalonSRX rightSlave = new TalonSRX(RobotMap.ROBOT_LIFTER_SLAVE);
+  private TalonSRX left = new TalonSRX(RobotMap.ROBOT_LIFTER_LEFT);
+  private TalonSRX right = new TalonSRX(RobotMap.ROBOT_LIFTER_RIGHT);
 
   private static RobotLifter INSTANCE = new RobotLifter();
 
@@ -42,26 +42,27 @@ public class RobotLifter extends Subsystem {
   public RobotLifter(){ 
     setupLogs();
 
-    rightSlave.follow(leftMaster);
-    rightSlave.setNeutralMode(NeutralMode.Brake);
-    rightSlave.configContinuousCurrentLimit(40, 0);
-		rightSlave.configPeakCurrentLimit(60, 0);
-		rightSlave.configPeakCurrentDuration(100, 0);
-    rightSlave.enableCurrentLimit(true);
     
-    leftMaster.configContinuousCurrentLimit(40, 0);
-		leftMaster.configPeakCurrentLimit(60, 0);
-		leftMaster.configPeakCurrentDuration(100, 0);
-    leftMaster.enableCurrentLimit(true);
+    right.setNeutralMode(NeutralMode.Brake);
+    right.configContinuousCurrentLimit(40, 0);
+		right.configPeakCurrentLimit(60, 0);
+		right.configPeakCurrentDuration(100, 0);
+    right.enableCurrentLimit(true);
+    
+    left.setNeutralMode(NeutralMode.Brake);
+    left.configContinuousCurrentLimit(40, 0);
+		left.configPeakCurrentLimit(60, 0);
+		left.configPeakCurrentDuration(100, 0);
+    left.enableCurrentLimit(true);
   }
   public void setPower(double power){
-    leftMaster.set(ControlMode.PercentOutput,power);
-    rightSlave.set(ControlMode.PercentOutput, power);
+    left.set(ControlMode.PercentOutput,power);
+    right.set(ControlMode.PercentOutput, power);
   }
 
   private void setupLogs() {
-    HelixLogger.getInstance().addDoubleSource("LEFT_MASTER_CURRENT", leftMaster::getOutputCurrent);
-    HelixLogger.getInstance().addDoubleSource("RIGHT_SLAVE_CURRENT", rightSlave::getOutputCurrent);
+    HelixLogger.getInstance().addDoubleSource("LEFT_MOTOR_CURRENT", left::getOutputCurrent);
+    HelixLogger.getInstance().addDoubleSource("RIGHT_MOTOR_CURRENT", right::getOutputCurrent);
    }
 }
 

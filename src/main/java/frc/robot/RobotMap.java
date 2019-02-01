@@ -26,8 +26,8 @@ public class RobotMap {
 
 
   // robot lifter declorations
-public static int ROBOT_LIFTER_MASTER = 20;
-public static int ROBOT_LIFTER_SLAVE = 40;
+public static int ROBOT_LIFTER_LEFT = 20;
+public static int ROBOT_LIFTER_RIGHT = 40;
 
 
 
