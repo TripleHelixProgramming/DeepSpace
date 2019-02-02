@@ -58,6 +58,13 @@ public class CargoGrabber extends Subsystem {
     	rightWheel.set(ControlMode.PercentOutput, 0.35);
     }
 
+    public boolean isOpen() {
+      if (cargo_solenoid.get() == DoubleSolenoid.Value.kReverse) {
+        return true;
+      } 
+      return false;
+    }
+
 
     public double getOutputCurrent() {
     	return Math.max(leftWheel.getOutputCurrent(), rightWheel.getOutputCurrent());
@@ -81,8 +88,17 @@ public class CargoGrabber extends Subsystem {
     setDefaultCommand(new GrabCargo());
   }
 
+  public int getLeftWheelVelocity() {
+    return leftWheel.getSelectedSensorVelocity();
+  }
+
+  public int getRightWheelVelocity() {
+    return rightWheel.getSelectedSensorVelocity();
+  }
+
   private void setupLogs() {
-    HelixLogger.getInstance().addDoubleSource("LEFT_WHEEL_VELOCITY", leftWheel::getOutputCurrent);
+    HelixLogger.getInstance().addDoubleSource("LEFT_WHEEL_CURRENT", leftWheel::getOutputCurrent);
     HelixLogger.getInstance().addDoubleSource("RIGHT_WHEEL_CURRENT", rightWheel::getOutputCurrent);
+    HelixLogger.getInstance().addBooleanSource("IS OPEN", CargoGrabber.getInstance()::isOpen);
   }
 }

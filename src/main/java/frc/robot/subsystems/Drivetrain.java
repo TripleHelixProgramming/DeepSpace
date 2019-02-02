@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team2363.logger.HelixEvents;
 import com.team2363.logger.HelixLogger;
@@ -19,6 +20,7 @@ import com.team319.follower.FollowsArc;
 import com.team319.models.BobTalonSRX;
 import com.team319.models.LeaderBobTalonSRX;
 
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -127,12 +129,11 @@ public class Drivetrain extends Subsystem implements FollowsArc {
     HelixLogger.getInstance().addDoubleSource("DRIVETRAIN LEFT Current", left::getOutputCurrent);
     HelixLogger.getInstance().addDoubleSource("DRIVETRAIN LEFT Voltage", left::getMotorOutputVoltage);
     HelixLogger.getInstance().addIntegerSource("DRIVETRAIN LEFT Error", left::getClosedLoopError);
-    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN LEFT Velocity", left::getActiveTrajectoryVelocity);
-
+    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN LEFT Velocity", Drivetrain.getInstance()::getLeftVelocity);
     HelixLogger.getInstance().addDoubleSource("DRIVETRAIN RIGHT Current", right::getOutputCurrent);
     HelixLogger.getInstance().addDoubleSource("DRIVETRAIN RIGHT Voltage", right::getMotorOutputVoltage);
     HelixLogger.getInstance().addIntegerSource("DRIVETRAIN RIGHT Error", right::getClosedLoopError);
-    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN RIGHT Velocity", right::getActiveTrajectoryVelocity);
+    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN RIGHT Velocity", Drivetrain.getInstance()::getRightVelocity);
 
     HelixLogger.getInstance().addDoubleSource("PIGEON HEADING", Drivetrain.getInstance()::getYaw);
   }
@@ -173,6 +174,14 @@ public class Drivetrain extends Subsystem implements FollowsArc {
     double [] yaw = {0, 0, 0};
     pigeon.getYawPitchRoll(yaw);
     return yaw[0];
+  }
+
+  public int getLeftVelocity() {
+    return left.getSelectedSensorVelocity();
+  }
+
+  public int getRightVelocity() {
+    return right.getSelectedSensorVelocity();
   }
 
   @Override

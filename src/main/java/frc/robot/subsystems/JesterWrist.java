@@ -79,8 +79,13 @@ public class JesterWrist extends Subsystem {
         wristMotor.configAllowableClosedloopError(0, 2, RobotMap.CTRE_TIMEOUT_INIT);
     }
 
+    public int getWristVelocity() {
+        return wristMotor.getSelectedSensorVelocity();
+      }
+
     private void setupLogs() {
         HelixLogger.getInstance().addDoubleSource("WRIST VOLTAGE", wristMotor::getMotorOutputVoltage);
+        HelixLogger.getInstance().addIntegerSource("WRIST VELOCITY", JesterWrist.getInstance()::getWristVelocity);
     }
 
     public void driveWristPercentOut(double percent) {
