@@ -17,12 +17,13 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
  */
 public class RobotMap {
 
-  public static int LEFT_MASTER_ID = 10;
-  public static int LEFT_SLAVE_1_ID = 12;
-  public static int LEFT_SLAVE_2_ID = 14;
-  public static int RIGHT_MASTER_ID = 11;
-  public static int RIGHT_SLAVE_1_ID = 13;
-  public static int RIGHT_SLAVE_2_ID = 15;
+  public static int LEFT_MASTER_ID = 23;
+  public static int LEFT_SLAVE_1_ID = 24;
+  public static int LEFT_SLAVE_2_ID = 25;
+
+  public static int RIGHT_MASTER_ID = 12;
+  public static int RIGHT_SLAVE_1_ID = 11;
+  public static int RIGHT_SLAVE_2_ID = 10;
   
   // Jester Arm 
   public static int WRIST_TALON_ID = 1;

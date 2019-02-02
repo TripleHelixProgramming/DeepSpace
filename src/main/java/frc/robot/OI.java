@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 import frc.robot.camera.CAMERA;
-
+import frc.robot.commands.drivetrain.driveByAssistJosh;
 import frc.robot.commands.drivetrain.driveByCamera;
 import frc.robot.commands.drivetrain.driveByDocking;
 import frc.robot.commands.drivetrain.driveByDockingPID;
@@ -46,12 +46,17 @@ public class OI {
   private final Joystick operator = new Joystick(ControllerMap.OPERATOR_PORT);
 
   private OI() {
-    
+    //Driver Controls
+
       new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByDocking(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.B).whileHeld(new driveByDocking(CAMERA.BACK));
-      new JoystickButton(driver, ControllerMap.A).whenPressed(new driveByCamera(CAMERA.FRONT));
-      new JoystickButton(driver, ControllerMap.A).whenPressed(new driveByCamera(CAMERA.BACK));
+      new JoystickButton(driver, ControllerMap.LB).whenPressed(new driveByCamera(CAMERA.FRONT));
+      new JoystickButton(driver, ControllerMap.LB).whenPressed(new driveByCamera(CAMERA.BACK));
       new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByDockingPID(CAMERA.FRONT));
+      new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByDockingPID(CAMERA.BACK));
+      // new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByAssistJosh(CAMERA.FRONT));
+
+    //Operator Controls
     
       // new JoystickButton(operator, ControllerMap.A).whenPressed(new ToggleArmCommand());
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new ToggleHeightCommand());

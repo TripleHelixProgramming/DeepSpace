@@ -30,14 +30,12 @@ public class driveByDocking extends Command {
     this.camera = camera;
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     left_command = 0.0;
     right_command = 0.0;
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
 
@@ -59,11 +57,11 @@ public class driveByDocking extends Command {
       steering_adjust = Kp * tx + min_command;
     }
 
-    double distance_adjust = OI.getInstance().getThrottle() * .8;
+    double distance_adjust = (kpDistance * distance_error);
 
     if (camera == CAMERA.FRONT) {
       left_command += steering_adjust - distance_adjust;
-      right_command -= steering_adjust + distance_adjust; // changed from "-"
+      right_command -= steering_adjust + distance_adjust;
     } else {
       left_command += steering_adjust + distance_adjust;
       right_command -= steering_adjust - distance_adjust;
@@ -73,19 +71,15 @@ public class driveByDocking extends Command {
 
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     return finished;
   }
 
-  // Called once after isFinished returns true
   @Override
   protected void end() {
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
   }
