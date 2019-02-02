@@ -88,14 +88,6 @@ public class CargoGrabber extends Subsystem {
     setDefaultCommand(new GrabCargo());
   }
 
-  public int getLeftWheelVelocity() {
-    return leftWheel.getSelectedSensorVelocity();
-  }
-
-  public int getRightWheelVelocity() {
-    return rightWheel.getSelectedSensorVelocity();
-  }
-
   private void setupLogs() {
     HelixLogger.getInstance().addDoubleSource("LEFT_WHEEL_CURRENT", leftWheel::getOutputCurrent);
     HelixLogger.getInstance().addDoubleSource("RIGHT_WHEEL_CURRENT", rightWheel::getOutputCurrent);
