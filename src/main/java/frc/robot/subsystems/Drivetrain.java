@@ -161,7 +161,7 @@ public class Drivetrain extends Subsystem implements FollowsArc {
 
   public void resetHeading() {
     pigeon.setYaw(0.0);
-    }
+  }
 
   @Override
   public void periodic() {
