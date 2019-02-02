@@ -83,9 +83,14 @@ public class JesterArm extends Subsystem {
         // docked position to front lower scoring position.
         unDockArm();
     }
+    
+    public int getArmVelocity() {
+        return armMotor.getSelectedSensorVelocity();
+      }
 
     private void setupLogs() {
         HelixLogger.getInstance().addDoubleSource("ARM VOLTAGE", armMotor::getMotorOutputVoltage);
+        HelixLogger.getInstance().addIntegerSource("ARM VELOCITY", JesterArm.getInstance()::getArmVelocity);
     }
 
     public void setArmHeight(int pos) {

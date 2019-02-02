@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.hatch.GrabHatch;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+
+import com.team2363.logger.HelixLogger;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
@@ -44,5 +47,9 @@ public class HatchGrabber extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
     setDefaultCommand(new GrabHatch());
+  }
+
+  private void setupLogs() {
+    HelixLogger.getInstance().addBooleanSource("HAS HATCH", HatchLimit::get);
   }
 }
