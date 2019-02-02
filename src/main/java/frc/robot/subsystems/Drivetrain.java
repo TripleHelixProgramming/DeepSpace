@@ -124,9 +124,17 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   }
 
   private void setupLogs() {
-    HelixLogger.getInstance().addDoubleSource("LEFT_MASTER_VOLTAGE", left::getMotorOutputVoltage);
-    HelixLogger.getInstance().addIntegerSource("LEFT_VELOCITY", left::getSelectedSensorVelocity);
-    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN_VELOCITY", right::getPrimarySensorVelocity);
+    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN LEFT Current", left::getOutputCurrent);
+    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN LEFT Voltage", left::getMotorOutputVoltage);
+    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN LEFT Error", left::getClosedLoopError);
+    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN LEFT Velocity", left::getActiveTrajectoryVelocity);
+
+    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN RIGHT Current", right::getOutputCurrent);
+    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN RIGHT Voltage", right::getMotorOutputVoltage);
+    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN RIGHT Error", right::getClosedLoopError);
+    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN RIGHT Velocity", right::getActiveTrajectoryVelocity);
+
+    HelixLogger.getInstance().addDoubleSource("PIGEON HEADING", Drivetrain.getInstance()::getYaw);
   }
 
   @Override
@@ -159,6 +167,12 @@ public class Drivetrain extends Subsystem implements FollowsArc {
 
   public void resetHeading() {
     pigeon.setYaw(0, 0);
+  }
+
+  public double getYaw() {
+    double [] yaw = {0, 0, 0};
+    pigeon.getYawPitchRoll(yaw);
+    return yaw[0];
   }
 
   @Override

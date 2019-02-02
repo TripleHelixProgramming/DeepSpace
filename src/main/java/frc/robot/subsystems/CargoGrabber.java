@@ -12,6 +12,7 @@ import frc.robot.RobotMap;
 import frc.robot.commands.cargo_grabber.GrabCargo;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.team2363.logger.HelixLogger;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
@@ -78,5 +79,10 @@ public class CargoGrabber extends Subsystem {
   public void initDefaultCommand() {
     //Set the default command for a subsystem here.
     setDefaultCommand(new GrabCargo());
+  }
+
+  private void setupLogs() {
+    HelixLogger.getInstance().addDoubleSource("LEFT_WHEEL_VELOCITY", leftWheel::getOutputCurrent);
+    HelixLogger.getInstance().addDoubleSource("RIGHT_WHEEL_CURRENT", rightWheel::getOutputCurrent);
   }
 }
