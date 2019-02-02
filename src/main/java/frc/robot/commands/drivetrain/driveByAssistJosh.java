@@ -12,7 +12,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.OI;
 import frc.robot.camera.CAMERA;
 
-public class driveByAssist extends Command {
+public class driveByAssistJosh extends Command {
 
   double Kp = 0.03;
   double Ki = 0.0;
@@ -30,7 +30,7 @@ public class driveByAssist extends Command {
 
   private CAMERA camera;
 
-  public driveByAssist(CAMERA camera) {
+  public driveByAssistJosh(CAMERA camera) {
 
     requires(Drivetrain.getInstance());
 
