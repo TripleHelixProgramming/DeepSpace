@@ -11,6 +11,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Drivetrain;
 
 public class resetHeading extends Command {
+
+  private boolean finished = false;
+
+
   public resetHeading() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -25,13 +29,20 @@ public class resetHeading extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+
+    double resetHeading = Drivetrain.getInstance().getYaw();
+
     Drivetrain.getInstance().resetHeading();
+    
+    if (Math.abs(resetHeading) < 3) {
+      finished = true;
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return finished;
   }
 
   // Called once after isFinished returns true

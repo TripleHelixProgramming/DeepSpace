@@ -47,13 +47,15 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   private static final int MOTION_PROFILE_POSITIONAL_SLOT = 0;
   private static final int MOTION_PROFILE_HEADING_SLOT = 1;
   private static final int VELOCITY_CONTROL_SLOT = 2;
+  private BobTalonSRX rightSlave2 = new BobTalonSRX(RobotMap.RIGHT_SLAVE_2_ID);
 
   private LeaderBobTalonSRX left = new LeaderBobTalonSRX(RobotMap.LEFT_MASTER_ID,
       new BobTalonSRX(RobotMap.LEFT_SLAVE_1_ID), new BobTalonSRX(RobotMap.LEFT_SLAVE_2_ID));
   private LeaderBobTalonSRX right = new LeaderBobTalonSRX(RobotMap.RIGHT_MASTER_ID,
-      new BobTalonSRX(RobotMap.RIGHT_SLAVE_1_ID), new BobTalonSRX(RobotMap.RIGHT_SLAVE_2_ID));
+      new BobTalonSRX(RobotMap.RIGHT_SLAVE_1_ID), rightSlave2);
+    
 
-  private PigeonIMU pigeon = new PigeonIMU(RobotMap.RIGHT_SLAVE_2_ID);
+  private PigeonIMU pigeon = new PigeonIMU(rightSlave2);
 
   private Drivetrain() {
     setPIDFValues();
@@ -166,11 +168,19 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   @Override
   public void periodic() {
     double averageVelocity = (right.getSensorCollection().getQuadratureVelocity() + left.getSensorCollection().getQuadratureVelocity()) / 2.0;
-    // SmartDashboard.putNumber("Drivetrain Velocity", right.getPrimarySensorVelocity());
-    // double [] yaw = {0, 0, 0};   //yaw[0],Pitch[1] and Roll[2] according to the ctr api's or am I miss understanding what you are implying with [0,0,0]
-    // double [] yaw = {0, 1, 2};
-    // pigeon.getYawPitchRoll(yaw);
-    // SmartDashboard.putNumber("Drivetrain Heading", yaw[0]);
+    SmartDashboard.putNumber("Drivetrain Velocity", right.getPrimarySensorVelocity());
+    SmartDashboard.putNumber("Pigeon Yaw", getYaw());
+    // PigeonIMU.FusionStatus fusionStatus = new PigeonIMU.FusionStatus();
+    // pigeon.getFusedHeading(fusionStatus);
+    // SmartDashboard.putNumber("Pigeon Heading", fusionStatus.heading);
+  
+  }
+   
+  public double getYaw() {
+    double [] yaw = {0, 0, 0};   //yaw[0],Pitch[1] and Roll[2] according to the ctr api's or am I miss understanding what you are implying with [0,0,0]
+    pigeon.getYawPitchRoll(yaw);
+    return yaw[0];
 
   }
+
 }

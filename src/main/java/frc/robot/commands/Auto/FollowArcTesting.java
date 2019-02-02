@@ -19,8 +19,10 @@ public class FollowArcTesting extends CommandGroup {
    * Add your docs here.
    */
   public FollowArcTesting() {
-  Drivetrain.getInstance().resetHeading();
+  // Drivetrain.getInstance().resetHeading();
+  addSequential(new resetHeading());
   addSequential(new FollowArc(Drivetrain.getInstance(), new TurnScalingArc(), false, false, false));
+  addSequential(new resetHeading());
   addSequential(new FollowArc(Drivetrain.getInstance(), new TurnScalingArc(), true, true, false)); //to flip path the robot must also get flipped
   }
 }

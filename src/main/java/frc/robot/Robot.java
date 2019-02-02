@@ -90,6 +90,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    // SmartDashboard.putNumber("Pigeon Yaw", Drivetrain.getInstance().getYaw());
     Scheduler.getInstance().run();
 
     // JesterArm.getInstance().updateSmartDash();
