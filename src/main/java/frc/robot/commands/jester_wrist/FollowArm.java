@@ -26,7 +26,7 @@ public class FollowArm extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    HelixEvents.getInstance().addEvent("ELEVATOR", "finished moving elevator");
+    HelixEvents.getInstance().addEvent("JESTER_WRIST", "Starting FollowArm");
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -66,7 +66,7 @@ public class FollowArm extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    HelixEvents.getInstance().addEvent("JESTER WRIST", "End FollowArm");
+    HelixEvents.getInstance().addEvent("JESTER_WRIST", "End FollowArm");
   }
 
   // Called when another command which requires one or more of the same

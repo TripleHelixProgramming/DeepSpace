@@ -17,6 +17,7 @@ import frc.arcs.TurnScalingArc;
 import frc.robot.camera.CAMERA;
 import frc.robot.commands.FollowArc;
 import frc.robot.commands.Auto.FollowArcTesting;
+import frc.robot.commands.drivetrain.driveByAssistJosh;
 import frc.robot.commands.drivetrain.driveByCamera;
 import frc.robot.commands.drivetrain.driveByDocking;
 import frc.robot.commands.drivetrain.driveByDockingPID;
@@ -51,7 +52,8 @@ public class OI {
   private final Joystick operator = new Joystick(ControllerMap.OPERATOR_PORT);
 
   private OI() {
-    
+    //Driver Controls
+
       new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByDocking(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.B).whileHeld(new driveByDocking(CAMERA.BACK));
 
@@ -62,7 +64,7 @@ public class OI {
       new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByDockingPID(CAMERA.BACK));
 
       new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArcTesting());
-    
+      // new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByAssistJosh(CAMERA.FRONT);
       // new JoystickButton(operator, ControllerMap.A).whenPressed(new ToggleArmCommand());
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new ToggleHeightCommand());
 

@@ -7,6 +7,8 @@
 
 package frc.robot.commands.hatch;
 
+import com.team2363.logger.HelixEvents;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.HatchGrabber;
 
@@ -20,6 +22,7 @@ public class GrabHatch extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    HelixEvents.getInstance().addEvent("GRAB_HATCH", "Starting to grab hatch");
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -36,6 +39,7 @@ public class GrabHatch extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    HelixEvents.getInstance().addEvent("GRAB_HATCH", "Ending grab hatch");
   }
 
   // Called when another command which requires one or more of the same

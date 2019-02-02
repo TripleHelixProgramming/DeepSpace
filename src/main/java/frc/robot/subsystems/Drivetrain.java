@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMUConfiguration;
 import com.team2363.logger.HelixEvents;
@@ -20,12 +21,12 @@ import com.team319.follower.FollowsArc;
 import com.team319.models.BobTalonSRX;
 import com.team319.models.LeaderBobTalonSRX;
 
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.drivetrain.DustinDrive;
 import frc.robot.commands.drivetrain.JoshDrive;
-
 
 /**
  * An example subsystem. You can replace me with your own Subsystem.
@@ -128,9 +129,16 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   }
 
   private void setupLogs() {
-    HelixLogger.getInstance().addDoubleSource("LEFT_MASTER_VOLTAGE", left::getMotorOutputVoltage);
-    HelixLogger.getInstance().addIntegerSource("LEFT_VELOCITY", left::getSelectedSensorVelocity);
-    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN_VELOCITY", right::getPrimarySensorVelocity);
+    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN LEFT Current", left::getOutputCurrent);
+    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN LEFT Voltage", left::getMotorOutputVoltage);
+    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN LEFT Error", left::getClosedLoopError);
+    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN LEFT Velocity", Drivetrain.getInstance()::getLeftVelocity);
+    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN RIGHT Current", right::getOutputCurrent);
+    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN RIGHT Voltage", right::getMotorOutputVoltage);
+    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN RIGHT Error", right::getClosedLoopError);
+    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN RIGHT Velocity", Drivetrain.getInstance()::getRightVelocity);
+
+    HelixLogger.getInstance().addDoubleSource("PIGEON HEADING", Drivetrain.getInstance()::getYaw);
   }
 
   @Override
@@ -163,6 +171,20 @@ public class Drivetrain extends Subsystem implements FollowsArc {
 
   public void resetHeading() {
     pigeon.setYaw(0.0);
+  }
+
+  public double getYaw() {
+    double [] yaw = {0, 0, 0};
+    pigeon.getYawPitchRoll(yaw);
+    return yaw[0];
+  }
+
+  public int getLeftVelocity() {
+    return left.getSelectedSensorVelocity();
+  }
+
+  public int getRightVelocity() {
+    return right.getSelectedSensorVelocity();
   }
 
   @Override
