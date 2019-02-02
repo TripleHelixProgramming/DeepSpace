@@ -10,12 +10,18 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-
+import frc.arcs.DistanceScalingArc;
+import frc.arcs.SpeedTestingArc;
+import frc.arcs.Straight10FeetArc;
+import frc.arcs.TurnScalingArc;
 import frc.robot.camera.CAMERA;
+import frc.robot.commands.FollowArc;
+import frc.robot.commands.Auto.FollowArcTesting;
 import frc.robot.commands.drivetrain.driveByAssistJosh;
 import frc.robot.commands.drivetrain.driveByCamera;
 import frc.robot.commands.drivetrain.driveByDocking;
 import frc.robot.commands.drivetrain.driveByDockingPID;
+import frc.robot.subsystems.Drivetrain;
 
 // import frc.robot.commands.drivetrain.driveByDockingPID;
 // import frc.robot.commands.drivetrain.aimByVision;
@@ -50,18 +56,17 @@ public class OI {
 
       new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByDocking(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.B).whileHeld(new driveByDocking(CAMERA.BACK));
-      new JoystickButton(driver, ControllerMap.LB).whenPressed(new driveByCamera(CAMERA.FRONT));
-      new JoystickButton(driver, ControllerMap.LB).whenPressed(new driveByCamera(CAMERA.BACK));
+
+      new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.FRONT));
+      new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.BACK));
+
       new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByDockingPID(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByDockingPID(CAMERA.BACK));
-      // new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByAssistJosh(CAMERA.FRONT));
 
-    //Operator Controls
-    
+      new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArcTesting());
+      // new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByAssistJosh(CAMERA.FRONT);
       // new JoystickButton(operator, ControllerMap.A).whenPressed(new ToggleArmCommand());
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new ToggleHeightCommand());
-      // new JoystickButton(driver, ControllerMap.Y).whileHeld(new aimByVision());
-      // new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByDockingPID());
 
   }
 
