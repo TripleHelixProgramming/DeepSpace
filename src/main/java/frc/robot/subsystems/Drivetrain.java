@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.PigeonIMUConfiguration;
 import com.team2363.logger.HelixEvents;
 import com.team2363.logger.HelixLogger;
 import com.team319.follower.FollowsArc;
@@ -159,15 +160,17 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   }
 
   public void resetHeading() {
-    pigeon.setYaw(0, 0);
-  }
+    pigeon.setYaw(0.0);
+    }
 
   @Override
   public void periodic() {
     double averageVelocity = (right.getSensorCollection().getQuadratureVelocity() + left.getSensorCollection().getQuadratureVelocity()) / 2.0;
-    SmartDashboard.putNumber("Drivetrain Velocity", right.getPrimarySensorVelocity());
-    // double [] yaw = {0, 0, 0};
+    // SmartDashboard.putNumber("Drivetrain Velocity", right.getPrimarySensorVelocity());
+    // double [] yaw = {0, 0, 0};   //yaw[0],Pitch[1] and Roll[2] according to the ctr api's or am I miss understanding what you are implying with [0,0,0]
+    // double [] yaw = {0, 1, 2};
     // pigeon.getYawPitchRoll(yaw);
     // SmartDashboard.putNumber("Drivetrain Heading", yaw[0]);
+
   }
 }

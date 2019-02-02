@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() { 
     initializeSubsystems();
+    Drivetrain.getInstance().resetHeading();
   }
 
   private void initializeSubsystems() {
