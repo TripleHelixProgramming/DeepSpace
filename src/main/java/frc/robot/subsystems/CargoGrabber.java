@@ -22,12 +22,17 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 public class CargoGrabber extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private DoubleSolenoid cargo_solenoid = new DoubleSolenoid(RobotMap.CARGO_EXTEND_SOLENOID, RobotMap.CARGO_RETRACT_SOLENOID); 
+  private DoubleSolenoid cargo_solenoid = new DoubleSolenoid(RobotMap.CARGO_EXTEND_SOLENOID,
+      RobotMap.CARGO_RETRACT_SOLENOID);
 
   private TalonSRX leftWheel = new TalonSRX(RobotMap.CARGO_LEFT_WHEEL);
-	private TalonSRX rightWheel = new TalonSRX(RobotMap.CARGO_RIGHT_WHEEL);
+  private TalonSRX rightWheel = new TalonSRX(RobotMap.CARGO_RIGHT_WHEEL);
 
   private static CargoGrabber INSTANCE = new CargoGrabber();
+
+  public CargoGrabber() {
+    setupLogs();
+  }
 
   public static CargoGrabber getInstance() {
     if (INSTANCE == null) {
@@ -36,55 +41,51 @@ public class CargoGrabber extends Subsystem {
     return INSTANCE;
   }
 
-	public void CargoGrabber(){
-
+  public void closeGrabber() {
+    cargo_solenoid.set(DoubleSolenoid.Value.kForward);
   }
 
-  	public void closeGrabber() {
-    	cargo_solenoid.set(DoubleSolenoid.Value.kForward);
-    }
-    
-    public void openGrabber() {
-    	cargo_solenoid.set(DoubleSolenoid.Value.kReverse);
-    }
+  public void openGrabber() {
+    cargo_solenoid.set(DoubleSolenoid.Value.kReverse);
+  }
 
-    public void intake() {
-    	leftWheel.set(ControlMode.PercentOutput, 0.35);
-    	rightWheel.set(ControlMode.PercentOutput, -0.35);
-    }
+  public void intake() {
+    leftWheel.set(ControlMode.PercentOutput, 0.35);
+    rightWheel.set(ControlMode.PercentOutput, -0.35);
+  }
 
-    public void eject() {
-    	leftWheel.set(ControlMode.PercentOutput, -0.35);
-    	rightWheel.set(ControlMode.PercentOutput, 0.35);
-    }
+  public void eject() {
+    leftWheel.set(ControlMode.PercentOutput, -0.35);
+    rightWheel.set(ControlMode.PercentOutput, 0.35);
+  }
 
-    public boolean isOpen() {
-      if (cargo_solenoid.get() == DoubleSolenoid.Value.kReverse) {
-        return true;
-      } 
+  public boolean isOpen() {
+    if (cargo_solenoid.get() == DoubleSolenoid.Value.kReverse) {
+      return true;
+    }
+    return false;
+  }
+
+  public double getOutputCurrent() {
+    return Math.max(leftWheel.getOutputCurrent(), rightWheel.getOutputCurrent());
+  }
+
+  /**
+   * Use to detect if the gear grabber roller is over current
+   * 
+   * @return true if over 20 amps
+   */
+  public boolean isOverCurrent() {
+    if (getOutputCurrent() > 15) {
+      return true;
+    } else {
       return false;
     }
-
-
-    public double getOutputCurrent() {
-    	return Math.max(leftWheel.getOutputCurrent(), rightWheel.getOutputCurrent());
-    }
-    
-    /**
-     * Use to detect if the gear grabber roller is over current
-     * @return true if over 20 amps
-     */
-    public boolean isOverCurrent() {
-    	if (getOutputCurrent() > 15) {
-    		return true;
-    	} else {
-    		return false;
-    	}
-    }
+  }
 
   @Override
   public void initDefaultCommand() {
-    //Set the default command for a subsystem here.
+    // Set the default command for a subsystem here.
     setDefaultCommand(new GrabCargo());
   }
 

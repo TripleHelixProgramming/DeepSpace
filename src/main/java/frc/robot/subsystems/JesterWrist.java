@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.jester_wrist.FollowArm;
-import frc.robot.subsystems.JesterArm.ArmPos;
 
 public class JesterWrist extends Subsystem {
 

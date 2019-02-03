@@ -51,10 +51,8 @@ public class driveByAssistJosh extends Command {
     camera.setDockingMode();
 
     double tx = camera.RotationalDegreesToTarget();
-    double ty = camera.VerticalDegreesToTarget();
 
     double steering_adjust = 0.0;
-    double distance_error = -ty;
 
     if (Math.abs(tx) < 1) {
       finished = true;
