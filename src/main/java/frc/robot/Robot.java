@@ -9,7 +9,8 @@ package frc.robot;
 
 import com.team2363.logger.HelixEvents;
 import com.team2363.logger.HelixLogger;
-import com.team319.follower.FollowArc;
+// import com.team319.follower.FollowArc;
+import frc.robot.commands.FollowArc;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -24,6 +25,10 @@ import frc.arcs.Straight10FeetArc;
 import frc.arcs.StraightBack10FeetArc;
 import frc.arcs.TurnScalingArc;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.JesterArm;
+import frc.robot.subsystems.JesterWrist;
+import frc.robot.subsystems.HatchGrabber;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.commands.ExampleCommand;
@@ -49,11 +54,18 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() { 
     initializeSubsystems();
+    Drivetrain.getInstance().resetHeading();
   }
 
   private void initializeSubsystems() {
     OI.getInstance();
     Drivetrain.getInstance();
+
+    // JesterArm.getInstance();
+    // JesterWrist.getInstance();
+    // CargoGrabber.getInstance();
+    // HatchGrabber.getInstance();
+
   }
 
   /**
@@ -78,7 +90,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    // SmartDashboard.putNumber("Pigeon Yaw", Drivetrain.getInstance().getYaw());
     Scheduler.getInstance().run();
+
+    // JesterArm.getInstance().updateSmartDash();
+    // JesterWrist.getInstance().updateSmartDash();
   }
 
   /**
@@ -98,8 +114,10 @@ public class Robot extends TimedRobot {
     // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new Straight10FeetArc());
     // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new ForwardLeftArc());
     // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new DistanceScalingArc());
-      autonomousCommand = new FollowArc(Drivetrain.getInstance(), new Figure8Arc());
+    // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new Figure8Arc());
+    autonomousCommand = new FollowArc(Drivetrain.getInstance(), new Straight10FeetArc(), false, false, false);
 
+    // autonomousCommand = null;
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.start();

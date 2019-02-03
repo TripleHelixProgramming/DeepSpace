@@ -12,18 +12,21 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.PigeonIMUConfiguration;
 import com.team2363.logger.HelixEvents;
 import com.team2363.logger.HelixLogger;
 import com.team319.follower.FollowsArc;
 import com.team319.models.BobTalonSRX;
 import com.team319.models.LeaderBobTalonSRX;
 
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.commands.drivetrain.DustinDrive;
 import frc.robot.commands.drivetrain.JoshDrive;
-
 
 /**
  * An example subsystem. You can replace me with your own Subsystem.
@@ -45,13 +48,15 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   private static final int MOTION_PROFILE_POSITIONAL_SLOT = 0;
   private static final int MOTION_PROFILE_HEADING_SLOT = 1;
   private static final int VELOCITY_CONTROL_SLOT = 2;
+  private BobTalonSRX rightSlave2 = new BobTalonSRX(RobotMap.RIGHT_SLAVE_2_ID);
 
   private LeaderBobTalonSRX left = new LeaderBobTalonSRX(RobotMap.LEFT_MASTER_ID,
       new BobTalonSRX(RobotMap.LEFT_SLAVE_1_ID), new BobTalonSRX(RobotMap.LEFT_SLAVE_2_ID));
   private LeaderBobTalonSRX right = new LeaderBobTalonSRX(RobotMap.RIGHT_MASTER_ID,
-      new BobTalonSRX(RobotMap.RIGHT_SLAVE_1_ID), new BobTalonSRX(RobotMap.RIGHT_SLAVE_2_ID));
+      new BobTalonSRX(RobotMap.RIGHT_SLAVE_1_ID), rightSlave2);
+    
 
-  private PigeonIMU pigeon = new PigeonIMU(RobotMap.RIGHT_SLAVE_2_ID);
+  private PigeonIMU pigeon = new PigeonIMU(rightSlave2);
 
   private Drivetrain() {
     setPIDFValues();
@@ -69,7 +74,7 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   public void initDefaultCommand() {
     // setDefaultCommand(new TestDrive());
     // setDefaultCommand(JoystickDriveFactory.createJoystickDrive());
-    setDefaultCommand(new JoshDrive());
+    setDefaultCommand(new DustinDrive());
   }
 
   public void tankDrive(double leftVelocity, double rightVelocity) {
@@ -124,9 +129,16 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   }
 
   private void setupLogs() {
-    HelixLogger.getInstance().addDoubleSource("LEFT_MASTER_VOLTAGE", left::getMotorOutputVoltage);
-    HelixLogger.getInstance().addIntegerSource("LEFT_VELOCITY", left::getSelectedSensorVelocity);
-    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN_VELOCITY", right::getPrimarySensorVelocity);
+    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN LEFT Current", left::getOutputCurrent);
+    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN LEFT Voltage", left::getMotorOutputVoltage);
+    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN LEFT Error", left::getClosedLoopError);
+    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN LEFT Velocity", Drivetrain.getInstance()::getLeftVelocity);
+    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN RIGHT Current", right::getOutputCurrent);
+    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN RIGHT Voltage", right::getMotorOutputVoltage);
+    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN RIGHT Error", right::getClosedLoopError);
+    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN RIGHT Velocity", Drivetrain.getInstance()::getRightVelocity);
+
+    HelixLogger.getInstance().addDoubleSource("PIGEON HEADING", Drivetrain.getInstance()::getYaw);
   }
 
   @Override
@@ -158,15 +170,39 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   }
 
   public void resetHeading() {
-    pigeon.setYaw(0, 0);
+    pigeon.setYaw(0.0);
+  }
+
+  public double getYaw() {
+    double [] yaw = {0, 0, 0};
+    pigeon.getYawPitchRoll(yaw);
+    return yaw[0];
+  }
+
+  public int getLeftVelocity() {
+    return left.getSelectedSensorVelocity();
+  }
+
+  public int getRightVelocity() {
+    return right.getSelectedSensorVelocity();
   }
 
   @Override
   public void periodic() {
     double averageVelocity = (right.getSensorCollection().getQuadratureVelocity() + left.getSensorCollection().getQuadratureVelocity()) / 2.0;
     SmartDashboard.putNumber("Drivetrain Velocity", right.getPrimarySensorVelocity());
-    // double [] yaw = {0, 0, 0};
-    // pigeon.getYawPitchRoll(yaw);
-    // SmartDashboard.putNumber("Drivetrain Heading", yaw[0]);
+    SmartDashboard.putNumber("Pigeon Yaw", getYaw());
+    // PigeonIMU.FusionStatus fusionStatus = new PigeonIMU.FusionStatus();
+    // pigeon.getFusedHeading(fusionStatus);
+    // SmartDashboard.putNumber("Pigeon Heading", fusionStatus.heading);
+  
   }
+   
+  public double getYaw() {
+    double [] yaw = {0, 0, 0};   //yaw[0],Pitch[1] and Roll[2] according to the ctr api's or am I miss understanding what you are implying with [0,0,0]
+    pigeon.getYawPitchRoll(yaw);
+    return yaw[0];
+
+  }
+
 }
