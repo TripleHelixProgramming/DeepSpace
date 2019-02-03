@@ -14,10 +14,8 @@ import com.team2363.logger.HelixLogger;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.robot_lifter.StopLifter;
 
-/**
- * Add your docs here.
- */
 public class RobotLifter extends Subsystem {
   private TalonSRX left = new TalonSRX(RobotMap.ROBOT_LIFTER_LEFT);
   private TalonSRX right = new TalonSRX(RobotMap.ROBOT_LIFTER_RIGHT);
@@ -38,11 +36,11 @@ public class RobotLifter extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new StopLifter());
   }
   public RobotLifter(){ 
     setupLogs();
 
-    
     right.setNeutralMode(NeutralMode.Brake);
     right.configContinuousCurrentLimit(40, 0);
 		right.configPeakCurrentLimit(60, 0);
@@ -56,8 +54,8 @@ public class RobotLifter extends Subsystem {
     left.enableCurrentLimit(true);
   }
   public void setPower(double power){
-    left.set(ControlMode.PercentOutput,power);
-    right.set(ControlMode.PercentOutput, power);
+    left.set(ControlMode.PercentOutput,  power);
+    right.set(ControlMode.PercentOutput, -power);
   }
 
   private void setupLogs() {
