@@ -10,9 +10,13 @@ package frc.robot.commands.hatch;
 import com.team2363.logger.HelixEvents;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.RumbleController;
 import frc.robot.subsystems.HatchGrabber;
 
 public class GrabHatch extends Command {
+
+  Command rumbleCommand = new RumbleController();
+
   public GrabHatch() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -34,6 +38,11 @@ public class GrabHatch extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    if (HatchGrabber.getInstance().hasHatch()) {
+      if (!rumbleCommand.isRunning()) {
+       rumbleCommand.start();
+     }
+    }
     return HatchGrabber.getInstance().hasHatch();
   }
   // Called once after isFinished returns true
