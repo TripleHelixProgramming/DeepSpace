@@ -8,6 +8,7 @@
 package frc.robot.commands.cargo_grabber;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.RumbleController;
 import frc.robot.subsystems.CargoGrabber;
 import com.team2363.logger.HelixEvents;
 
