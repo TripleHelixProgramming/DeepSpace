@@ -7,8 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -47,4 +45,9 @@ public class RobotMap {
   
   //LIMIT SWITCHES
   public static final int HATCH_LIMIT_CHANNEL = 2;
+  
+  // robot lifter declorations
+  public static int ROBOT_LIFTER_LEFT = 20;
+  public static int ROBOT_LIFTER_RIGHT = 40;
+  
 }
