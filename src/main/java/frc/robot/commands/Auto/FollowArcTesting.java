@@ -7,10 +7,12 @@
 
 package frc.robot.commands.Auto;
 
+import com.team319.follower.FollowArc;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.arcs.DistanceScalingArc;
 import frc.arcs.TurnScalingArc;
-import frc.robot.commands.FollowArc;
+// import frc.robot.commands.FollowArc;
 import frc.robot.commands.drivetrain.resetHeading;
 import frc.robot.subsystems.Drivetrain;
 
@@ -21,8 +23,8 @@ public class FollowArcTesting extends CommandGroup {
   public FollowArcTesting() {
   // Drivetrain.getInstance().resetHeading();
   addSequential(new resetHeading());
-  addSequential(new FollowArc(Drivetrain.getInstance(), new TurnScalingArc(), false, false, false));
+  addSequential(new FollowArc(Drivetrain.getInstance(), new TurnScalingArc(), false, false));
   addSequential(new resetHeading());
-  addSequential(new FollowArc(Drivetrain.getInstance(), new TurnScalingArc(), true, true, false)); //to flip path the robot must also get flipped
+  addSequential(new FollowArc(Drivetrain.getInstance(), new TurnScalingArc(), true, true)); //to flip path the robot must also get flipped
   }
 }
