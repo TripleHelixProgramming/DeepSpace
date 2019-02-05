@@ -59,7 +59,7 @@ public class Drivetrain extends Subsystem implements FollowsArc {
     setPIDFValues();
     setBrakeMode(NeutralMode.Brake);
     setupSensors();
-    setupLogs();
+    // setupLogs();
 
     left.setSensorPhase(false);
     right.setSensorPhase(false);
@@ -186,8 +186,8 @@ public class Drivetrain extends Subsystem implements FollowsArc {
 
   @Override
   public void periodic() {
-    double averageVelocity = (right.getSensorCollection().getQuadratureVelocity() + left.getSensorCollection().getQuadratureVelocity()) / 2.0;
-    SmartDashboard.putNumber("Drivetrain Velocity", averageVelocity );
+    // double averageVelocity = (right.getSensorCollection().getQuadratureVelocity() + left.getSensorCollection().getQuadratureVelocity()) / 2.0;
+    // SmartDashboard.putNumber("Drivetrain Velocity", averageVelocity );
     SmartDashboard.putNumber("Pigeon Yaw", getYaw());
   }
 }

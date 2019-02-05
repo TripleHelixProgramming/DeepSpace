@@ -21,6 +21,7 @@ import frc.robot.commands.drivetrain.driveByAssistJosh;
 import frc.robot.commands.drivetrain.driveByCamera;
 import frc.robot.commands.drivetrain.driveByDocking;
 import frc.robot.commands.drivetrain.driveByDockingPID;
+import frc.robot.commands.drivetrain.driveByVision;
 
 // import frc.robot.commands.drivetrain.driveByDockingPID;
 // import frc.robot.commands.drivetrain.aimByVision;
@@ -59,8 +60,11 @@ public class OI {
       new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.BACK));
 
-      new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByDockingPID(CAMERA.FRONT));
-      new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByDockingPID(CAMERA.BACK));
+      new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByVision(CAMERA.FRONT));
+      new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByVision(CAMERA.BACK));
+
+      // new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByDockingPID(CAMERA.FRONT));
+      // new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByDockingPID(CAMERA.BACK));
 
       new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArcTesting());
       // new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByAssistJosh(CAMERA.FRONT);
