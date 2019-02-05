@@ -27,7 +27,7 @@ public class driveByAssist extends PIDCommand {
 
     getPIDController().setInputRange(-27.0, 27.0);        // tx range of Limelight
     getPIDController().setOutputRange(-1.0, 1.0);         // Give us motor values between -1 & 1
-    getPIDController().setAbsoluteTolerance(2);           // End when with in 2 degrees. See isFinished()
+    getPIDController().setAbsoluteTolerance(3);           // End when with in 3 degrees. See isFinished()
 
   }
 
@@ -55,6 +55,7 @@ public class driveByAssist extends PIDCommand {
 
   @Override
   protected void usePIDOutput(double output) {
+    
     double throttleInput, saturatedInput, greaterInput, lesserInput, left, right;
 
     SmartDashboard.putNumber("PID Output: ", output);
