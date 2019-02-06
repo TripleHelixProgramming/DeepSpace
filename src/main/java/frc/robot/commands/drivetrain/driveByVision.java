@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.camera.CAMERA;
 
@@ -101,7 +102,8 @@ public class driveByVision extends Command {
     aimPID.setInputRange(-27.0, 27.0);        // tx range of Limelight
     aimPID.setOutputRange(-1.0, 1.0);         // Give us motor values between -1 & 1
     aimPID.setAbsoluteTolerance(2);           // End when with in 2 degrees. See isFinished()
-  
+    
+    SmartDashboard.putData(distancePID);
   }
 
   // Called just before this Command runs the first time
@@ -162,7 +164,9 @@ public class driveByVision extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return distancePID.onTarget() && aimPID.onTarget();
+    boolean finished = distancePID.onTarget() && aimPID.onTarget();
+    SmartDashboard.putBoolean("FINISHED", finished);
+    return finished;
   }
 
   // Called once after isFinished returns true

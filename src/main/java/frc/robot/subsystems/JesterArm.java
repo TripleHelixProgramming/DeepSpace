@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2363.logger.HelixLogger;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -20,9 +21,11 @@ import frc.robot.commands.jester_arm.DriveArmByJoystick;
 
 public class JesterArm extends Subsystem {
 
-    private TalonSRX armMotor;
-    public static int ARM_ACCELERATION = 100;
-    public static int ARM_CRUISE = 300;
+    private TalonSRX armMaster;
+    private TalonSRX armSlave;
+
+    public static int ARM_ACCELERATION = 1000;
+    public static int ARM_CRUISE = 400;
 
     public enum ArmPos {
         START(200),
@@ -49,6 +52,7 @@ public class JesterArm extends Subsystem {
 
     private static JesterArm INSTANCE = new JesterArm();
     private ArmPos currentArmPreset = ArmPos.START;
+    PowerDistributionPanel pdp = new PowerDistributionPanel();
 
     /**
      * @return the singleton instance of the JesterArm subsystem
@@ -62,23 +66,28 @@ public class JesterArm extends Subsystem {
 
     public JesterArm() {
         super("Jester Arm Subsystem");
-        // setupLogs();
+        setupLogs();
 
         currentArmPreset = ArmPos.START;
 
-        armMotor = new TalonSRX(RobotMap.SHOULDER_MASTER_TALON_ID);
+        armMaster = new TalonSRX(RobotMap.SHOULDER_MASTER_ID);
+        armSlave = new TalonSRX(RobotMap.SHOULDER_SLAVE_ID);
 
-        armMotor.configContinuousCurrentLimit(40, 0);
-        armMotor.configPeakCurrentLimit(60, 0);
-        armMotor.configPeakCurrentDuration(100, 0);
-        armMotor.enableCurrentLimit(true);
+		armSlave.follow(armMaster);
+		armSlave.setNeutralMode(NeutralMode.Brake);
+        armSlave.configOpenloopRamp(0.2, 0);
+        
+        armMaster.configContinuousCurrentLimit(40, 0);
+        armMaster.configPeakCurrentLimit(60, 0);
+        armMaster.configPeakCurrentDuration(100, 0);
+        armMaster.enableCurrentLimit(true);
 
-        armMotor.setNeutralMode(NeutralMode.Brake);
-        armMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, RobotMap.CTRE_TIMEOUT_INIT);
-        armMotor.config_kP(0, 1, RobotMap.CTRE_TIMEOUT_INIT);
-        armMotor.config_kI(0, 0.01, RobotMap.CTRE_TIMEOUT_INIT);
+        armMaster.setNeutralMode(NeutralMode.Brake);
+        armMaster.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, RobotMap.CTRE_TIMEOUT_INIT);
+        armMaster.config_kP(0, 1, RobotMap.CTRE_TIMEOUT_INIT);
+        armMaster.config_kI(0, 0.01, RobotMap.CTRE_TIMEOUT_INIT);
 
-        armMotor.setNeutralMode(NeutralMode.Coast);
+        armMaster.setNeutralMode(NeutralMode.Coast);
 
         setArmSoftLimits(ArmPos.START.pos, ArmPos.BACK_LIMIT.pos);
         setArmMotionProfile(ARM_ACCELERATION, ARM_CRUISE);
@@ -89,16 +98,16 @@ public class JesterArm extends Subsystem {
     }
     
     public int getArmVelocity() {
-        return armMotor.getSelectedSensorVelocity();
+        return armMaster.getSelectedSensorVelocity();
       }
 
     private void setupLogs() {
-        HelixLogger.getInstance().addDoubleSource("ARM VOLTAGE", armMotor::getMotorOutputVoltage);
-        HelixLogger.getInstance().addIntegerSource("ARM VELOCITY", JesterArm.getInstance()::getArmVelocity);
+        HelixLogger.getInstance().addDoubleSource("ARM MASTER CURRENT", armMaster::getOutputCurrent);
+        HelixLogger.getInstance().addDoubleSource("ARM SLAVE", () -> pdp.getCurrent(RobotMap.SHOULDER_SLAVE_ID));
     }
 
     public void setArmHeight(int pos) {
-        armMotor.set(ControlMode.Position, pos);
+        armMaster.set(ControlMode.Position, pos);
     }
     
     // Move arm from docked position (at start of match) to front lower scoring position.
@@ -107,17 +116,17 @@ public class JesterArm extends Subsystem {
     }
 
     public void setArmMotionMagic(ArmPos preset) {
-        // armMotor.set(ControlMode.MotionMagic, preset.pos);
+        // armMaster.set(ControlMode.MotionMagic, preset.pos);
         // currentArmPreset = preset;
     }
 
     public void setArmMotionMagic(int pos) {
-        // armMotor.set(ControlMode.MotionMagic, pos);
+        // armMaster.set(ControlMode.MotionMagic, pos);
         // currentArmPreset = preset;
     }
 
     public void driveArmPercentOut(double percent) {
-        armMotor.set(ControlMode.PercentOutput, percent);
+        armMaster.set(ControlMode.PercentOutput, percent);
     }
 
     public void goTo(int pos) {
@@ -125,7 +134,7 @@ public class JesterArm extends Subsystem {
     }
 
     public int getArmPos() {
-        return armMotor.getSelectedSensorPosition(0);
+        return armMaster.getSelectedSensorPosition(0);
     }
 
     public ArmPos getCurrentArmPreset() {
@@ -133,16 +142,16 @@ public class JesterArm extends Subsystem {
     }
 
     public void setArmSoftLimits(int reverseSoftLimit, int forwardSoftLimit) {
-        armMotor.configReverseSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
-        armMotor.configReverseSoftLimitThreshold(reverseSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
+        armMaster.configReverseSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
+        armMaster.configReverseSoftLimitThreshold(reverseSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
 
-        armMotor.configForwardSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
-        armMotor.configForwardSoftLimitThreshold(forwardSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
+        armMaster.configForwardSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
+        armMaster.configForwardSoftLimitThreshold(forwardSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
     }
 
     public void setArmMotionProfile(int acceleration, int cruise) {
-        armMotor.configMotionAcceleration(acceleration, RobotMap.CTRE_TIMEOUT_INIT);
-        armMotor.configMotionCruiseVelocity(cruise, RobotMap.CTRE_TIMEOUT_INIT);
+        armMaster.configMotionAcceleration(acceleration, RobotMap.CTRE_TIMEOUT_INIT);
+        armMaster.configMotionCruiseVelocity(cruise, RobotMap.CTRE_TIMEOUT_INIT);
     }
 
     // Put items in here that you want updated on SmartDash during disableperiodic()

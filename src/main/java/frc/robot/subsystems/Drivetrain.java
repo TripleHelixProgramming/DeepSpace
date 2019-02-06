@@ -17,8 +17,10 @@ import com.team2363.logger.HelixEvents;
 import com.team2363.logger.HelixLogger;
 import com.team319.follower.FollowsArc;
 import com.team319.models.BobTalonSRX;
+import com.team319.models.BobVictorSPX;
 import com.team319.models.LeaderBobTalonSRX;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -45,21 +47,32 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   private static final int MOTION_PROFILE_POSITIONAL_SLOT = 0;
   private static final int MOTION_PROFILE_HEADING_SLOT = 1;
   private static final int VELOCITY_CONTROL_SLOT = 2;
+
+  // Programming Robot =  All Talons
+  private BobTalonSRX rightSlave1 = new BobTalonSRX(RobotMap.RIGHT_SLAVE_1_ID);
   private BobTalonSRX rightSlave2 = new BobTalonSRX(RobotMap.RIGHT_SLAVE_2_ID);
+  private BobTalonSRX leftSlave1 = new BobTalonSRX(RobotMap.LEFT_SLAVE_1_ID);
+  private BobTalonSRX leftSlave2 = new BobTalonSRX(RobotMap.LEFT_SLAVE_2_ID);
+
+  //  Competition & Practice Bot  Talon Masters with Victors as Slaves.
+  // private BobVictorSPX rightSlave1 = new BobVictorSPX(RobotMap.RIGHT_SLAVE_1_ID);
+  // private BobVictorSPX rightSlave2 = new BobVictorSPX(RobotMap.RIGHT_SLAVE_2_ID);
+  // private BobVictorSPX leftSlave1 = new BobVictorSPX(RobotMap.LEFT_SLAVE_1_ID);
+  // private BobVictorSPX leftSlave2 = new BobVictorSPX(RobotMap.LEFT_SLAVE_2_ID);
 
   private LeaderBobTalonSRX left = new LeaderBobTalonSRX(RobotMap.LEFT_MASTER_ID,
-      new BobTalonSRX(RobotMap.LEFT_SLAVE_1_ID), new BobTalonSRX(RobotMap.LEFT_SLAVE_2_ID));
+      leftSlave1, leftSlave2);
   private LeaderBobTalonSRX right = new LeaderBobTalonSRX(RobotMap.RIGHT_MASTER_ID,
-      new BobTalonSRX(RobotMap.RIGHT_SLAVE_1_ID), rightSlave2);
+      rightSlave1, rightSlave2);
     
-
+  PowerDistributionPanel pdp = new PowerDistributionPanel();
   private PigeonIMU pigeon = new PigeonIMU(rightSlave2);
 
   private Drivetrain() {
     setPIDFValues();
     setBrakeMode(NeutralMode.Brake);
     setupSensors();
-    // setupLogs();
+    setupLogs();
 
     left.setSensorPhase(false);
     right.setSensorPhase(false);
@@ -126,16 +139,23 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   }
 
   private void setupLogs() {
-    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN LEFT Current", left::getOutputCurrent);
-    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN LEFT Voltage", left::getMotorOutputVoltage);
-    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN LEFT Error", left::getClosedLoopError);
-    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN LEFT Velocity", Drivetrain.getInstance()::getLeftVelocity);
-    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN RIGHT Current", right::getOutputCurrent);
-    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN RIGHT Voltage", right::getMotorOutputVoltage);
-    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN RIGHT Error", right::getClosedLoopError);
-    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN RIGHT Velocity", Drivetrain.getInstance()::getRightVelocity);
 
-    HelixLogger.getInstance().addDoubleSource("PIGEON HEADING", Drivetrain.getInstance()::getYaw);
+    HelixLogger.getInstance().addDoubleSource("TOTAL CURRENT", pdp::getTotalCurrent);
+    HelixLogger.getInstance().addDoubleSource("DT LM Current", left::getOutputCurrent);
+    HelixLogger.getInstance().addDoubleSource("DT RM Current", right::getOutputCurrent);
+
+    //  This logging format should work for Talons OR Victor SLAVES.
+    HelixLogger.getInstance().addDoubleSource("DT LS1 Current", () -> pdp.getCurrent(RobotMap.LEFT_SLAVE_1_PDP));
+    HelixLogger.getInstance().addDoubleSource("DT LS2 Current", () -> pdp.getCurrent(RobotMap.LEFT_SLAVE_2_PDP));
+    HelixLogger.getInstance().addDoubleSource("DT RS1 Current", () -> pdp.getCurrent(RobotMap.RIGHT_SLAVE_1_PDP));
+    HelixLogger.getInstance().addDoubleSource("DT RS2 Current", () -> pdp.getCurrent(RobotMap.RIGHT_SLAVE_1_PDP));
+
+    HelixLogger.getInstance().addDoubleSource("PIGEON HEADING", () -> Drivetrain.getInstance().getYaw());
+
+    // HelixLogger.getInstance().addDoubleSource("DRIVETRAIN LEFT Voltage", left::getMotorOutputVoltage);
+    // HelixLogger.getInstance().addIntegerSource("DRIVETRAIN LEFT Velocity", Drivetrain.getInstance()::getLeftVelocity);
+    // HelixLogger.getInstance().addDoubleSource("DRIVETRAIN RIGHT Voltage", right::getMotorOutputVoltage);
+    // HelixLogger.getInstance().addIntegerSource("DRIVETRAIN RIGHT Velocity", Drivetrain.getInstance()::getRightVelocity);
   }
 
   @Override
@@ -186,8 +206,6 @@ public class Drivetrain extends Subsystem implements FollowsArc {
 
   @Override
   public void periodic() {
-    // double averageVelocity = (right.getSensorCollection().getQuadratureVelocity() + left.getSensorCollection().getQuadratureVelocity()) / 2.0;
-    // SmartDashboard.putNumber("Drivetrain Velocity", averageVelocity );
     SmartDashboard.putNumber("Pigeon Yaw", getYaw());
   }
 }

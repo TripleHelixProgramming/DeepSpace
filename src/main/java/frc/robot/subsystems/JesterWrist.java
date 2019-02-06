@@ -58,7 +58,7 @@ public class JesterWrist extends Subsystem {
 
         setupLogs();
 
-        wristMotor = new TalonSRX(RobotMap.WRIST_TALON_ID);
+        wristMotor = new TalonSRX(RobotMap.WRIST_ID);
 
         // Protect the motors and protect from brown out
         wristMotor.configContinuousCurrentLimit(40, 0);

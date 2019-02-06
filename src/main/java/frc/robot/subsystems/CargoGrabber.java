@@ -25,8 +25,8 @@ public class CargoGrabber extends Subsystem {
   private DoubleSolenoid cargo_solenoid = new DoubleSolenoid(RobotMap.CARGO_EXTEND_SOLENOID,
       RobotMap.CARGO_RETRACT_SOLENOID);
 
-  private TalonSRX leftWheel = new TalonSRX(RobotMap.CARGO_LEFT_WHEEL);
-  private TalonSRX rightWheel = new TalonSRX(RobotMap.CARGO_RIGHT_WHEEL);
+  private TalonSRX leftWheel = new TalonSRX(RobotMap.CARGO_LEFT_ID);
+  private TalonSRX rightWheel = new TalonSRX(RobotMap.CARGO_RIGHT_ID);
 
   private static CargoGrabber INSTANCE = new CargoGrabber();
 
