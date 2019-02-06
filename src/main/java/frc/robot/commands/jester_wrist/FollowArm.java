@@ -46,7 +46,7 @@ public class FollowArm extends Command {
     } else if ((arm_pos > ArmPos.START.pos ) && (arm_pos <= ArmPos.FRONT_HATCH_UPPER.pos)) {
         new_wrist_pos = Wrist.FRONT.pos;
 
-    } else if ((arm_pos > ArmPos.FRONT_HATCH_UPPER.pos) && (arm_pos < ArmPos.BACK_HATCH_UPPER.pos)) {
+    } else if ((arm_pos > ArmPos.FRONT_BALL_UPPER.pos) && (arm_pos < ArmPos.BACK_BALL_UPPER.pos)) {
         new_wrist_pos = Wrist.TRANSITION.pos;
 
     } else {
