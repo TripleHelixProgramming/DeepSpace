@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.team2363.logger.HelixLogger;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -22,7 +23,7 @@ import frc.robot.commands.jester_arm.DriveArmByJoystick;
 public class JesterArm extends Subsystem {
 
     private TalonSRX armMaster;
-    private TalonSRX armSlave;
+    private VictorSPX armSlave;
 
     public static int ARM_ACCELERATION = 1000;
     public static int ARM_CRUISE = 400;
@@ -71,7 +72,7 @@ public class JesterArm extends Subsystem {
         currentArmPreset = ArmPos.START;
 
         armMaster = new TalonSRX(RobotMap.SHOULDER_MASTER_ID);
-        armSlave = new TalonSRX(RobotMap.SHOULDER_SLAVE_ID);
+        armSlave = new VictorSPX(RobotMap.SHOULDER_SLAVE_ID);
 
 		armSlave.follow(armMaster);
 		armSlave.setNeutralMode(NeutralMode.Brake);
