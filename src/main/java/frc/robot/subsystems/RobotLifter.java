@@ -10,15 +10,19 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.team2363.logger.HelixLogger;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.robot_lifter.StopLifter;
 
 public class RobotLifter extends Subsystem {
-  private TalonSRX left = new TalonSRX(RobotMap.ROBOT_LIFTER_LEFT);
-  private TalonSRX right = new TalonSRX(RobotMap.ROBOT_LIFTER_RIGHT);
+
+  PowerDistributionPanel pdp = new PowerDistributionPanel();
+  private TalonSRX left = new TalonSRX(RobotMap.LIFTER_LEFT_ID);
+  private VictorSPX right = new VictorSPX(RobotMap.LIFTER_RIGHT_ID);
 
   private static RobotLifter INSTANCE = new RobotLifter();
 
@@ -42,10 +46,6 @@ public class RobotLifter extends Subsystem {
     setupLogs();
 
     right.setNeutralMode(NeutralMode.Brake);
-    right.configContinuousCurrentLimit(40, 0);
-		right.configPeakCurrentLimit(60, 0);
-		right.configPeakCurrentDuration(100, 0);
-    right.enableCurrentLimit(true);
     
     left.setNeutralMode(NeutralMode.Brake);
     left.configContinuousCurrentLimit(40, 0);
@@ -59,8 +59,8 @@ public class RobotLifter extends Subsystem {
   }
 
   private void setupLogs() {
-    HelixLogger.getInstance().addDoubleSource("LEFT_MOTOR_CURRENT", left::getOutputCurrent);
-    HelixLogger.getInstance().addDoubleSource("RIGHT_MOTOR_CURRENT", right::getOutputCurrent);
+    HelixLogger.getInstance().addDoubleSource("LIFTER_LEFT_CURRENT", left::getOutputCurrent);
+    HelixLogger.getInstance().addDoubleSource("LIFTER_RIGHT_CURRENT", ()-> pdp.getCurrent(RobotMap.LIFTER_RIGHT_PDP));
    }
 }
 

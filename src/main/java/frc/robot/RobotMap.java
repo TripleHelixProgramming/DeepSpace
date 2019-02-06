@@ -15,6 +15,29 @@ package frc.robot;
  */
 public class RobotMap {
 
+  // PDP PORT NUMBERS
+  public static int RIGHT_SLAVE_2_PDP = 0;       
+  public static int RIGHT_SLAVE_1_PDP= 1;
+  public static int RIGHT_MASTER_PDP = 2;
+
+  public static int LIFTER_LEFT_PDP = 3;
+  public static int SHOULDER_MASTER_PDP = 4;
+  public static int SHOULDER_SLAVE_PDP = 5;   
+  public static int WRIST_PDP = 6;
+  public static int CARGO_INTAKE_PDP = 7;
+  public static int CARGO_LEFT_PDP = 8;
+  public static int CARGO_RIGHT_PDP = 9;
+  public static int EMPTY_PDP = 10;
+  public static int CAMERA_PDP = 11;
+  public static int LIFTER_RIGHT_PDP = 12;
+
+  public static int LEFT_MASTER_PDP = 13;
+  public static int LEFT_SLAVE_1_PDP = 14;
+  public static int LEFT_SLAVE_2_PDP = 15;
+
+  //  CAN ID NUMBERS
+
+  //  DRIVETRAIN
   public static int LEFT_MASTER_ID = 23;
   public static int LEFT_SLAVE_1_ID = 24;
   public static int LEFT_SLAVE_2_ID = 25;
@@ -23,31 +46,31 @@ public class RobotMap {
   public static int RIGHT_SLAVE_1_ID = 11;
   public static int RIGHT_SLAVE_2_ID = 10;
   
-  // Jester Arm 
-  public static int WRIST_TALON_ID = 1;
+  //  ARM
+  public static int WRIST_ID = 16;
   public static int WRIST_ENCODER_ID = 4;
-  public static int SHOULDER_MASTER_TALON_ID = 2;
-  public static int SHOULDER_SLAVE_TALON_ID = 3;
-  public static int TELESCOPE_TALON_ID = 4;
-  public static final int CTRE_TIMEOUT_INIT = 10;
-  public static final int CTRE_TIMEOUT_PERIODIC = 0;
+  public static int SHOULDER_MASTER_ID = 14;
+  public static int SHOULDER_SLAVE_ID = 15;
 
-  //CargoGrabber Solenoids
+  //  CargoGrabber 
   public static int CARGO_EXTEND_SOLENOID = 6;
   public static int CARGO_RETRACT_SOLENOID = 1;
-
-  public static final int CARGO_LEFT_WHEEL = 20;
-	public static final int CARGO_RIGHT_WHEEL = 21;
+  public static int CARGO_INTAKE_DEPLOY = 2;
+  public static int CARGO_INTAKE_RETRACT = 5;
+  public static int CARGO_LEFT_ID= 18;
+  public static int CARGO_RIGHT_ID = 19;
+  public static int CARGO_INTAKE_ID = 17;
   
-  //HATCHGRABBER
-  public static final int HATCH_GRAB = 2;
-  public static final int HATCH_RELEASE = 3;
+  //  HATCHGRABBER
+  public static int HATCH_GRAB = 0;
+  public static int HATCH_RELEASE = 7;
+  public static int HATCH_LIMIT_CHANNEL = 2;
   
-  //LIMIT SWITCHES
-  public static final int HATCH_LIMIT_CHANNEL = 2;
+  //  ROBOT LIFTER
+  public static int LIFTER_LEFT_ID = 13;
+  public static int LIFTER_RIGHT_ID = 22;
   
-  // robot lifter declorations
-  public static int ROBOT_LIFTER_LEFT = 20;
-  public static int ROBOT_LIFTER_RIGHT = 40;
-  
+  //  OTHER
+  public static int CTRE_TIMEOUT_INIT = 10;
+  public static int CTRE_TIMEOUT_PERIODIC = 0;
 }
