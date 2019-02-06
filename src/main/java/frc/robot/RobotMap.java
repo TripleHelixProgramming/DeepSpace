@@ -55,13 +55,15 @@ public class RobotMap {
   //  CargoGrabber 
   public static int CARGO_EXTEND_SOLENOID = 6;
   public static int CARGO_RETRACT_SOLENOID = 1;
+  public static int CARGO_INTAKE_DEPLOY = 2;
+  public static int CARGO_INTAKE_RETRACT = 5;
   public static int CARGO_LEFT_ID= 18;
   public static int CARGO_RIGHT_ID = 19;
   public static int CARGO_INTAKE_ID = 17;
   
   //  HATCHGRABBER
-  public static int HATCH_GRAB = 2;
-  public static int HATCH_RELEASE = 3;
+  public static int HATCH_GRAB = 0;
+  public static int HATCH_RELEASE = 7;
   public static int HATCH_LIMIT_CHANNEL = 2;
   
   //  ROBOT LIFTER
