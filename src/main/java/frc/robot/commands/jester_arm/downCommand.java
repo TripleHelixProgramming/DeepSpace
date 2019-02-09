@@ -8,6 +8,8 @@
 package frc.robot.commands.jester_arm;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.cargo_intake.RetractIntake;
+import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.JesterArm;
 import frc.robot.subsystems.JesterArm.ArmPos;
 
@@ -16,6 +18,7 @@ public class downCommand extends Command {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(JesterArm.getInstance());
+    requires(CargoIntake.getInstance());
   }
 
   // Called just before this Command runs the first time
@@ -36,6 +39,8 @@ public class downCommand extends Command {
       JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_HATCH_LOWER);
       break;
     case FRONT_HATCH_MIDDLE:
+      CargoIntake.getInstance().off();
+      CargoIntake.getInstance().down();
       JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_BALL_LOWER);
       break;
     case FRONT_BALL_MIDDLE:

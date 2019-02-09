@@ -28,6 +28,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.JesterArm;
 import frc.robot.subsystems.JesterWrist;
 import frc.robot.subsystems.HatchGrabber;
+import frc.robot.subsystems.CargoIntake;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -62,6 +63,7 @@ public class Robot extends TimedRobot {
     // JesterWrist.getInstance();
     // CargoGrabber.getInstance();
     // HatchGrabber.getInstance();
+    CargoIntake.getInstance();
 
   }
 
