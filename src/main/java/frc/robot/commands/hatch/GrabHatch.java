@@ -11,6 +11,7 @@ import com.team2363.logger.HelixEvents;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.RumbleController;
+import frc.robot.subsystems.CargoGrabber;
 import frc.robot.subsystems.HatchGrabber;
 
 public class GrabHatch extends Command {
@@ -21,12 +22,15 @@ public class GrabHatch extends Command {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(HatchGrabber.getInstance());
+    requires(CargoGrabber.getInstance());
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     HelixEvents.getInstance().addEvent("GRAB_HATCH", "Starting to grab hatch");
+    CargoGrabber.getInstance().openGrabber();
+    HatchGrabber.getInstance().hatchGrab();
   }
 
   // Called repeatedly when this Command is scheduled to run
