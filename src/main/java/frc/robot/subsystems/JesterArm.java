@@ -25,8 +25,8 @@ public class JesterArm extends Subsystem {
     private TalonSRX armMaster;
     private VictorSPX armSlave;
 
-    public static int ARM_ACCELERATION = 1000;
-    public static int ARM_CRUISE = 400;
+    public static int ARM_ACCELERATION = 10;
+    public static int ARM_CRUISE = 20;
 
     public enum ArmPos {
         START(200),

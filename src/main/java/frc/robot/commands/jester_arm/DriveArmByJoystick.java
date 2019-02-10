@@ -33,7 +33,7 @@ public class DriveArmByJoystick extends Command {
 
         double error;
 
-        position += OI.getInstance().getArmPower() * 200;
+        position += OI.getInstance().getArmPower() * 20;
         if (position > ArmPos.BACK_LIMIT.pos) {
             position = ArmPos.BACK_LIMIT.pos;
         } else if (position < 0) {
