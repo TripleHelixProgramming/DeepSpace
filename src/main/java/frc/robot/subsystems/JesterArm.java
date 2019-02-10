@@ -71,8 +71,8 @@ public class JesterArm extends Subsystem {
 
         currentArmPreset = ArmPos.START;
 
-        armMaster = new TalonSRX(RobotMap.SHOULDER_MASTER_ID);
-        armSlave = new VictorSPX(RobotMap.SHOULDER_SLAVE_ID);
+        armMaster = new TalonSRX(RobotMap.ARM_MASTER_ID);
+        armSlave = new VictorSPX(RobotMap.ARM_SLAVE_ID);
 
 		armSlave.follow(armMaster);
 		armSlave.setNeutralMode(NeutralMode.Brake);
@@ -104,7 +104,7 @@ public class JesterArm extends Subsystem {
 
     private void setupLogs() {
         HelixLogger.getInstance().addDoubleSource("ARM MASTER CURRENT", armMaster::getOutputCurrent);
-        HelixLogger.getInstance().addDoubleSource("ARM SLAVE", () -> pdp.getCurrent(RobotMap.SHOULDER_SLAVE_ID));
+        HelixLogger.getInstance().addDoubleSource("ARM SLAVE", () -> pdp.getCurrent(RobotMap.ARM_SLAVE_ID));
     }
 
     public void setArmHeight(int pos) {
