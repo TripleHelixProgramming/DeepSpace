@@ -84,8 +84,7 @@ public class JesterArm extends Subsystem {
         armMaster.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, RobotMap.CTRE_TIMEOUT_INIT);
         armMaster.config_kP(0, 1, RobotMap.CTRE_TIMEOUT_INIT);
         armMaster.config_kI(0, 0.01, RobotMap.CTRE_TIMEOUT_INIT);
-        setArmSoftLimits(ArmPos.START.pos, ArmPos.BACK_LIMIT.pos);
-        setArmMotionProfile(ARM_ACCELERATION, ARM_CRUISE);
+
 
         // Set current limiting
         armMaster.configContinuousCurrentLimit(40, 0);
@@ -95,7 +94,10 @@ public class JesterArm extends Subsystem {
 
         // The arm starts the match in a one-time docked position.  Move arm from
         // docked position to front lower scoring position.
-        unDockArm();
+
+        // setArmSoftLimits(ArmPos.START.pos, ArmPos.BACK_LIMIT.pos);
+        // setArmMotionProfile(ARM_ACCELERATION, ARM_CRUISE);
+        // unDockArm();
     }
 
     private void setupLogs() {
@@ -113,17 +115,12 @@ public class JesterArm extends Subsystem {
     }
 
     public void setArmMotionMagic(ArmPos preset) {
-        // armMaster.set(ControlMode.MotionMagic, preset.pos);
-        // currentArmPreset = preset;
+        setArmMotionMagic(preset.getPos());
+        currentArmPreset = preset;
     }
 
     public void setArmMotionMagic(int pos) {
         // armMaster.set(ControlMode.MotionMagic, pos);
-        // currentArmPreset = preset;
-    }
-
-    public void driveArmPercentOut(double percent) {
-        armMaster.set(ControlMode.PercentOutput, percent);
     }
 
     public void goTo(ArmPos pos) {
@@ -155,11 +152,6 @@ public class JesterArm extends Subsystem {
         armMaster.configMotionCruiseVelocity(cruise, RobotMap.CTRE_TIMEOUT_INIT);
     }
 
-    // Put items in here that you want updated on SmartDash during disableperiodic()
-    public void updateSmartDash() {
-        SmartDashboard.putNumber("Arm Pos", getArmPos());
-    }
-
     public void stop() {
         armMaster.set(ControlMode.PercentOutput, 0.0);
     }
@@ -171,6 +163,6 @@ public class JesterArm extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new StopArm());
+        // setDefaultCommand(new StopArm());
     }
 }

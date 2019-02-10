@@ -75,11 +75,10 @@ public class JesterWrist extends Subsystem {
 
         wristMotor.config_kP(0, 1, RobotMap.CTRE_TIMEOUT_INIT);
         wristMotor.config_kI(0, 0.01, RobotMap.CTRE_TIMEOUT_INIT);
-
-        setWristSoftLimits(Wrist.FRONT_LIMIT.pos, Wrist.BACK_LIMIT.pos);
-        setWristMotionProfile(WRIST_ACCELERATION, WRIST_CRUISE);
-
         wristMotor.configAllowableClosedloopError(0, 2, RobotMap.CTRE_TIMEOUT_INIT);
+        
+        // setWristSoftLimits(Wrist.FRONT_LIMIT.pos, Wrist.BACK_LIMIT.pos);
+        // setWristMotionProfile(WRIST_ACCELERATION, WRIST_CRUISE);
     }
 
     private void setupLogs() {
@@ -111,18 +110,20 @@ public class JesterWrist extends Subsystem {
         return wristMotor.getClosedLoopError(0);
     }
 
-    // Calculate the wrist position based on the arm position.
-    public void setWristPos(int pos) {
-        setWristMotionMagic(pos);
-    }
-
     private void setWristMotionProfile(int acceleration, int cruise) {
         wristMotor.configMotionAcceleration(acceleration, RobotMap.CTRE_TIMEOUT_INIT);
         wristMotor.configMotionCruiseVelocity(cruise, RobotMap.CTRE_TIMEOUT_INIT);
     }
 
+    public void setWristPos(Wrist pos) {
+         setWristMotionMagic(pos);
+    }
+
+    private void setWristMotionMagic(Wrist pos) {
+        setWristMotionMagic(pos.getPos());
+    }
+
     private void setWristMotionMagic(int pos) {
-        SmartDashboard.putNumber("Wrist Pos", pos);
         // wristMotor.set(ControlMode.MotionMagic, pos);
     }
 
@@ -130,15 +131,10 @@ public class JesterWrist extends Subsystem {
         wristMotor.set(ControlMode.PercentOutput, 0.0);
     }
 
-    // Put items in here that you want updated on SmartDash during disableperiodic()
-    public void updateSmartDash() {
-        SmartDashboard.putNumber("Wrist Pos", getWristPos());
-    }
-
     @Override
     public void initDefaultCommand() {
         // setDefaultCommand(new FollowArm());
-        setDefaultCommand(new StopWrist());
+        // setDefaultCommand(new StopWrist());
     }
     
 }
