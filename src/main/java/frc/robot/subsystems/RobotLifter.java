@@ -21,6 +21,7 @@ import frc.robot.commands.robot_lifter.StopLifter;
 public class RobotLifter extends Subsystem {
 
   PowerDistributionPanel pdp = new PowerDistributionPanel();
+
   private TalonSRX left = new TalonSRX(RobotMap.LIFTER_LEFT_ID);
   private VictorSPX right = new VictorSPX(RobotMap.LIFTER_RIGHT_ID);
 
@@ -46,13 +47,15 @@ public class RobotLifter extends Subsystem {
     setupLogs();
 
     right.setNeutralMode(NeutralMode.Brake);
-    
     left.setNeutralMode(NeutralMode.Brake);
+
+    // Set current limiting
     left.configContinuousCurrentLimit(40, 0);
 		left.configPeakCurrentLimit(60, 0);
 		left.configPeakCurrentDuration(100, 0);
     left.enableCurrentLimit(true);
   }
+  
   public void setPower(double power){
     left.set(ControlMode.PercentOutput,  power);
     right.set(ControlMode.PercentOutput, -power);

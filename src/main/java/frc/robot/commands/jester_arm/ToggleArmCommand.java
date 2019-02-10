@@ -17,6 +17,7 @@ public class ToggleArmCommand extends Command {
   public ToggleArmCommand() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(JesterArm.getInstance());
   }
 
   // Called just before this Command runs the first time
