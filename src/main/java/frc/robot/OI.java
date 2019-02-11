@@ -100,7 +100,7 @@ public class OI {
   public double getGMPOV() {
     return operator.getPOV();
   }
-
+  
   /**
 	 * Turns on and off the rumble function on the driver and operator controllers
 	 * @param set true to turn on rumble
