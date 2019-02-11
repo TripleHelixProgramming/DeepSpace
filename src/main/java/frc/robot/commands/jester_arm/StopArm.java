@@ -5,55 +5,30 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.jester_wrist;
+package frc.robot.commands.jester_arm;
 
 import com.team2363.logger.HelixEvents;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.JesterArm;
-import frc.robot.subsystems.JesterArm.ArmPos;
-import frc.robot.subsystems.JesterWrist;
-import frc.robot.subsystems.JesterWrist.Wrist;
 
-public class FollowArm extends Command {
-  public FollowArm() {
+public class StopArm extends Command {
+  public StopArm() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(JesterWrist.getInstance());
+    requires(JesterArm.getInstance());
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    HelixEvents.getInstance().addEvent("JESTER_WRIST", "Starting FollowArm");
+    HelixEvents.getInstance().addEvent("JESTER ARM", "Stopping Jesster Arm");
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Set the wrist position based of the arm position.
-
-    int arm_pos = JesterArm.getInstance().getArmPos();
-    Wrist new_wrist_pos;
-    
-    SmartDashboard.putNumber("Arm Pos", arm_pos);
-
-    // Caclualate next wrist Pos
-    if (arm_pos <= ArmPos.START.getPos()) { 
-        new_wrist_pos = Wrist.START;
-
-    } else if ((arm_pos > ArmPos.START.getPos() ) && (arm_pos <= ArmPos.FRONT_HATCH_UPPER.getPos())) {
-        new_wrist_pos = Wrist.FRONT;
-
-    } else if ((arm_pos > ArmPos.FRONT_BALL_UPPER.getPos()) && (arm_pos < ArmPos.BACK_BALL_UPPER.getPos())) {
-        new_wrist_pos = Wrist.TRANSITION;
-
-    } else {
-        new_wrist_pos = Wrist.BACK;
-    }
-    
-    JesterWrist.getInstance().setWristPos(new_wrist_pos);
+    JesterArm.getInstance().stop();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -65,13 +40,11 @@ public class FollowArm extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    HelixEvents.getInstance().addEvent("JESTER_WRIST", "End FollowArm");
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    HelixEvents.getInstance().addEvent("JESTER WRIST", "FollowArm() interuppted");
   }
 }

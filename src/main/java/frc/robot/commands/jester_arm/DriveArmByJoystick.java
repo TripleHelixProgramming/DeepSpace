@@ -19,7 +19,6 @@ public class DriveArmByJoystick extends Command {
     public DriveArmByJoystick() {
         super("Drive arm by joystick");
         requires(jesterArm);
-        requires(jesterWrist);
     }
 
     // Called just before this Command runs the first time
@@ -33,11 +32,11 @@ public class DriveArmByJoystick extends Command {
 
         double error;
 
-        position += OI.getInstance().getArmPower() * 200;
-        if (position > ArmPos.BACK_LIMIT.pos) {
-            position = ArmPos.BACK_LIMIT.pos;
-        } else if (position < 0) {
-            position = 0;
+        position += OI.getInstance().getArmPower() * 10;
+        if (position > ArmPos.BACK_LIMIT.getPos()) {
+            position = ArmPos.BACK_LIMIT.getPos();
+        } else if (position < ArmPos.START.getPos()) {
+            position = ArmPos.START.getPos();
         }
 
         jesterArm.setArmMotionMagic(position);
@@ -46,15 +45,6 @@ public class DriveArmByJoystick extends Command {
         SmartDashboard.putNumber("Arm Manual Position", position);
         SmartDashboard.putNumber("Arm Error", error);
 
-        // some quick code to test the wrist
-        double pov = OI.getInstance().getGMPOV();
-        if (pov == 0) {
-            jesterWrist.driveWristPercentOut(0.4);
-        } else if (pov == 180) {
-            jesterWrist.driveWristPercentOut(-0.4);
-        } else {
-            jesterWrist.driveWristPercentOut(0);
-        }
     }
 
     @Override

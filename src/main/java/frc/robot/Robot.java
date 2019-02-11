@@ -62,7 +62,8 @@ public class Robot extends TimedRobot {
     // JesterWrist.getInstance();
     // CargoGrabber.getInstance();
     // HatchGrabber.getInstance();
-
+    // CargoIntake.getInstance();
+    // RobotLifter.getInstance();
   }
 
   /**
@@ -87,11 +88,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    // SmartDashboard.putNumber("Pigeon Yaw", Drivetrain.getInstance().getYaw());
     Scheduler.getInstance().run();
 
+    // SmartDashboard.putNumber("Pigeon Yaw", Drivetrain.getInstance().getYaw());
     // JesterArm.getInstance().updateSmartDash();
     // JesterWrist.getInstance().updateSmartDash();
+
   }
 
   /**
