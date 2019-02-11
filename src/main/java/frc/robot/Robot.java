@@ -63,7 +63,7 @@ public class Robot extends TimedRobot {
     // JesterWrist.getInstance();
     // CargoGrabber.getInstance();
     // HatchGrabber.getInstance();
-    CargoIntake.getInstance();
+    // CargoIntake.getInstance();
 
   }
 

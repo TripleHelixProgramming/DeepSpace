@@ -39,9 +39,12 @@ public class downCommand extends Command {
       JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_HATCH_LOWER);
       break;
     case FRONT_HATCH_MIDDLE:
-      CargoIntake.getInstance().off();
-      CargoIntake.getInstance().down();
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_BALL_LOWER);
+      if (CargoIntake.getInstance().isDown()) {
+        CargoIntake.getInstance().up();
+        CargoIntake.getInstance().off();
+      } else {
+        JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_BALL_LOWER);
+      }
       break;
     case FRONT_BALL_MIDDLE:
       JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_HATCH_MIDDLE);
