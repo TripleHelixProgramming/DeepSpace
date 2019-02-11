@@ -21,59 +21,50 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class CargoIntake extends Subsystem {
-  
+
   public static CargoIntake INSTANCE = new CargoIntake();
-  
-  public static CargoIntake getInstance(){
-    if (INSTANCE == null){
+
+  public static CargoIntake getInstance() {
+    if (INSTANCE == null) {
       INSTANCE = new CargoIntake();
     }
     return INSTANCE;
   }
-	
-	public enum IntakeState {
-		IN,
-		OUT,
-		OFF
-	}
-    
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-	private VictorSPX motor = new VictorSPX(CARGO_INTAKE_ID);
-	private DoubleSolenoid solenoid = new DoubleSolenoid(CARGO_INTAKE_DEPLOY, CARGO_INTAKE_RETRACT);
-	
-	public void in() {
-		motor.set(ControlMode.PercentOutput,-0.7);
-    }
-	
-	public void out() {
-		motor.set(ControlMode.PercentOutput,1);
-	}
-    
-    public void off() {
-    	motor.set(ControlMode.PercentOutput,0);
-    }
-    
-    public void up() {
-    	solenoid.set(Value.kReverse);
-    }
-   
-    public void down() {
-    	solenoid.set(Value.kForward);
-    }
-    
-    public boolean isUp() {
-    	return solenoid.get() == Value.kReverse;
-    }
 
-    public boolean isDown() {
-      return solenoid.get() == Value.kForward;
-    }
-    
-    
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new RetractIntake());
-    }
+  private VictorSPX motor = new VictorSPX(CARGO_INTAKE_ID);
+  private DoubleSolenoid solenoid = new DoubleSolenoid(CARGO_INTAKE_DEPLOY, CARGO_INTAKE_RETRACT);
+
+  public void in() {
+    motor.set(ControlMode.PercentOutput, -0.4);
+  }
+
+  public void out() {
+    motor.set(ControlMode.PercentOutput, 0.4);
+  }
+
+  public void off() {
+    motor.set(ControlMode.PercentOutput, 0);
+  }
+
+  public void up() {
+    solenoid.set(Value.kReverse);
+  }
+
+  public void down() {
+    solenoid.set(Value.kForward);
+  }
+
+  public boolean isUp() {
+    return solenoid.get() == Value.kReverse;
+  }
+
+  public boolean isDown() {
+    return solenoid.get() == Value.kForward;
+  }
+
+  public void initDefaultCommand() {
+    // Set the default command for a subsystem here.
+    // setDefaultCommand(new MySpecialCommand());
+    // setDefaultCommand(new RetractIntake());
+  }
 }
