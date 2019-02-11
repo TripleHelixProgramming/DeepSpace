@@ -5,54 +5,41 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.hatch;
+package frc.robot.commands.jester_arm;
 
 import com.team2363.logger.HelixEvents;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.RumbleController;
-import frc.robot.subsystems.CargoGrabber;
-import frc.robot.subsystems.HatchGrabber;
+import frc.robot.subsystems.JesterArm;
 
-public class GrabHatch extends Command {
-
-  Command rumbleCommand = new RumbleController();
-
-  public GrabHatch() {
+public class StopArm extends Command {
+  public StopArm() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(HatchGrabber.getInstance());
-    requires(CargoGrabber.getInstance());
+    requires(JesterArm.getInstance());
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    HelixEvents.getInstance().addEvent("GRAB_HATCH", "Starting to grab hatch");
-    CargoGrabber.getInstance().openGrabber();
-    HatchGrabber.getInstance().hatchGrab();
+    HelixEvents.getInstance().addEvent("JESTER ARM", "Stopping Jesster Arm");
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    HatchGrabber.getInstance().hatchGrab();
+    JesterArm.getInstance().stop();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if (HatchGrabber.getInstance().hasHatch()) {
-      if (!rumbleCommand.isRunning()) {
-       rumbleCommand.start();
-     }
-    }
-    return HatchGrabber.getInstance().hasHatch();
+    return false;
   }
+
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    HelixEvents.getInstance().addEvent("GRAB_HATCH", "Ending grab hatch");
   }
 
   // Called when another command which requires one or more of the same

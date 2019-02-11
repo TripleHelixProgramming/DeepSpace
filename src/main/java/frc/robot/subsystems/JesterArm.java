@@ -19,14 +19,15 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.jester_arm.DriveArmByJoystick;
+import frc.robot.commands.jester_arm.StopArm;
 
 public class JesterArm extends Subsystem {
 
-    private TalonSRX armMaster;
-    private VictorSPX armSlave;
+    private TalonSRX armMaster = new TalonSRX(RobotMap.ARM_MASTER_ID);
+    private VictorSPX armSlave = new VictorSPX(RobotMap.ARM_SLAVE_ID);
 
-    public static int ARM_ACCELERATION = 1000;
-    public static int ARM_CRUISE = 400;
+    public static int ARM_ACCELERATION = 10;
+    public static int ARM_CRUISE = 20;
 
     public enum ArmPos {
         START(200),
@@ -44,10 +45,14 @@ public class JesterArm extends Subsystem {
         BACK_BALL_LOWER(ArmPos.START.pos+630),
         BACK_LIMIT(ArmPos.START.pos+650);
 
-        public final int pos;
+        private final int pos;
 
-        ArmPos(int pos) {
+        private ArmPos(int pos) {
             this.pos = pos;
+        }
+
+        public int getPos() {
+            return pos;
         }
     }
 
@@ -71,40 +76,33 @@ public class JesterArm extends Subsystem {
 
         currentArmPreset = ArmPos.START;
 
-        armMaster = new TalonSRX(RobotMap.SHOULDER_MASTER_ID);
-        armSlave = new VictorSPX(RobotMap.SHOULDER_SLAVE_ID);
-
 		armSlave.follow(armMaster);
 		armSlave.setNeutralMode(NeutralMode.Brake);
         armSlave.configOpenloopRamp(0.2, 0);
-        
-        armMaster.configContinuousCurrentLimit(40, 0);
-        armMaster.configPeakCurrentLimit(60, 0);
-        armMaster.configPeakCurrentDuration(100, 0);
-        armMaster.enableCurrentLimit(true);
 
         armMaster.setNeutralMode(NeutralMode.Brake);
         armMaster.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, RobotMap.CTRE_TIMEOUT_INIT);
         armMaster.config_kP(0, 1, RobotMap.CTRE_TIMEOUT_INIT);
         armMaster.config_kI(0, 0.01, RobotMap.CTRE_TIMEOUT_INIT);
 
-        armMaster.setNeutralMode(NeutralMode.Coast);
 
-        setArmSoftLimits(ArmPos.START.pos, ArmPos.BACK_LIMIT.pos);
-        setArmMotionProfile(ARM_ACCELERATION, ARM_CRUISE);
+        // Set current limiting
+        armMaster.configContinuousCurrentLimit(40, 0);
+        armMaster.configPeakCurrentLimit(60, 0);
+        armMaster.configPeakCurrentDuration(100, 0);
+        armMaster.enableCurrentLimit(true);
 
         // The arm starts the match in a one-time docked position.  Move arm from
         // docked position to front lower scoring position.
-        unDockArm();
+
+        // setArmSoftLimits(ArmPos.START.pos, ArmPos.BACK_LIMIT.pos);
+        // setArmMotionProfile(ARM_ACCELERATION, ARM_CRUISE);
+        // unDockArm();
     }
-    
-    public int getArmVelocity() {
-        return armMaster.getSelectedSensorVelocity();
-      }
 
     private void setupLogs() {
         HelixLogger.getInstance().addDoubleSource("ARM MASTER CURRENT", armMaster::getOutputCurrent);
-        HelixLogger.getInstance().addDoubleSource("ARM SLAVE", () -> pdp.getCurrent(RobotMap.SHOULDER_SLAVE_ID));
+        HelixLogger.getInstance().addDoubleSource("ARM SLAVE", () -> pdp.getCurrent(RobotMap.ARM_SLAVE_ID));
     }
 
     public void setArmHeight(int pos) {
@@ -117,17 +115,16 @@ public class JesterArm extends Subsystem {
     }
 
     public void setArmMotionMagic(ArmPos preset) {
-        // armMaster.set(ControlMode.MotionMagic, preset.pos);
-        // currentArmPreset = preset;
+        setArmMotionMagic(preset.getPos());
+        currentArmPreset = preset;
     }
 
     public void setArmMotionMagic(int pos) {
         // armMaster.set(ControlMode.MotionMagic, pos);
-        // currentArmPreset = preset;
     }
 
-    public void driveArmPercentOut(double percent) {
-        armMaster.set(ControlMode.PercentOutput, percent);
+    public void goTo(ArmPos pos) {
+        goTo(pos.getPos());
     }
 
     public void goTo(int pos) {
@@ -155,6 +152,10 @@ public class JesterArm extends Subsystem {
         armMaster.configMotionCruiseVelocity(cruise, RobotMap.CTRE_TIMEOUT_INIT);
     }
 
+    public void stop() {
+        armMaster.set(ControlMode.PercentOutput, 0.0);
+    }
+    
     // Put items in here that you want updated on SmartDash during disableperiodic()
     public void updateSmartDash() {
         SmartDashboard.putNumber("Arm Pos", getArmPos());
@@ -167,6 +168,6 @@ public class JesterArm extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new DriveArmByJoystick());
+        // setDefaultCommand(new StopArm());
     }
 }

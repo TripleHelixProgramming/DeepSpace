@@ -21,10 +21,12 @@ public class RobotMap {
   public static int RIGHT_MASTER_PDP = 2;
 
   public static int LIFTER_LEFT_PDP = 3;
-  public static int SHOULDER_MASTER_PDP = 4;
-  public static int SHOULDER_SLAVE_PDP = 5;   
-  public static int WRIST_PDP = 6;
-  public static int CARGO_INTAKE_PDP = 7;
+  public static int WRIST_PDP = 4;
+  public static int CARGO_INTAKE_PDP = 5;
+  public static int ARM_MASTER_PDP = 6;
+  public static int ARM_SLAVE_PDP = 7;   
+
+
   public static int CARGO_LEFT_PDP = 8;
   public static int CARGO_RIGHT_PDP = 9;
   public static int EMPTY_PDP = 10;
@@ -47,10 +49,10 @@ public class RobotMap {
   public static int RIGHT_SLAVE_2_ID = 10;
   
   //  ARM
-  public static int WRIST_ID = 16;
+  public static int WRIST_ID = 14;
   public static int WRIST_ENCODER_ID = 4;
-  public static int SHOULDER_MASTER_ID = 14;
-  public static int SHOULDER_SLAVE_ID = 15;
+  public static int ARM_MASTER_ID = 16;
+  public static int ARM_SLAVE_ID = 17;
 
   //  CargoGrabber 
   public static int CARGO_EXTEND_SOLENOID = 6;
@@ -59,7 +61,7 @@ public class RobotMap {
   public static int CARGO_INTAKE_RETRACT = 5;
   public static int CARGO_LEFT_ID= 18;
   public static int CARGO_RIGHT_ID = 19;
-  public static int CARGO_INTAKE_ID = 17;
+  public static int CARGO_INTAKE_ID = 15;
   
   //  HATCHGRABBER
   public static int HATCH_GRAB = 0;

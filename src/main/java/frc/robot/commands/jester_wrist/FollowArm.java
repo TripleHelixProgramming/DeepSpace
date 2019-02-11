@@ -35,25 +35,24 @@ public class FollowArm extends Command {
     // Set the wrist position based of the arm position.
 
     int arm_pos = JesterArm.getInstance().getArmPos();
-    int new_wrist_pos;
+    Wrist new_wrist_pos;
     
     SmartDashboard.putNumber("Arm Pos", arm_pos);
 
     // Caclualate next wrist Pos
-    if (arm_pos <= ArmPos.START.pos) { 
-        new_wrist_pos = Wrist.START.pos;
+    if (arm_pos <= ArmPos.START.getPos()) { 
+        new_wrist_pos = Wrist.START;
 
-    } else if ((arm_pos > ArmPos.START.pos ) && (arm_pos <= ArmPos.FRONT_HATCH_UPPER.pos)) {
-        new_wrist_pos = Wrist.FRONT.pos;
+    } else if ((arm_pos > ArmPos.START.getPos() ) && (arm_pos <= ArmPos.FRONT_HATCH_UPPER.getPos())) {
+        new_wrist_pos = Wrist.FRONT;
 
-    } else if ((arm_pos > ArmPos.FRONT_BALL_UPPER.pos) && (arm_pos < ArmPos.BACK_BALL_UPPER.pos)) {
-        new_wrist_pos = Wrist.TRANSITION.pos;
+    } else if ((arm_pos > ArmPos.FRONT_BALL_UPPER.getPos()) && (arm_pos < ArmPos.BACK_BALL_UPPER.getPos())) {
+        new_wrist_pos = Wrist.TRANSITION;
 
     } else {
-        new_wrist_pos = Wrist.BACK.pos;
+        new_wrist_pos = Wrist.BACK;
     }
-
-    SmartDashboard.putNumber("Wrist Pos", new_wrist_pos);
+    
     JesterWrist.getInstance().setWristPos(new_wrist_pos);
   }
 

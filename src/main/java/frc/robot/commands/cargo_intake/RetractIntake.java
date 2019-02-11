@@ -25,7 +25,7 @@ public class RetractIntake extends Command {
   protected void initialize() {
     ArmPos currentArmPos = JesterArm.getInstance().getCurrentArmPreset();
 
-    if (currentArmPos.pos < ArmPos.FRONT_HATCH_MIDDLE.pos)
+    if (currentArmPos.getPos() < ArmPos.FRONT_HATCH_MIDDLE.getPos())
       JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_HATCH_MIDDLE);
   }
 
@@ -33,7 +33,7 @@ public class RetractIntake extends Command {
   @Override
   protected void execute() {
     ArmPos currentArmPos = JesterArm.getInstance().getCurrentArmPreset();
-    boolean armClear = (currentArmPos.pos >= ArmPos.FRONT_HATCH_MIDDLE.pos);
+    boolean armClear = (currentArmPos.getPos() >= ArmPos.FRONT_HATCH_MIDDLE.getPos());
     if (armClear){
       CargoIntake.getInstance().up();
       CargoIntake.getInstance().off();
