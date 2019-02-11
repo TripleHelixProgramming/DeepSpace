@@ -155,6 +155,11 @@ public class JesterArm extends Subsystem {
     public void stop() {
         armMaster.set(ControlMode.PercentOutput, 0.0);
     }
+    
+    // Put items in here that you want updated on SmartDash during disableperiodic()
+    public void updateSmartDash() {
+        SmartDashboard.putNumber("Arm Pos", getArmPos());
+    }
 
     @Override
     public void periodic() {

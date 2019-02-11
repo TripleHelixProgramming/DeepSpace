@@ -24,12 +24,12 @@ public class JesterWrist extends Subsystem {
     private TalonSRX wristMotor = new TalonSRX(RobotMap.WRIST_ID);
 
     public static int WRIST_ACCELERATION = 5;
-    public static int WRIST_CRUISE = 10;
+    public static int WRIST_CRUISE = 5;
 
     // Standard wrist positions.  This assumes the pot is mounted such that lower values 
     // correspond to front arm positions.
     public enum Wrist {
-        START(100),                             // Wrist starting position
+        START(100),                             // Wrist position at start of the match
         FRONT_LIMIT(Wrist.START.pos + 100),      // True Limit given to PID control
         FRONT(Wrist.START.pos + 300),           // Normal Position when arm is to the front
         TRANSITION(Wrist.START.pos + 400),      // Position to in when above the highest hatch level
@@ -97,6 +97,11 @@ public class JesterWrist extends Subsystem {
         wristMotor.configForwardSoftLimitThreshold(forwardSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
     }
 
+    // Put items in here that you want updated on SmartDash during disableperiodic()
+    public void updateSmartDash() {
+        SmartDashboard.putNumber("Wrist Pos", getWristPos());
+    }
+
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Wrist Pos", getWristPos());
@@ -134,7 +139,7 @@ public class JesterWrist extends Subsystem {
     @Override
     public void initDefaultCommand() {
         // setDefaultCommand(new FollowArm());
-        // setDefaultCommand(new StopWrist());
+        setDefaultCommand(new StopWrist());
     }
     
 }
