@@ -22,6 +22,8 @@ import frc.robot.commands.drivetrain.driveByCamera;
 import frc.robot.commands.drivetrain.driveByDocking;
 import frc.robot.commands.drivetrain.driveByDockingPID;
 import frc.robot.commands.drivetrain.driveByVision;
+import frc.robot.commands.jester_wrist.MoveTo;
+import frc.robot.subsystems.JesterWrist.Wrist;
 
 // import frc.robot.commands.drivetrain.driveByDockingPID;
 // import frc.robot.commands.drivetrain.aimByVision;
@@ -67,9 +69,14 @@ public class OI {
       // new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByDockingPID(CAMERA.BACK));
 
       new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArcTesting());
-      // new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByAssistJosh(CAMERA.FRONT);
-      // new JoystickButton(operator, ControllerMap.A).whenPressed(new ToggleArmCommand());
+
+      // new JoystickButton(operator, ControllerMap.A).whenPressed(new MoveTo(Wrist.FRONT));
+      // new JoystickButton(operator, ControllerMap.B).whenPressed(new MoveTo(Wrist.BACK));
+      // new JoystickButton(operator, ControllerMap.X).whenPressed(new MoveTo(Wrist.TRANSITION));
+
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new ToggleHeightCommand());
+
+
 
   }
 

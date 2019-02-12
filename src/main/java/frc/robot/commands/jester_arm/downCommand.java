@@ -73,7 +73,7 @@ public class downCommand extends Command {
       JesterArm.getInstance().setArmMotionMagic(ArmPos.BACK_HATCH_UPPER);
       break;
     case BACK_LIMIT:
-    case START:
+    case FRONT_LIMIT:
       break;
     }
   }

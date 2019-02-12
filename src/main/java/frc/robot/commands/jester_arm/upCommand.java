@@ -67,7 +67,7 @@ public class upCommand extends Command {
     case BACK_LIMIT:
       JesterArm.getInstance().setArmMotionMagic(ArmPos.BACK_HATCH_LOWER);
       break;
-    case START:
+    case FRONT_LIMIT:
       JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_HATCH_LOWER);
       break;
     }

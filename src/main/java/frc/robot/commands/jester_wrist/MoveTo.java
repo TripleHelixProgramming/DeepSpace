@@ -5,16 +5,21 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.cargo_intake;
+package frc.robot.commands.jester_wrist;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.CargoIntake;
+import frc.robot.subsystems.JesterWrist;
+import frc.robot.subsystems.JesterWrist.Wrist;
 
-public class IntakeMotorStop extends Command {
-  public IntakeMotorStop() {
+public class MoveTo extends Command {
+
+  private Wrist pos;
+  
+  public MoveTo(Wrist pos) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(CargoIntake.getInstance());
+    requires(JesterWrist.getInstance());
+    this.pos = pos;
   }
 
   // Called just before this Command runs the first time
@@ -25,7 +30,7 @@ public class IntakeMotorStop extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    CargoIntake.getInstance().off();
+    JesterWrist.getInstance().setWristPos(pos);
   }
 
   // Make this return true when this Command no longer needs to run execute()
