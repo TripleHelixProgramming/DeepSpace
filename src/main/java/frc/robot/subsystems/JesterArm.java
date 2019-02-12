@@ -29,21 +29,27 @@ public class JesterArm extends Subsystem {
     public static int ARM_ACCELERATION = 10;
     public static int ARM_CRUISE = 20;
 
+    private int OFFSET = 0;    // Difference in pot readings between bots.
+
+    //  Bot B (Practice Bot)  FRONT_LIMIT 559   VERTICAL 422   BACK_LIMIT  284
+    //  Bot A (Comp Bot)  FRONT_LIMIT    VERTICAL    BACK_LIMIT  
+
     public enum ArmPos {
-        START(200),
-        FRONT_HATCH_LOWER(ArmPos.START.pos+100),
-        FRONT_BALL_LOWER(ArmPos.START.pos+150),
-        FRONT_HATCH_MIDDLE(ArmPos.START.pos+200),
-        FRONT_BALL_MIDDLE(ArmPos.START.pos+250),
-        FRONT_HATCH_UPPER(ArmPos.START.pos+300),
-        FRONT_BALL_UPPER(ArmPos.START.pos+350),
-        BACK_HATCH_UPPER(ArmPos.START.pos+400),
-        BACK_BALL_UPPER(ArmPos.START.pos+450),
-        BACK_HATCH_MIDDLE(ArmPos.START.pos+500),
-        BACK_BALL_MIDDLE(ArmPos.START.pos+550),
-        BACK_HATCH_LOWER(ArmPos.START.pos+600),
-        BACK_BALL_LOWER(ArmPos.START.pos+630),
-        BACK_LIMIT(ArmPos.START.pos+650);
+        STOW(559),
+        FRONT_LIMIT(500),
+        FRONT_HATCH_LOWER(ArmPos.FRONT_LIMIT.pos-10),
+        FRONT_BALL_LOWER(ArmPos.FRONT_LIMIT.pos-20),
+        FRONT_HATCH_MIDDLE(ArmPos.FRONT_LIMIT.pos-30),
+        FRONT_BALL_MIDDLE(ArmPos.FRONT_LIMIT.pos-40),
+        FRONT_HATCH_UPPER(ArmPos.FRONT_LIMIT.pos-50),
+        FRONT_BALL_UPPER(ArmPos.FRONT_LIMIT.pos-55),
+        BACK_BALL_UPPER(ArmPos.FRONT_LIMIT.pos-78),
+        BACK_HATCH_UPPER(ArmPos.FRONT_LIMIT.pos-73),
+        BACK_BALL_MIDDLE(ArmPos.FRONT_LIMIT.pos-83),
+        BACK_HATCH_MIDDLE(ArmPos.FRONT_LIMIT.pos-93),
+        BACK_BALL_LOWER(ArmPos.FRONT_LIMIT.pos-103),
+        BACK_HATCH_LOWER(ArmPos.FRONT_LIMIT.pos-113),
+        BACK_LIMIT(ArmPos.FRONT_LIMIT.pos-123);
 
         private final int pos;
 
@@ -57,7 +63,8 @@ public class JesterArm extends Subsystem {
     }
 
     private static JesterArm INSTANCE = new JesterArm();
-    private ArmPos currentArmPreset = ArmPos.START;
+    private ArmPos currentArmPreset = ArmPos.FRONT_LIMIT;
+
     PowerDistributionPanel pdp = new PowerDistributionPanel();
 
     /**
@@ -74,7 +81,10 @@ public class JesterArm extends Subsystem {
         super("Jester Arm Subsystem");
         setupLogs();
 
-        currentArmPreset = ArmPos.START;
+        armSlave.configFactoryDefault();
+        armMaster.configFactoryDefault();
+
+        currentArmPreset = ArmPos.FRONT_LIMIT;
 
 		armSlave.follow(armMaster);
 		armSlave.setNeutralMode(NeutralMode.Brake);
@@ -82,9 +92,17 @@ public class JesterArm extends Subsystem {
 
         armMaster.setNeutralMode(NeutralMode.Brake);
         armMaster.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, RobotMap.CTRE_TIMEOUT_INIT);
+
+        // Need to verify and set.  With positive motor direction sensor values should increase.
+        armMaster.setSensorPhase(true);   
+        armMaster.setInverted(false); 
+
+        // PID Settings
+        armMaster.config_kF(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
         armMaster.config_kP(0, 1, RobotMap.CTRE_TIMEOUT_INIT);
         armMaster.config_kI(0, 0.01, RobotMap.CTRE_TIMEOUT_INIT);
-
+        armMaster.config_kD(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
+        armMaster.configAllowableClosedloopError(0, 2, RobotMap.CTRE_TIMEOUT_INIT);
 
         // Set current limiting
         armMaster.configContinuousCurrentLimit(40, 0);
@@ -92,12 +110,12 @@ public class JesterArm extends Subsystem {
         armMaster.configPeakCurrentDuration(100, 0);
         armMaster.enableCurrentLimit(true);
 
-        // The arm starts the match in a one-time docked position.  Move arm from
-        // docked position to front lower scoring position.
-
         // setArmSoftLimits(ArmPos.START.pos, ArmPos.BACK_LIMIT.pos);
         // setArmMotionProfile(ARM_ACCELERATION, ARM_CRUISE);
-        // unDockArm();
+
+        // The arm starts the match in a one-time docked position.  Move arm from
+        // docked position to front lower scoring position.
+        unDockArm();
     }
 
     private void setupLogs() {
@@ -111,7 +129,7 @@ public class JesterArm extends Subsystem {
     
     // Move arm from docked position (at start of match) to front lower scoring position.
     public void unDockArm() {
-        setArmMotionMagic(ArmPos.FRONT_HATCH_LOWER);
+        // setArmMotionMagic(ArmPos.FRONT_HATCH_LOWER);
     }
 
     public void setArmMotionMagic(ArmPos preset) {
@@ -168,6 +186,6 @@ public class JesterArm extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        // setDefaultCommand(new StopArm());
+        setDefaultCommand(new StopArm());
     }
 }

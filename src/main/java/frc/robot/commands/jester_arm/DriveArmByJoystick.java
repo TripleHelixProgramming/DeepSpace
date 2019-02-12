@@ -35,8 +35,8 @@ public class DriveArmByJoystick extends Command {
         position += OI.getInstance().getArmPower() * 10;
         if (position > ArmPos.BACK_LIMIT.getPos()) {
             position = ArmPos.BACK_LIMIT.getPos();
-        } else if (position < ArmPos.START.getPos()) {
-            position = ArmPos.START.getPos();
+        } else if (position < ArmPos.FRONT_LIMIT.getPos()) {
+            position = ArmPos.FRONT_LIMIT.getPos();
         }
 
         jesterArm.setArmMotionMagic(position);

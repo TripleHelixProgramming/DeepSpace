@@ -23,18 +23,22 @@ public class JesterWrist extends Subsystem {
   
     private TalonSRX wristMotor = new TalonSRX(RobotMap.WRIST_ID);
 
-    public static int WRIST_ACCELERATION = 5;
-    public static int WRIST_CRUISE = 5;
+    public static int WRIST_ACCELERATION = 2;
+    public static int WRIST_CRUISE = 2;
 
-    // Standard wrist positions.  This assumes the pot is mounted such that lower values 
-    // correspond to front arm positions.
+    private int OFFSET = 0;    // Difference in pot readings between bots.
+ 
+    //  Bot B (Practice Bot)  FRONT_LIMIT - 272   TRANSITION - 492   BACK_LIMIT - 681  MAX VEL-
+    //  Bot A (Comp Bot)  FRONT_LIMIT -     TRANSITION -      BACK_LIMIT -       MAX VEL -
+
+    // Standard wrist positions potentiometer positions. 
     public enum Wrist {
-        START(100),                             // Wrist position at start of the match
-        FRONT_LIMIT(Wrist.START.pos + 100),      // True Limit given to PID control
-        FRONT(Wrist.START.pos + 300),           // Normal Position when arm is to the front
-        TRANSITION(Wrist.START.pos + 400),      // Position to in when above the highest hatch level
-        BACK(Wrist.START.pos + 500),            // Normal Position when arm is to back
-        BACK_LIMIT(Wrist.START.pos + 700);      // Ture Limit given to PID Control
+        START(272),                                   // Wrist position at start of the match
+        FRONT_LIMIT(300),                             // True Limit given to PID control
+        FRONT(Wrist.FRONT_LIMIT.pos + 25),            // Normal Position when arm is to the front
+        TRANSITION(Wrist.FRONT_LIMIT.pos + 50),      // Position to in when above the highest hatch level
+        BACK(Wrist.FRONT_LIMIT.pos + 75),            // Normal Position when arm is to back
+        BACK_LIMIT(Wrist.FRONT_LIMIT.pos + 100);      // Ture Limit given to PID Control
 
         private final int pos;
 
@@ -63,6 +67,7 @@ public class JesterWrist extends Subsystem {
         super("Jester Wrist Subsystem");
 
         setupLogs();
+        wristMotor.configFactoryDefault();
 
         // Protect the motors and protect from brown out
         wristMotor.configContinuousCurrentLimit(40, 0);
@@ -73,20 +78,19 @@ public class JesterWrist extends Subsystem {
         wristMotor.setNeutralMode(NeutralMode.Brake);
         wristMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, RobotMap.CTRE_TIMEOUT_INIT);
 
+        // Need to verify and set.  With positive motor direction sensor values should increase.
+        wristMotor.setSensorPhase(false);   
+        wristMotor.setInverted(false);  
+
+        // PID settings
+        wristMotor.config_kF(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
         wristMotor.config_kP(0, 1, RobotMap.CTRE_TIMEOUT_INIT);
         wristMotor.config_kI(0, 0.01, RobotMap.CTRE_TIMEOUT_INIT);
+        wristMotor.config_kD(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
         wristMotor.configAllowableClosedloopError(0, 2, RobotMap.CTRE_TIMEOUT_INIT);
         
         // setWristSoftLimits(Wrist.FRONT_LIMIT.pos, Wrist.BACK_LIMIT.pos);
         // setWristMotionProfile(WRIST_ACCELERATION, WRIST_CRUISE);
-    }
-
-    private void setupLogs() {
-        HelixLogger.getInstance().addDoubleSource("WRIST VOLTAGE", wristMotor::getMotorOutputVoltage);
-    }
-
-    public void driveWristPercentOut(double percent) {
-        wristMotor.set(ControlMode.PercentOutput, percent);
     }
 
     public void setWristSoftLimits(int reverseSoftLimit, int forwardSoftLimit) {
@@ -95,16 +99,6 @@ public class JesterWrist extends Subsystem {
 
         wristMotor.configForwardSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
         wristMotor.configForwardSoftLimitThreshold(forwardSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
-    }
-
-    // Put items in here that you want updated on SmartDash during disableperiodic()
-    public void updateSmartDash() {
-        SmartDashboard.putNumber("Wrist Pos", getWristPos());
-    }
-
-    @Override
-    public void periodic() {
-        SmartDashboard.putNumber("Wrist Pos", getWristPos());
     }
 
     public int getWristPos() {
@@ -134,6 +128,24 @@ public class JesterWrist extends Subsystem {
 
     public void stop() {
         wristMotor.set(ControlMode.PercentOutput, 0.0);
+    }
+
+    // Put items in here that you want updated on SmartDash during disableperiodic()
+    public void updateSmartDash() {
+        SmartDashboard.putNumber("Wrist Pos", getWristPos());
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Wrist Pos", getWristPos());
+    }
+
+    private void setupLogs() {
+        HelixLogger.getInstance().addDoubleSource("WRIST VOLTAGE", wristMotor::getMotorOutputVoltage);
+    }
+
+    public void driveWristPercentOut(double percent) {
+        wristMotor.set(ControlMode.PercentOutput, percent);
     }
 
     @Override

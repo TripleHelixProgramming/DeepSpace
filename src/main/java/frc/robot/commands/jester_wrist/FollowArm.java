@@ -40,13 +40,13 @@ public class FollowArm extends Command {
     SmartDashboard.putNumber("Arm Pos", arm_pos);
 
     // Caclualate next wrist Pos
-    if (arm_pos <= ArmPos.START.getPos()) { 
-        new_wrist_pos = Wrist.START;
+    if (arm_pos > ArmPos.FRONT_LIMIT.getPos()) { 
+        new_wrist_pos = Wrist.FRONT_LIMIT;
 
-    } else if ((arm_pos > ArmPos.START.getPos() ) && (arm_pos <= ArmPos.FRONT_HATCH_UPPER.getPos())) {
+    } else if ((arm_pos <= ArmPos.FRONT_LIMIT.getPos() ) && (arm_pos >= ArmPos.FRONT_BALL_UPPER.getPos())) {
         new_wrist_pos = Wrist.FRONT;
 
-    } else if ((arm_pos > ArmPos.FRONT_BALL_UPPER.getPos()) && (arm_pos < ArmPos.BACK_BALL_UPPER.getPos())) {
+    } else if ((arm_pos < ArmPos.FRONT_BALL_UPPER.getPos()) && (arm_pos > ArmPos.BACK_BALL_UPPER.getPos())) {
         new_wrist_pos = Wrist.TRANSITION;
 
     } else {
