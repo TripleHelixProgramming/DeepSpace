@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team2363.logger.HelixEvents;
 import com.team2363.logger.HelixLogger;
@@ -49,30 +50,32 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   private static final int VELOCITY_CONTROL_SLOT = 2;
 
   // Programming Robot =  All Talons
-  private BobTalonSRX rightSlave1 = new BobTalonSRX(RobotMap.RIGHT_SLAVE_1_ID);
-  private BobTalonSRX rightSlave2 = new BobTalonSRX(RobotMap.RIGHT_SLAVE_2_ID);
-  private BobTalonSRX leftSlave1 = new BobTalonSRX(RobotMap.LEFT_SLAVE_1_ID);
-  private BobTalonSRX leftSlave2 = new BobTalonSRX(RobotMap.LEFT_SLAVE_2_ID);
+  // private BobTalonSRX rightSlave1 = new BobTalonSRX(RobotMap.RIGHT_SLAVE_1_ID);
+  // private BobTalonSRX rightSlave2 = new BobTalonSRX(RobotMap.RIGHT_SLAVE_2_ID);
+  // private BobTalonSRX leftSlave1 = new BobTalonSRX(RobotMap.LEFT_SLAVE_1_ID);
+  // private BobTalonSRX leftSlave2 = new BobTalonSRX(RobotMap.LEFT_SLAVE_2_ID);
 
   //  Competition & Practice Bot  Talon Masters with Victors as Slaves.
-  // private BobVictorSPX rightSlave1 = new BobVictorSPX(RobotMap.RIGHT_SLAVE_1_ID);
-  // private BobVictorSPX rightSlave2 = new BobVictorSPX(RobotMap.RIGHT_SLAVE_2_ID);
-  // private BobVictorSPX leftSlave1 = new BobVictorSPX(RobotMap.LEFT_SLAVE_1_ID);
-  // private BobVictorSPX leftSlave2 = new BobVictorSPX(RobotMap.LEFT_SLAVE_2_ID);
+  private BobVictorSPX rightSlave1 = new BobVictorSPX(RobotMap.RIGHT_SLAVE_1_ID);
+  private BobVictorSPX rightSlave2 = new BobVictorSPX(RobotMap.RIGHT_SLAVE_2_ID);
+  private BobVictorSPX leftSlave1 = new BobVictorSPX(RobotMap.LEFT_SLAVE_1_ID);
+  private BobVictorSPX leftSlave2 = new BobVictorSPX(RobotMap.LEFT_SLAVE_2_ID);
 
   private LeaderBobTalonSRX left = new LeaderBobTalonSRX(RobotMap.LEFT_MASTER_ID,
       leftSlave1, leftSlave2);
   private LeaderBobTalonSRX right = new LeaderBobTalonSRX(RobotMap.RIGHT_MASTER_ID,
       rightSlave1, rightSlave2);
+
+  private TalonSRX cgMotor = new TalonSRX(RobotMap.CARGO_LEFT_ID);
     
   PowerDistributionPanel pdp = new PowerDistributionPanel();
-  private PigeonIMU pigeon = new PigeonIMU(rightSlave2);
+  private PigeonIMU pigeon = new PigeonIMU(cgMotor);
 
   private Drivetrain() {
     setPIDFValues();
     setBrakeMode(NeutralMode.Brake);
     setupSensors();
-    setupLogs();
+    // setupLogs();
 
     left.setSensorPhase(false);
     right.setSensorPhase(false);

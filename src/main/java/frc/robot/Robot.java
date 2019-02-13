@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
     Drivetrain.getInstance();
 
     // JesterArm.getInstance();
-    // JesterWrist.getInstance();
+    JesterWrist.getInstance();
     // CargoGrabber.getInstance();
     // HatchGrabber.getInstance();
     // CargoIntake.getInstance();
@@ -93,7 +93,7 @@ public class Robot extends TimedRobot {
 
     // SmartDashboard.putNumber("Pigeon Yaw", Drivetrain.getInstance().getYaw());
     // JesterArm.getInstance().updateSmartDash();
-    // JesterWrist.getInstance().updateSmartDash();
+    JesterWrist.getInstance().updateSmartDash();
 
   }
 

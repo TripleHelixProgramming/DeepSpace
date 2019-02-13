@@ -77,6 +77,7 @@ public class JesterWrist extends Subsystem {
 
         wristMotor.setNeutralMode(NeutralMode.Brake);
         wristMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, RobotMap.CTRE_TIMEOUT_INIT);
+        wristMotor.configFeedbackNotContinuous(true, RobotMap.CTRE_TIMEOUT_INIT);
 
         // Need to verify and set.  With positive motor direction sensor values should increase.
         wristMotor.setSensorPhase(false);   
