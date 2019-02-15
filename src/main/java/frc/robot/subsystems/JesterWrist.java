@@ -23,8 +23,8 @@ public class JesterWrist extends Subsystem {
   
     private TalonSRX wristMotor = new TalonSRX(RobotMap.WRIST_ID);
 
-    public static int WRIST_ACCELERATION = 2;
-    public static int WRIST_CRUISE = 2;
+    public static int WRIST_ACCELERATION = 50;
+    public static int WRIST_CRUISE = 4;
 
     private int OFFSET = 0;    // Difference in pot readings between bots.
  
@@ -33,12 +33,12 @@ public class JesterWrist extends Subsystem {
 
     // Standard wrist positions potentiometer positions. 
     public enum Wrist {
-        START(272),                                   // Wrist position at start of the match
-        FRONT_LIMIT(300),                             // True Limit given to PID control
-        FRONT(Wrist.FRONT_LIMIT.pos + 25),            // Normal Position when arm is to the front
-        TRANSITION(Wrist.FRONT_LIMIT.pos + 50),      // Position to in when above the highest hatch level
-        BACK(Wrist.FRONT_LIMIT.pos + 75),            // Normal Position when arm is to back
-        BACK_LIMIT(Wrist.FRONT_LIMIT.pos + 100);      // Ture Limit given to PID Control
+        // START(272),                                   // Wrist position at start of the match
+        FRONT_LIMIT(250),                             // True Limit given to PID control
+        FRONT(243),            // Normal Position when arm is to the front
+        TRANSITION(201),      // Position to in when above the highest hatch level
+        BACK(159),            // Normal Position when arm is to back
+        BACK_LIMIT(145);      // Ture Limit given to PID Control
 
         private final int pos;
 

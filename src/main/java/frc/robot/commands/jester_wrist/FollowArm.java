@@ -52,9 +52,9 @@ public class FollowArm extends Command {
     } else {
         new_wrist_pos = Wrist.BACK;
     }
-    
-    JesterWrist.getInstance().setWristPos(new_wrist_pos);
-  }
+  
+  JesterWrist.getInstance().setWristPos(new_wrist_pos);
+}
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
