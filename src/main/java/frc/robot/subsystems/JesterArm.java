@@ -33,6 +33,8 @@ public class JesterArm extends Subsystem {
     private static JesterArm INSTANCE = new JesterArm();
     private ArmPreset currentArmPreset = ArmPreset.BACK_HATCH_UPPER;
 
+    private int reverseSoftLimit, fwdSoftLimit;
+
     PowerDistributionPanel pdp = new PowerDistributionPanel();
 
     /**
@@ -79,8 +81,8 @@ public class JesterArm extends Subsystem {
         armMaster.configPeakCurrentDuration(100, 0);
         armMaster.enableCurrentLimit(true);
 
-        int reverseSoftLimit = ArmPreset.FRONT_BALL_MIDDLE.CalculateArmPos();
-        int fwdSoftLimit = ArmPreset.BACK_BALL_MIDDLE.CalculateArmPos();
+        reverseSoftLimit = ArmPreset.FRONT_BALL_MIDDLE.CalculateArmPos();
+        fwdSoftLimit = ArmPreset.BACK_BALL_MIDDLE.CalculateArmPos();
         setArmSoftLimits(reverseSoftLimit, fwdSoftLimit);
         setArmMotionProfile(ARM_ACCELERATION, ARM_CRUISE);
 
@@ -112,7 +114,7 @@ public class JesterArm extends Subsystem {
     }
 
     public void setArmMotionMagic(int pos) {
-        armMaster.set(ControlMode.MotionMagic, pos);
+        // armMaster.set(ControlMode.MotionMagic, pos);
     }
 
     public int getArmPos() {
@@ -124,12 +126,9 @@ public class JesterArm extends Subsystem {
     }
 
     public void setArmSoftLimits(int reverseSoftLimit, int forwardSoftLimit) {
-
-        SmartDashboard.putNumber("Arm Lower Limit", reverseSoftLimit);
         armMaster.configReverseSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
         armMaster.configReverseSoftLimitThreshold(reverseSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
 
-        SmartDashboard.putNumber("Arm Upper Limit", forwardSoftLimit);
         armMaster.configForwardSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
         armMaster.configForwardSoftLimitThreshold(forwardSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
     }
@@ -146,6 +145,8 @@ public class JesterArm extends Subsystem {
     // Put items in here that you want updated on SmartDash during disableperiodic()
     public void updateSmartDash() {
         SmartDashboard.putNumber("Arm Pos", getArmPos());
+        SmartDashboard.putNumber("Arm Lower Limit", reverseSoftLimit);
+        SmartDashboard.putNumber("Arm Upper Limit", fwdSoftLimit);
     }
 
     @Override

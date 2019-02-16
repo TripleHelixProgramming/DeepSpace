@@ -72,14 +72,6 @@ public class JesterWrist extends Subsystem {
         setWristMotionProfile(WRIST_ACCELERATION, WRIST_CRUISE);
     }
 
-    public void setWristSoftLimits(int reverseSoftLimit, int forwardSoftLimit) {
-        wristMotor.configReverseSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
-        wristMotor.configReverseSoftLimitThreshold(reverseSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
-
-        wristMotor.configForwardSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
-        wristMotor.configForwardSoftLimitThreshold(forwardSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
-    }
-
     public void setWristSoftLimits() {
 
         int curArmPos, lowerLimit, upperLimit;
@@ -123,7 +115,7 @@ public class JesterWrist extends Subsystem {
     }
 
     private void setWristMotionMagic(int pos) {
-        wristMotor.set(ControlMode.MotionMagic, pos);
+        // wristMotor.set(ControlMode.MotionMagic, pos);
     }
 
     public void stop() {
@@ -137,7 +129,6 @@ public class JesterWrist extends Subsystem {
 
     @Override
     public void periodic() {
-
         setWristSoftLimits();
     }
 
