@@ -23,6 +23,7 @@ import frc.robot.commands.drivetrain.driveByCamera;
 import frc.robot.commands.drivetrain.driveByDocking;
 import frc.robot.commands.drivetrain.driveByDockingPID;
 import frc.robot.commands.drivetrain.driveByVision;
+import frc.robot.commands.jester_arm.MoveArmTo;
 
 
 // import frc.robot.commands.drivetrain.driveByDockingPID;
@@ -74,8 +75,8 @@ public class OI {
       // new JoystickButton(operator, ControllerMap.X).whenPressed(new MoveArmTo(ArmPreset.FRONT_HATCH_UPPER));
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new MoveArmTo(ArmPreset.BACK_HATCH_UPPER));
 
-      new JoystickButton(operator, ControllerMap.B).whenPressed(new MoveJesterTo(ArmPreset.FRONT_BALL_UPPER));
-      new JoystickButton(operator, ControllerMap.X).whenPressed(new MoveJesterTo(ArmPreset.FRONT_HATCH_UPPER));
+      new JoystickButton(operator, ControllerMap.B).whenPressed(new MoveJesterTo(ArmPreset.FRONT_HATCH_UPPER));
+      new JoystickButton(operator, ControllerMap.X).whenPressed(new MoveJesterTo(ArmPreset.TRANSITION));
       new JoystickButton(operator, ControllerMap.Y).whenPressed(new MoveJesterTo(ArmPreset.BACK_HATCH_UPPER));
 
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new ToggleHeightCommand());

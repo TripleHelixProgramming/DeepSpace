@@ -54,7 +54,7 @@ public class JesterArm extends Subsystem {
         armSlave.configFactoryDefault();
         armMaster.configFactoryDefault();
 
-        currentArmPreset = ArmPreset.FRONT_HATCH_LOWER;
+        currentArmPreset = ArmPreset.FRONT_HATCH_UPPER;
 
 		armSlave.follow(armMaster);
 		armSlave.setNeutralMode(NeutralMode.Brake);
@@ -114,7 +114,7 @@ public class JesterArm extends Subsystem {
     }
 
     public void setArmMotionMagic(int pos) {
-        // armMaster.set(ControlMode.MotionMagic, pos);
+        armMaster.set(ControlMode.MotionMagic, pos);
     }
 
     public int getArmPos() {
@@ -145,6 +145,8 @@ public class JesterArm extends Subsystem {
     // Put items in here that you want updated on SmartDash during disableperiodic()
     public void updateSmartDash() {
         SmartDashboard.putNumber("Arm Pos", getArmPos());
+        SmartDashboard.putNumber("WristAngle", currentArmPreset.getWristAngle());
+        SmartDashboard.putNumber("Shoulder Angle", currentArmPreset.getShoulderAngle());
         SmartDashboard.putNumber("Arm Lower Limit", reverseSoftLimit);
         SmartDashboard.putNumber("Arm Upper Limit", fwdSoftLimit);
     }

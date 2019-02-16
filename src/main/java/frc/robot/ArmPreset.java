@@ -16,7 +16,8 @@ public enum ArmPreset {
     FRONT_HATCH_MIDDLE(0, 0),       
     FRONT_BALL_MIDDLE(20, 0),         
     FRONT_HATCH_UPPER(70, 30),         
-    FRONT_BALL_UPPER(80, 30),        
+    FRONT_BALL_UPPER(80, 30), 
+    TRANSITION(90, 90),      
     BACK_BALL_UPPER(100, 150),     
     BACK_HATCH_UPPER(110, 150),       
     BACK_BALL_MIDDLE(160, 180),       
@@ -39,6 +40,14 @@ public enum ArmPreset {
     private ArmPreset(int shoulder_angle, int wrist_angle) {
         this.shoulder_angle = shoulder_angle;
         this.wrist_angle = wrist_angle;
+    }
+
+    public int getWristAngle() {
+        return wrist_angle;
+    }
+
+    public int getShoulderAngle() {
+        return shoulder_angle;
     }
 
     public int CalculateArmPos() {

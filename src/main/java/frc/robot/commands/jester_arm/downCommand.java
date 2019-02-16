@@ -38,12 +38,12 @@ public class downCommand extends Command {
       JesterArm.getInstance().goTo(ArmPreset.FRONT_HATCH_LOWER);
       break;
     case FRONT_HATCH_MIDDLE:
-      if (CargoIntake.getInstance().isDown()) {
-        CargoIntake.getInstance().up();
-        CargoIntake.getInstance().off();
-      } else {
+      // if (CargoIntake.getInstance().isDown()) {
+      //   CargoIntake.getInstance().up();
+      //   CargoIntake.getInstance().off();
+      // } else {
         JesterArm.getInstance().goTo(ArmPreset.FRONT_BALL_LOWER);
-      }
+      // }
       break;
     case FRONT_BALL_MIDDLE:
       JesterArm.getInstance().goTo(ArmPreset.FRONT_HATCH_MIDDLE);

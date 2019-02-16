@@ -35,6 +35,6 @@ public class MoveJesterTo extends CommandGroup {
     // arm.
 
     addParallel(new MoveArmTo(armPreset));
-    addSequential(new MoveWristTo(armPreset));
+    addParallel(new MoveWristTo(armPreset));
   }
 }

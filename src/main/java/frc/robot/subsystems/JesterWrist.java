@@ -25,8 +25,8 @@ public class JesterWrist extends Subsystem {
 
     private TalonSRX wristMotor = new TalonSRX(RobotMap.WRIST_ID);
 
-    public static int WRIST_ACCELERATION = 50;
-    public static int WRIST_CRUISE = 4;
+    public static int WRIST_ACCELERATION = 180;
+    public static int WRIST_CRUISE = 25;
 
     private static JesterWrist INSTANCE = new JesterWrist();
 
@@ -74,15 +74,13 @@ public class JesterWrist extends Subsystem {
 
     public void setWristSoftLimits() {
 
-        int curArmPos, lowerLimit, upperLimit;
+        int lowerLimit, upperLimit;
         ArmPreset curArmPreset; 
 
         // Dynamially set wrist soft limits as arm positions changes.
-        curArmPos = JesterArm.getInstance().getArmPos();
         curArmPreset = JesterArm.getInstance().getCurrentArmPreset();
-
-        lowerLimit = curArmPreset.getWristLowerLimit(curArmPos);
-        upperLimit = curArmPreset.getWristUpperLimit(curArmPos);
+        lowerLimit = curArmPreset.getWristLowerLimit(curArmPreset.getShoulderAngle());
+        upperLimit = curArmPreset.getWristUpperLimit(curArmPreset.getShoulderAngle());
 
         wristMotor.configReverseSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
         wristMotor.configReverseSoftLimitThreshold(lowerLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
@@ -115,7 +113,7 @@ public class JesterWrist extends Subsystem {
     }
 
     private void setWristMotionMagic(int pos) {
-        // wristMotor.set(ControlMode.MotionMagic, pos);
+        wristMotor.set(ControlMode.MotionMagic, pos);
     }
 
     public void stop() {
@@ -142,7 +140,7 @@ public class JesterWrist extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        // setDefaultCommand(new FollowArm());
-        setDefaultCommand(new StopWrist());
+        setDefaultCommand(new FollowArm());
+        // setDefaultCommand(new StopWrist());
     }
 }

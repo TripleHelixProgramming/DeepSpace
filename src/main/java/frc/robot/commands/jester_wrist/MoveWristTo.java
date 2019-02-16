@@ -15,7 +15,7 @@ public class MoveWristTo extends Command {
 
   private ArmPreset preset;
   
-  public MoveWristTo(ArmPreset pos) {
+  public MoveWristTo(ArmPreset preset) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(JesterWrist.getInstance());
