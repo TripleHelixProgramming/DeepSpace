@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.jester_arm.DriveArmByJoystick;
 import frc.robot.commands.jester_arm.StopArm;
+import frc.robot.ArmPreset;
 
 public class JesterArm extends Subsystem {
 
@@ -29,47 +30,8 @@ public class JesterArm extends Subsystem {
     public static int ARM_ACCELERATION = 30;
     public static int ARM_CRUISE = 4;
 
-    private int OFFSET = 0;    // Difference in pot readings between bots.
-
-    //  Bot B (Practice Bot)  FRONT_LIMIT 559   VERTICAL 422   BACK_LIMIT  284
-    //  Bot A (Comp Bot)  FRONT_LIMIT    VERTICAL    BACK_LIMIT  
-    //  -453 -422  -392
-    public enum ArmPos {
-        // STOW(599),
-        FRONT_LIMIT(-460),
-        FRONT(-453),
-        FRONT_BALL_UPPER(-439),
-        TRANSITION(-422),
-        BACK_BALL_UPPER(-405), 
-        BACK(-392),
-        // FRONT_HATCH_LOWER(ArmPos.FRONT_LIMIT.pos-10),
-        // FRONT_BALL_LOWER(ArmPos.FRONT_LIMIT.pos-20),
-        // FRONT_HATCH_MIDDLE(ArmPos.FRONT_LIMIT.pos-30),
-        // FRONT_BALL_MIDDLE(ArmPos.FRONT_LIMIT.pos-40),
-        // FRONT_HATCH_UPPER(ArmPos.FRONT_LIMIT.pos-50),
-        // FRONT_BALL_UPPER(ArmPos.FRONT_LIMIT.pos-55),
-        // BACK_BALL_UPPER(ArmPos.FRONT_LIMIT.pos-78),
-        // BACK_HATCH_UPPER(ArmPos.FRONT_LIMIT.pos-73),
-        // BACK_BALL_MIDDLE(ArmPos.FRONT_LIMIT.pos-83),
-        // BACK_HATCH_MIDDLE(ArmPos.FRONT_LIMIT.pos-93),
-        // BACK_BALL_LOWER(ArmPos.FRONT_LIMIT.pos-103),
-        // BACK_HATCH_LOWER(ArmPos.FRONT_LIMIT.pos-113),
-        // BACK_LIMIT(ArmPos.FRONT_LIMIT.pos-123);
-        BACK_LIMIT(-385);
-
-        private final int pos;
-
-        private ArmPos(int pos) {
-            this.pos = pos;
-        }
-
-        public int getPos() {
-            return pos;
-        }
-    }
-
     private static JesterArm INSTANCE = new JesterArm();
-    private ArmPos currentArmPreset = ArmPos.FRONT_LIMIT;
+    private ArmPreset currentArmPreset = ArmPreset.BACK_HATCH_UPPER;
 
     PowerDistributionPanel pdp = new PowerDistributionPanel();
 
@@ -90,7 +52,7 @@ public class JesterArm extends Subsystem {
         armSlave.configFactoryDefault();
         armMaster.configFactoryDefault();
 
-        currentArmPreset = ArmPos.FRONT_LIMIT;
+        currentArmPreset = ArmPreset.FRONT_HATCH_LOWER;
 
 		armSlave.follow(armMaster);
 		armSlave.setNeutralMode(NeutralMode.Brake);
@@ -117,7 +79,9 @@ public class JesterArm extends Subsystem {
         armMaster.configPeakCurrentDuration(100, 0);
         armMaster.enableCurrentLimit(true);
 
-        setArmSoftLimits(ArmPos.FRONT_LIMIT.pos, ArmPos.BACK_LIMIT.pos);
+        int reverseSoftLimit = ArmPreset.FRONT_BALL_MIDDLE.CalculateArmPos();
+        int fwdSoftLimit = ArmPreset.BACK_BALL_MIDDLE.CalculateArmPos();
+        setArmSoftLimits(reverseSoftLimit, fwdSoftLimit);
         setArmMotionProfile(ARM_ACCELERATION, ARM_CRUISE);
 
         // The arm starts the match in a one-time docked position.  Move arm from
@@ -129,45 +93,43 @@ public class JesterArm extends Subsystem {
         HelixLogger.getInstance().addDoubleSource("ARM MASTER CURRENT", armMaster::getOutputCurrent);
         HelixLogger.getInstance().addDoubleSource("ARM SLAVE", () -> pdp.getCurrent(RobotMap.ARM_SLAVE_ID));
     }
-
-    public void setArmHeight(int pos) {
-        armMaster.set(ControlMode.Position, pos);
-    }
     
     // Move arm from docked position (at start of match) to front lower scoring position.
     public void unDockArm() {
         // setArmMotionMagic(ArmPos.FRONT_HATCH_LOWER);
     }
 
-    public void setArmMotionMagic(ArmPos preset) {
-        setArmMotionMagic(preset.getPos());
+    public void goTo(ArmPreset preset) {
+        int newPos = preset.CalculateArmPos();
         currentArmPreset = preset;
-    }
 
-    public void setArmMotionMagic(int pos) {
-        armMaster.set(ControlMode.MotionMagic, pos);
-    }
-
-    public void goTo(ArmPos pos) {
-        goTo(pos.getPos());
+        SmartDashboard.putNumber("Calc Arm Pos", newPos);
+        setArmMotionMagic(newPos);
     }
 
     public void goTo(int pos) {
         setArmMotionMagic(pos);
     }
 
+    public void setArmMotionMagic(int pos) {
+        armMaster.set(ControlMode.MotionMagic, pos);
+    }
+
     public int getArmPos() {
         return armMaster.getSelectedSensorPosition(0);
     }
 
-    public ArmPos getCurrentArmPreset() {
+    public ArmPreset getCurrentArmPreset() {
         return currentArmPreset;         
     }
 
     public void setArmSoftLimits(int reverseSoftLimit, int forwardSoftLimit) {
+
+        SmartDashboard.putNumber("Arm Lower Limit", reverseSoftLimit);
         armMaster.configReverseSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
         armMaster.configReverseSoftLimitThreshold(reverseSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
 
+        SmartDashboard.putNumber("Arm Upper Limit", forwardSoftLimit);
         armMaster.configForwardSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
         armMaster.configForwardSoftLimitThreshold(forwardSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
     }
@@ -188,7 +150,7 @@ public class JesterArm extends Subsystem {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Arm Pos", getArmPos());
+        updateSmartDash(); 
     }
 
     @Override

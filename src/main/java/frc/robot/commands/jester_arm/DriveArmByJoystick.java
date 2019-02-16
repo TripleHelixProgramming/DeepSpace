@@ -4,15 +4,14 @@ import com.team2363.logger.HelixEvents;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.ArmPreset;
 import frc.robot.OI;
 import frc.robot.subsystems.JesterArm;
 import frc.robot.subsystems.JesterWrist;
-import frc.robot.subsystems.JesterArm.ArmPos;
 
 public class DriveArmByJoystick extends Command {
 
     private JesterArm jesterArm = JesterArm.getInstance();
-    private JesterWrist jesterWrist = JesterWrist.getInstance();
 
     int position;
 
@@ -31,20 +30,19 @@ public class DriveArmByJoystick extends Command {
     protected void execute() {
 
         double error;
+        int backLimit = ArmPreset.BACK_HATCH_LOWER.CalculateArmPos();
+        int frontLimit = ArmPreset.FRONT_HATCH_LOWER.CalculateArmPos();
 
         position += OI.getInstance().getArmPower() * 10;
-        if (position > ArmPos.BACK_LIMIT.getPos()) {
-            position = ArmPos.BACK_LIMIT.getPos();
-        } else if (position < ArmPos.FRONT_LIMIT.getPos()) {
-            position = ArmPos.FRONT_LIMIT.getPos();
+        if (position > backLimit) {
+            position = backLimit;
+        } else if (position < frontLimit) {
+            position = frontLimit;
         }
 
         jesterArm.setArmMotionMagic(position);
 
-        error = position - jesterArm.getArmPos();
         SmartDashboard.putNumber("Arm Manual Position", position);
-        SmartDashboard.putNumber("Arm Error", error);
-
     }
 
     @Override

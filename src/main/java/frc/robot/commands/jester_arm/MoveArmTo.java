@@ -5,21 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.jester_wrist;
+package frc.robot.commands.jester_arm;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.JesterWrist;
-import frc.robot.subsystems.JesterWrist.Wrist;
+import frc.robot.subsystems.JesterArm;
+import frc.robot.ArmPreset;
+ 
 
-public class MoveTo extends Command {
+public class MoveArmTo extends Command {
 
-  private Wrist pos;
-  
-  public MoveTo(Wrist pos) {
+  private ArmPreset armPreset;
+
+  public MoveArmTo(ArmPreset armPreset) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(JesterWrist.getInstance());
-    this.pos = pos;
+
+    requires(JesterArm.getInstance());
+    this.armPreset = armPreset;
   }
 
   // Called just before this Command runs the first time
@@ -30,7 +32,7 @@ public class MoveTo extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    JesterWrist.getInstance().setWristPos(pos);
+     JesterArm.getInstance().goTo(armPreset);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -49,4 +51,5 @@ public class MoveTo extends Command {
   @Override
   protected void interrupted() {
   }
+
 }

@@ -17,15 +17,13 @@ import frc.arcs.TurnScalingArc;
 import frc.robot.camera.CAMERA;
 import frc.robot.commands.FollowArc;
 import frc.robot.commands.Auto.FollowArcTesting;
+import frc.robot.commands.Auto.MoveJesterTo;
 import frc.robot.commands.drivetrain.driveByAssistJosh;
 import frc.robot.commands.drivetrain.driveByCamera;
 import frc.robot.commands.drivetrain.driveByDocking;
 import frc.robot.commands.drivetrain.driveByDockingPID;
 import frc.robot.commands.drivetrain.driveByVision;
-import frc.robot.commands.jester_arm.goTo;
-import frc.robot.commands.jester_wrist.MoveTo;
-import frc.robot.subsystems.JesterArm.ArmPos;
-import frc.robot.subsystems.JesterWrist.Wrist;
+
 
 // import frc.robot.commands.drivetrain.driveByDockingPID;
 // import frc.robot.commands.drivetrain.aimByVision;
@@ -72,13 +70,13 @@ public class OI {
 
       new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArcTesting());
 
-      // new JoystickButton(operator, ControllerMap.B).whenPressed(new goTo(ArmPos.FRONT));
-      // new JoystickButton(operator, ControllerMap.X).whenPressed(new goTo(ArmPos.BACK));
-      // new JoystickButton(operator, ControllerMap.Y).whenPressed(new goTo(ArmPos.TRANSITION));
+      // new JoystickButton(operator, ControllerMap.B).whenPressed(new MoveArmTo(ArmPreset.FRONT_BALL_UPPER));
+      // new JoystickButton(operator, ControllerMap.X).whenPressed(new MoveArmTo(ArmPreset.FRONT_HATCH_UPPER));
+      // new JoystickButton(operator, ControllerMap.Y).whenPressed(new MoveArmTo(ArmPreset.BACK_HATCH_UPPER));
 
-      new JoystickButton(operator, ControllerMap.B).whenPressed(new MoveTo(Wrist.FRONT));
-      new JoystickButton(operator, ControllerMap.X).whenPressed(new MoveTo(Wrist.BACK));
-      new JoystickButton(operator, ControllerMap.Y).whenPressed(new MoveTo(Wrist.TRANSITION));
+      new JoystickButton(operator, ControllerMap.B).whenPressed(new MoveJesterTo(ArmPreset.FRONT_BALL_UPPER));
+      new JoystickButton(operator, ControllerMap.X).whenPressed(new MoveJesterTo(ArmPreset.FRONT_HATCH_UPPER));
+      new JoystickButton(operator, ControllerMap.Y).whenPressed(new MoveJesterTo(ArmPreset.BACK_HATCH_UPPER));
 
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new ToggleHeightCommand());
 
