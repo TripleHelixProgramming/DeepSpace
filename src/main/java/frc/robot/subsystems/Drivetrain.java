@@ -66,10 +66,10 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   private LeaderBobTalonSRX right = new LeaderBobTalonSRX(RobotMap.RIGHT_MASTER_ID,
       rightSlave1, rightSlave2);
 
-  private TalonSRX cgMotor = new TalonSRX(RobotMap.CARGO_LEFT_ID);
+  private TalonSRX cargoGrabberLeft = new TalonSRX(RobotMap.CARGO_LEFT_ID);
     
   PowerDistributionPanel pdp = new PowerDistributionPanel();
-  private PigeonIMU pigeon = new PigeonIMU(cgMotor);
+  private PigeonIMU pigeon = new PigeonIMU(cargoGrabberLeft);
 
   private Drivetrain() {
     setPIDFValues();

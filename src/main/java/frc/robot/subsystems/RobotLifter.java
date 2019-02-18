@@ -8,13 +8,17 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.team2363.logger.HelixLogger;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Utility;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.robot_lifter.StopLifter;
 
@@ -43,7 +47,10 @@ public class RobotLifter extends Subsystem {
   }
   
   public RobotLifter(){ 
-    setupLogs();
+    // setupLogs();
+
+    left.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+		left.overrideLimitSwitchesEnable(true);
 
     right.setNeutralMode(NeutralMode.Brake);
     left.setNeutralMode(NeutralMode.Brake);
@@ -53,8 +60,20 @@ public class RobotLifter extends Subsystem {
 		left.configPeakCurrentLimit(60, 0);
 		left.configPeakCurrentDuration(100, 0);
     left.enableCurrentLimit(true);
+
   }
   
+  @Override
+	public void periodic() {
+    SmartDashboard.putBoolean("LimitSwitch", isLimitSwitchTriggered());
+  }
+
+  public boolean isLimitSwitchTriggered() {
+    return left.getSensorCollection().isRevLimitSwitchClosed();
+  }
+
+  
+
   public void setPower(double power){
     left.set(ControlMode.PercentOutput,  power);
     right.set(ControlMode.PercentOutput, -power);
