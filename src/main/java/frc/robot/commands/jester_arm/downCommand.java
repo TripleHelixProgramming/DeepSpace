@@ -13,6 +13,7 @@ import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.JesterArm;
 
 public class downCommand extends Command {
+
   public downCommand() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);

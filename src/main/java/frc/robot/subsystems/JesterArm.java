@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.jester_arm.DriveArmByJoystick;
+import frc.robot.commands.jester_arm.MoveArmTo;
 import frc.robot.commands.jester_arm.StopArm;
 import frc.robot.ArmPreset;
 
@@ -282,6 +283,7 @@ public class JesterArm extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new StopArm());
+        // setDefaultCommand(new StopArm());
+        setDefaultCommand(new MoveArmTo(currentArmPreset));
     }
 }

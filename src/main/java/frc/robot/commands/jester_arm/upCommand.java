@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.JesterArm;
 
 public class upCommand extends Command {
+
   public upCommand() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -26,7 +27,7 @@ public class upCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    
+    // isDone = false;
     SmartDashboard.putString("UpCommand: ", "Executing");
     JesterArm.getInstance().Up();
   }
@@ -34,7 +35,7 @@ public class upCommand extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return (true);
   }
 
   // Called once after isFinished returns true
