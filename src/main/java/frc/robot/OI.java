@@ -23,6 +23,8 @@ import frc.robot.commands.drivetrain.driveByDocking;
 import frc.robot.commands.drivetrain.driveByDockingPID;
 import frc.robot.commands.drivetrain.driveByVision;
 import frc.robot.commands.jester_wrist.MoveTo;
+import frc.robot.commands.robot_lifter.ExtendLifter;
+import frc.robot.commands.robot_lifter.burstExtendLifter;
 import frc.robot.subsystems.JesterWrist.Wrist;
 
 // import frc.robot.commands.drivetrain.driveByDockingPID;
@@ -56,19 +58,22 @@ public class OI {
   private OI() {
     //Driver Controls
 
-      new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByDocking(CAMERA.FRONT));
-      new JoystickButton(driver, ControllerMap.B).whileHeld(new driveByDocking(CAMERA.BACK));
+      // new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByDocking(CAMERA.FRONT));
+      // new JoystickButton(driver, ControllerMap.B).whileHeld(new driveByDocking(CAMERA.BACK));
 
-      new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.FRONT));
-      new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.BACK));
+      // new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.FRONT));
+      // new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.BACK));
 
-      new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByVision(CAMERA.FRONT));
-      new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByVision(CAMERA.BACK));
+      // new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByVision(CAMERA.FRONT));
+      // new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByVision(CAMERA.BACK));
 
       // new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByDockingPID(CAMERA.FRONT));
       // new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByDockingPID(CAMERA.BACK));
 
-      new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArcTesting());
+      // new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArcTesting());
+      new JoystickButton(driver, ControllerMap.B).whileHeld(new burstExtendLifter());
+      new JoystickButton(driver, ControllerMap.Y).whileHeld(new ExtendLifter());
+
 
       // new JoystickButton(operator, ControllerMap.A).whenPressed(new MoveTo(Wrist.FRONT));
       // new JoystickButton(operator, ControllerMap.B).whenPressed(new MoveTo(Wrist.BACK));
