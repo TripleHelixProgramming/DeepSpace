@@ -43,7 +43,7 @@ public class RobotLifter extends Subsystem {
   }
   
   public RobotLifter(){ 
-    setupLogs();
+    // setupLogs();
 
     right.setNeutralMode(NeutralMode.Brake);
     left.setNeutralMode(NeutralMode.Brake);

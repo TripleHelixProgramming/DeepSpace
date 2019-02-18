@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team2363.logger.HelixEvents;
 import com.team2363.logger.HelixLogger;
@@ -64,15 +65,16 @@ public class Drivetrain extends Subsystem implements FollowsArc {
       leftSlave1, leftSlave2);
   private LeaderBobTalonSRX right = new LeaderBobTalonSRX(RobotMap.RIGHT_MASTER_ID,
       rightSlave1, rightSlave2);
+  private TalonSRX cargoGrabberLeft = new TalonSRX(RobotMap.CARGO_LEFT_ID);
     
   PowerDistributionPanel pdp = new PowerDistributionPanel();
-  private PigeonIMU pigeon = new PigeonIMU(rightSlave2);
+  private PigeonIMU pigeon = new PigeonIMU(cargoGrabberLeft);
 
   private Drivetrain() {
     setPIDFValues();
     setBrakeMode(NeutralMode.Brake);
     setupSensors();
-    setupLogs();
+    // setupLogs();
 
     left.setSensorPhase(false);
     right.setSensorPhase(false);

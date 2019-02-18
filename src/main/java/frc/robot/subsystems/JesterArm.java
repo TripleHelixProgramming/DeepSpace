@@ -79,7 +79,7 @@ public class JesterArm extends Subsystem {
 
     public JesterArm() {
         super("Jester Arm Subsystem");
-        setupLogs();
+        // setupLogs();
 
         armSlave.configFactoryDefault();
         armMaster.configFactoryDefault();

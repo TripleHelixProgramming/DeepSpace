@@ -31,7 +31,7 @@ public class CargoGrabber extends Subsystem {
   private static CargoGrabber INSTANCE = new CargoGrabber();
 
   public CargoGrabber() {
-    setupLogs();
+    // setupLogs();
   }
 
   public static CargoGrabber getInstance() {
