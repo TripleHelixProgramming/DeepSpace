@@ -11,7 +11,7 @@ import com.team2363.logger.HelixEvents;
 import com.team2363.logger.HelixLogger;
 // import com.team319.follower.FollowArc;
 import frc.robot.commands.FollowArc;
-
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -27,6 +27,7 @@ import frc.arcs.TurnScalingArc;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.JesterArm;
 import frc.robot.subsystems.JesterWrist;
+import frc.robot.subsystems.RobotLifter;
 import frc.robot.subsystems.HatchGrabber;
 import frc.robot.subsystems.CargoIntake;
 
@@ -42,6 +43,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
   //public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static OI m_oi;
+
+	private final Compressor compressor = new Compressor();
+
 
   Command autonomousCommand;
 
@@ -64,7 +68,7 @@ public class Robot extends TimedRobot {
     // CargoGrabber.getInstance();
     // HatchGrabber.getInstance();
     // CargoIntake.getInstance();
-    // RobotLifter.getInstance();
+    RobotLifter.getInstance();
   }
 
   /**

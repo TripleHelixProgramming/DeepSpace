@@ -66,7 +66,7 @@ public class JesterWrist extends Subsystem {
     public JesterWrist() {
         super("Jester Wrist Subsystem");
 
-        setupLogs();
+        // setupLogs();
         wristMotor.configFactoryDefault();
 
         // Protect the motors and protect from brown out

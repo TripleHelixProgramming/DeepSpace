@@ -35,7 +35,7 @@ public class HatchGrabber extends Subsystem {
   }
 
   public HatchGrabber () {
-    setupLogs();
+    // setupLogs();
   }
   public void hatchGrab(){
     grabber.set(DoubleSolenoid.Value.kForward);
