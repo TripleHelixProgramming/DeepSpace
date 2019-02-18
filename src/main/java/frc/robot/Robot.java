@@ -29,6 +29,7 @@ import frc.robot.subsystems.JesterArm;
 import frc.robot.subsystems.JesterWrist;
 import frc.robot.subsystems.RobotLifter;
 import frc.robot.subsystems.HatchGrabber;
+import frc.robot.subsystems.CargoGrabber;
 import frc.robot.subsystems.CargoIntake;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -57,17 +58,18 @@ public class Robot extends TimedRobot {
   public void robotInit() { 
     initializeSubsystems();
     Drivetrain.getInstance().resetHeading();
+
   }
 
   private void initializeSubsystems() {
     OI.getInstance();
     Drivetrain.getInstance();
 
-    JesterArm.getInstance();
-    JesterWrist.getInstance();
+    // JesterArm.getInstance();
+    // JesterWrist.getInstance();
     // CargoGrabber.getInstance();
     // HatchGrabber.getInstance();
-    // CargoIntake.getInstance();
+    CargoIntake.getInstance();
     RobotLifter.getInstance();
   }
 
@@ -96,8 +98,8 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
 
     // SmartDashboard.putNumber("Pigeon Yaw", Drivetrain.getInstance().getYaw());
-    JesterArm.getInstance().updateSmartDash();
-    JesterWrist.getInstance().updateSmartDash();
+    // JesterArm.getInstance().updateSmartDash();
+    // JesterWrist.getInstance().updateSmartDash();
 
   }
 

@@ -43,14 +43,12 @@ public class HatchGrabber extends Subsystem {
   public void hatchRelease(){
     grabber.set(DoubleSolenoid.Value.kReverse);
   }
-  public boolean hasHatch(){
-    return (HatchLimit.get());   
-  }
+  
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new GrabHatch());
+    // setDefaultCommand(new GrabHatch());
   }
 
   private void setupLogs() {

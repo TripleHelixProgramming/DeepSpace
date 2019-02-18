@@ -31,7 +31,6 @@ public class ReleaseCargo extends Command {
   @Override
   protected void execute() {
     CargoGrabber.getInstance().eject();
-    CargoGrabber.getInstance().openGrabber();
   }
 
   // Make this return true when this Command no longer needs to run execute()

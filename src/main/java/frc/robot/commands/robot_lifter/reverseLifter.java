@@ -5,38 +5,27 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.hatch;
-
-import com.team2363.logger.HelixEvents;
+package frc.robot.commands.robot_lifter;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.RumbleController;
-import frc.robot.subsystems.CargoGrabber;
-import frc.robot.subsystems.HatchGrabber;
+import frc.robot.subsystems.RobotLifter;
 
-public class GrabHatch extends Command {
-
-  Command rumbleCommand = new RumbleController();
-
-  public GrabHatch() {
+public class reverseLifter extends Command {
+  public reverseLifter() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(HatchGrabber.getInstance());
-    // requires(CargoGrabber.getInstance());
+    RobotLifter.getInstance();
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    HelixEvents.getInstance().addEvent("GRAB_HATCH", "Starting to grab hatch");
-    // CargoGrabber.getInstance().openGrabber();
-    // HatchGrabber.getInstance().hatchRelease();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    HatchGrabber.getInstance().hatchGrab();
+    RobotLifter.getInstance().setPower(-0.1);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -44,10 +33,10 @@ public class GrabHatch extends Command {
   protected boolean isFinished() {
     return false;
   }
+
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    // HelixEvents.getInstance().addEvent("GRAB_HATCH", "Ending grab hatch");
   }
 
   // Called when another command which requires one or more of the same
