@@ -186,7 +186,7 @@ public class JesterArm extends Subsystem {
             goTo(ArmPreset.BACK_BALL_LOWER);
             break;
         case BACK_BALL_MIDDLE:
-            goTo(ArmPreset.BACK_HATCH_LOWER);
+            goTo(ArmPreset.BACK_HATCH_MIDDLE);
             break;
         case BACK_HATCH_UPPER:
             goTo(ArmPreset.BACK_BALL_MIDDLE);
@@ -201,32 +201,44 @@ public class JesterArm extends Subsystem {
 
     public void toggleArm() {
         switch (currentArmPreset) {
-            case FRONT_HATCH_LOWER:
-              goTo(ArmPreset.BACK_HATCH_LOWER);
-              break;
-            case BACK_HATCH_LOWER:
-              goTo(ArmPreset.FRONT_HATCH_LOWER);
-              break;
-            case FRONT_HATCH_MIDDLE:
-              goTo(ArmPreset.BACK_HATCH_MIDDLE);
-              break;
-            case BACK_HATCH_MIDDLE:
-              goTo(ArmPreset.FRONT_HATCH_MIDDLE);
-              break;
-            case FRONT_BALL_LOWER:
-              goTo(ArmPreset.BACK_BALL_LOWER);
-              break;
-            case BACK_BALL_LOWER:
-              break;
-            case FRONT_BALL_MIDDLE:
-              goTo(ArmPreset.BACK_BALL_MIDDLE);
-              break;
-            case BACK_BALL_MIDDLE:
-              goTo(ArmPreset.FRONT_BALL_MIDDLE);
-              break;
-            default:
-              break;
-            }
+        // case FRONT_HATCH_LOWER:
+        // goTo(ArmPreset.BACK_HATCH_LOWER);
+        // break;
+        // case BACK_HATCH_LOWER:
+        // goTo(ArmPreset.FRONT_HATCH_LOWER);
+        // break;
+        // case FRONT_HATCH_MIDDLE:
+        // goTo(ArmPreset.BACK_HATCH_MIDDLE);
+        // break;
+        // case BACK_HATCH_MIDDLE:
+        // goTo(ArmPreset.FRONT_HATCH_MIDDLE);
+        // break;
+        // case FRONT_BALL_LOWER:
+        // goTo(ArmPreset.BACK_BALL_LOWER);
+        // break;
+        // case BACK_BALL_LOWER:
+        // goTo(ArmPreset.FRONT_BALL_LOWER);
+        // break;
+        case FRONT_BALL_MIDDLE:
+            goTo(ArmPreset.BACK_BALL_MIDDLE);
+            break;
+        case BACK_BALL_MIDDLE:
+            goTo(ArmPreset.FRONT_BALL_MIDDLE);
+            break;
+        case FRONT_BALL_UPPER:
+            goTo(ArmPreset.BACK_BALL_UPPER);
+            break;
+        case BACK_BALL_UPPER:
+            goTo(ArmPreset.FRONT_BALL_UPPER);
+        case FRONT_HATCH_UPPER:
+            goTo(ArmPreset.BACK_HATCH_UPPER);
+            break;
+        case BACK_HATCH_UPPER:
+            goTo(ArmPreset.FRONT_HATCH_UPPER);
+            break;
+        default:
+            break;
+        }
     }
 
     public void goTo(int pos) {
@@ -284,6 +296,6 @@ public class JesterArm extends Subsystem {
     @Override
     protected void initDefaultCommand() {
         // setDefaultCommand(new StopArm());
-        setDefaultCommand(new MoveArmTo(currentArmPreset));
+        // setDefaultCommand(new MoveArmTo(currentArmPreset));
     }
 }
