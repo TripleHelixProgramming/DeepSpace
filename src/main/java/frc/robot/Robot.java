@@ -11,7 +11,7 @@ import com.team2363.logger.HelixEvents;
 import com.team2363.logger.HelixLogger;
 // import com.team319.follower.FollowArc;
 import frc.robot.commands.FollowArc;
-
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -42,6 +42,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
   //public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static OI m_oi;
+
+	private final Compressor compressor = new Compressor();
+
 
   Command autonomousCommand;
 
