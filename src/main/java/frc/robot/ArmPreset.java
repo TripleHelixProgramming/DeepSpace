@@ -56,7 +56,11 @@ public enum ArmPreset {
 
     public int CalculateWristPos() {
         return (int) (m_wrist * wrist_angle + b_wrist);
-    }        
+    }     
+    
+    public int getShoulderAngle(int armPos) {
+        return (int)((armPos + b_shoulder) / m_shoulder);
+    }
     
     public int getWristLowerLimit(int curArmPos) {
         int wristLowerLimit;

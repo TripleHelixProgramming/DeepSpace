@@ -33,6 +33,10 @@ public class FollowArm extends Command {
   protected void execute() {
     // Set the wrist position based of the arm position.
 
+    // int armPos = JesterArm.getInstance().getArmPos();
+    // int wristPos = 
+    // JesterWrist.getInstance().setWristMotionMagic(wristPos);
+    
     ArmPreset armPreset = JesterArm.getInstance().getCurrentArmPreset();
     JesterWrist.getInstance().setWristPos(armPreset);
 }

@@ -31,7 +31,7 @@ public class JesterArm extends Subsystem {
     public static int ARM_CRUISE = 4;
 
     private static JesterArm INSTANCE = new JesterArm();
-    private ArmPreset currentArmPreset = ArmPreset.BACK_HATCH_UPPER;
+    private ArmPreset currentArmPreset = ArmPreset.FRONT_HATCH_LOWER;
 
     private int reverseSoftLimit, fwdSoftLimit;
 
@@ -54,19 +54,20 @@ public class JesterArm extends Subsystem {
         armSlave.configFactoryDefault();
         armMaster.configFactoryDefault();
 
-        currentArmPreset = ArmPreset.FRONT_HATCH_UPPER;
+        currentArmPreset = ArmPreset.FRONT_HATCH_LOWER;
 
-		armSlave.follow(armMaster);
-		armSlave.setNeutralMode(NeutralMode.Brake);
+        armSlave.follow(armMaster);
+        armSlave.setNeutralMode(NeutralMode.Brake);
         armSlave.configOpenloopRamp(0.2, 0);
 
         armMaster.setNeutralMode(NeutralMode.Brake);
         armMaster.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, RobotMap.CTRE_TIMEOUT_INIT);
         armMaster.configFeedbackNotContinuous(true, RobotMap.CTRE_TIMEOUT_INIT);
 
-        // Need to verify and set.  With positive motor direction sensor values should increase.
-        armMaster.setSensorPhase(true);   
-        armMaster.setInverted(false); 
+        // Need to verify and set. With positive motor direction sensor values should
+        // increase.
+        armMaster.setSensorPhase(true);
+        armMaster.setInverted(false);
 
         // PID Settings
         armMaster.config_kF(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
@@ -81,12 +82,12 @@ public class JesterArm extends Subsystem {
         armMaster.configPeakCurrentDuration(100, 0);
         armMaster.enableCurrentLimit(true);
 
-        reverseSoftLimit = ArmPreset.FRONT_BALL_MIDDLE.CalculateArmPos();
-        fwdSoftLimit = ArmPreset.BACK_BALL_MIDDLE.CalculateArmPos();
+        reverseSoftLimit = ArmPreset.FRONT_HATCH_LOWER.CalculateArmPos();
+        fwdSoftLimit = ArmPreset.BACK_HATCH_LOWER.CalculateArmPos();
         setArmSoftLimits(reverseSoftLimit, fwdSoftLimit);
         setArmMotionProfile(ARM_ACCELERATION, ARM_CRUISE);
 
-        // The arm starts the match in a one-time docked position.  Move arm from
+        // The arm starts the match in a one-time docked position. Move arm from
         // docked position to front lower scoring position.
         unDockArm();
     }
@@ -95,8 +96,9 @@ public class JesterArm extends Subsystem {
         HelixLogger.getInstance().addDoubleSource("ARM MASTER CURRENT", armMaster::getOutputCurrent);
         HelixLogger.getInstance().addDoubleSource("ARM SLAVE", () -> pdp.getCurrent(RobotMap.ARM_SLAVE_ID));
     }
-    
-    // Move arm from docked position (at start of match) to front lower scoring position.
+
+    // Move arm from docked position (at start of match) to front lower scoring
+    // position.
     public void unDockArm() {
         // setArmMotionMagic(ArmPos.FRONT_HATCH_LOWER);
     }
@@ -104,9 +106,126 @@ public class JesterArm extends Subsystem {
     public void goTo(ArmPreset preset) {
         int newPos = preset.CalculateArmPos();
         currentArmPreset = preset;
-
+        SmartDashboard.putString("goTo: ", preset.toString());
         SmartDashboard.putNumber("Calc Arm Pos", newPos);
         setArmMotionMagic(newPos);
+    }
+
+    public void Up() {
+        switch (currentArmPreset) {
+        case FRONT_BALL_UPPER:
+        case BACK_BALL_UPPER:
+            // Case where at top
+            break;
+        case FRONT_HATCH_LOWER:
+            goTo(ArmPreset.FRONT_BALL_LOWER);
+            break;
+        case FRONT_BALL_LOWER:
+            goTo(ArmPreset.FRONT_HATCH_MIDDLE);
+            break;
+        case FRONT_HATCH_MIDDLE:
+            goTo(ArmPreset.FRONT_BALL_MIDDLE);
+            break;
+        case FRONT_BALL_MIDDLE:
+            goTo(ArmPreset.FRONT_HATCH_UPPER);
+            break;
+        case FRONT_HATCH_UPPER:
+            goTo(ArmPreset.FRONT_BALL_UPPER);
+            break;
+        case BACK_HATCH_LOWER:
+            goTo(ArmPreset.BACK_BALL_LOWER);
+            break;
+        case BACK_BALL_LOWER:
+            goTo(ArmPreset.BACK_HATCH_MIDDLE);
+            break;
+        case BACK_HATCH_MIDDLE:
+            goTo(ArmPreset.BACK_BALL_MIDDLE);
+            break;
+        case BACK_BALL_MIDDLE:
+            goTo(ArmPreset.BACK_HATCH_UPPER);
+            break;
+        case BACK_HATCH_UPPER:
+            goTo(ArmPreset.BACK_BALL_UPPER);
+            break;
+        default:
+            break;
+        }
+    }
+
+    public void down() {
+        switch (currentArmPreset) {
+        case FRONT_HATCH_LOWER:
+        case BACK_HATCH_LOWER:
+            // Case where at bottom
+            break;
+        case FRONT_BALL_LOWER:
+            goTo(ArmPreset.FRONT_HATCH_LOWER);
+            break;
+        case FRONT_HATCH_MIDDLE:
+            // if (CargoIntake.getInstance().isDown()) {
+            // CargoIntake.getInstance().up();
+            // CargoIntake.getInstance().off();
+            // } else {
+            goTo(ArmPreset.FRONT_BALL_LOWER);
+            // }
+            break;
+        case FRONT_BALL_MIDDLE:
+            goTo(ArmPreset.FRONT_HATCH_MIDDLE);
+            break;
+        case FRONT_HATCH_UPPER:
+            goTo(ArmPreset.FRONT_BALL_MIDDLE);
+            break;
+        case FRONT_BALL_UPPER:
+            goTo(ArmPreset.FRONT_HATCH_UPPER);
+            break;
+        case BACK_BALL_LOWER:
+            goTo(ArmPreset.BACK_HATCH_LOWER);
+            break;
+        case BACK_HATCH_MIDDLE:
+            goTo(ArmPreset.BACK_BALL_LOWER);
+            break;
+        case BACK_BALL_MIDDLE:
+            goTo(ArmPreset.BACK_HATCH_LOWER);
+            break;
+        case BACK_HATCH_UPPER:
+            goTo(ArmPreset.BACK_BALL_MIDDLE);
+            break;
+        case BACK_BALL_UPPER:
+            goTo(ArmPreset.BACK_HATCH_UPPER);
+            break;
+        default:
+            break;
+        }
+    }
+
+    public void toggleArm() {
+        switch (currentArmPreset) {
+            case FRONT_HATCH_LOWER:
+              goTo(ArmPreset.BACK_HATCH_LOWER);
+              break;
+            case BACK_HATCH_LOWER:
+              goTo(ArmPreset.FRONT_HATCH_LOWER);
+              break;
+            case FRONT_HATCH_MIDDLE:
+              goTo(ArmPreset.BACK_HATCH_MIDDLE);
+              break;
+            case BACK_HATCH_MIDDLE:
+              goTo(ArmPreset.FRONT_HATCH_MIDDLE);
+              break;
+            case FRONT_BALL_LOWER:
+              goTo(ArmPreset.BACK_BALL_LOWER);
+              break;
+            case BACK_BALL_LOWER:
+              break;
+            case FRONT_BALL_MIDDLE:
+              goTo(ArmPreset.BACK_BALL_MIDDLE);
+              break;
+            case BACK_BALL_MIDDLE:
+              goTo(ArmPreset.FRONT_BALL_MIDDLE);
+              break;
+            default:
+              break;
+            }
     }
 
     public void goTo(int pos) {
@@ -122,7 +241,11 @@ public class JesterArm extends Subsystem {
     }
 
     public ArmPreset getCurrentArmPreset() {
-        return currentArmPreset;         
+        return currentArmPreset;
+    }
+
+    public void setCurrentArmPreset(ArmPreset preset) {
+        currentArmPreset = preset;
     }
 
     public void setArmSoftLimits(int reverseSoftLimit, int forwardSoftLimit) {
@@ -141,11 +264,12 @@ public class JesterArm extends Subsystem {
     public void stop() {
         armMaster.set(ControlMode.PercentOutput, 0.0);
     }
-    
+
     // Put items in here that you want updated on SmartDash during disableperiodic()
     public void updateSmartDash() {
         SmartDashboard.putNumber("Arm Pos", getArmPos());
         SmartDashboard.putNumber("WristAngle", currentArmPreset.getWristAngle());
+        SmartDashboard.putString("Current Preset", currentArmPreset.toString());
         SmartDashboard.putNumber("Shoulder Angle", currentArmPreset.getShoulderAngle());
         SmartDashboard.putNumber("Arm Lower Limit", reverseSoftLimit);
         SmartDashboard.putNumber("Arm Upper Limit", fwdSoftLimit);
@@ -153,7 +277,7 @@ public class JesterArm extends Subsystem {
 
     @Override
     public void periodic() {
-        updateSmartDash(); 
+        updateSmartDash();
     }
 
     @Override

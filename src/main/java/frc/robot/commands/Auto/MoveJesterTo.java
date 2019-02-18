@@ -34,7 +34,7 @@ public class MoveJesterTo extends CommandGroup {
     // a CommandGroup containing them would require both the chassis and the
     // arm.
 
-    addParallel(new MoveArmTo(armPreset));
-    addParallel(new MoveWristTo(armPreset));
+    // addParallel(new MoveArmTo(armPreset));
+    // addSequential(new MoveWristTo(armPreset));
   }
 }

@@ -112,8 +112,19 @@ public class JesterWrist extends Subsystem {
         setWristMotionMagic(newPos);
     }
 
-    private void setWristMotionMagic(int pos) {
-        wristMotor.set(ControlMode.MotionMagic, pos);
+    public void GoToRelatedPreset(int armPos) {
+
+        for (ArmPreset preset : ArmPreset.values()) {
+            if (preset.getShoulderAngle() == preset.getShoulderAngle(armPos)) {
+                SmartDashboard.putString("Related Preset", preset.toString());
+                setWristPos(preset);
+                return;
+            }
+        }
+    }
+
+    public void setWristMotionMagic(int pos) {
+        // wristMotor.set(ControlMode.MotionMagic, pos);
     }
 
     public void stop() {

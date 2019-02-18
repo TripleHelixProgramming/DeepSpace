@@ -8,7 +8,7 @@
 package frc.robot.commands.jester_arm;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.ArmPreset;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.JesterArm;
 
 public class upCommand extends Command {
@@ -26,45 +26,9 @@ public class upCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
-    ArmPreset currentArmPreset = JesterArm.getInstance().getCurrentArmPreset();
-
-    switch (currentArmPreset) {
-    case FRONT_HATCH_LOWER:
-      JesterArm.getInstance().goTo(ArmPreset.FRONT_BALL_LOWER);
-      break;
-    case FRONT_BALL_LOWER:
-      JesterArm.getInstance().goTo(ArmPreset.FRONT_HATCH_MIDDLE);
-      break;
-    case FRONT_HATCH_MIDDLE:
-      JesterArm.getInstance().goTo(ArmPreset.FRONT_BALL_MIDDLE);
-      break;
-    case FRONT_BALL_MIDDLE:
-      JesterArm.getInstance().goTo(ArmPreset.FRONT_HATCH_UPPER);
-      break;
-    case FRONT_HATCH_UPPER:
-      JesterArm.getInstance().goTo(ArmPreset.FRONT_BALL_UPPER);
-      break;
-    case FRONT_BALL_UPPER:
-      break;
-    case BACK_HATCH_LOWER:
-      JesterArm.getInstance().goTo(ArmPreset.BACK_BALL_LOWER);
-      break;
-    case BACK_BALL_LOWER:
-      JesterArm.getInstance().goTo(ArmPreset.BACK_HATCH_MIDDLE);
-      break;
-    case BACK_HATCH_MIDDLE:
-      JesterArm.getInstance().goTo(ArmPreset.BACK_BALL_MIDDLE);
-      break;
-    case BACK_BALL_MIDDLE:
-      JesterArm.getInstance().goTo(ArmPreset.BACK_HATCH_UPPER);
-      break;
-    case BACK_HATCH_UPPER:
-      JesterArm.getInstance().goTo(ArmPreset.BACK_BALL_UPPER);
-      break;
-    case BACK_BALL_UPPER:
-      break;
-    }
+    
+    SmartDashboard.putString("UpCommand: ", "Executing");
+    JesterArm.getInstance().Up();
   }
 
   // Make this return true when this Command no longer needs to run execute()
