@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.cargo_grabber.GrabCargo;
+import frc.robot.commands.cargo_grabber.openGrabber;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2363.logger.HelixLogger;
@@ -50,13 +52,18 @@ public class CargoGrabber extends Subsystem {
   }
 
   public void intake() {
-    leftWheel.set(ControlMode.PercentOutput, 0.35);
-    rightWheel.set(ControlMode.PercentOutput, -0.35);
+    leftWheel.set(ControlMode.PercentOutput, 0.15);
+    rightWheel.set(ControlMode.PercentOutput, 0.15);
   }
 
   public void eject() {
-    leftWheel.set(ControlMode.PercentOutput, -0.35);
-    rightWheel.set(ControlMode.PercentOutput, 0.35);
+    leftWheel.set(ControlMode.PercentOutput, -0.5);
+    rightWheel.set(ControlMode.PercentOutput, -0.50);
+  }
+
+  public void stop() {
+    leftWheel.set(ControlMode.PercentOutput, 0.0);
+    rightWheel.set(ControlMode.PercentOutput, 0.0);
   }
 
   public boolean isOpen() {
@@ -86,7 +93,7 @@ public class CargoGrabber extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new GrabCargo());
+    setDefaultCommand(new openGrabber());
   }
 
   private void setupLogs() {

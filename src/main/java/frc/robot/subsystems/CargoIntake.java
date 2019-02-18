@@ -35,7 +35,7 @@ public class CargoIntake extends Subsystem {
   private DoubleSolenoid solenoid = new DoubleSolenoid(CARGO_INTAKE_DEPLOY, CARGO_INTAKE_RETRACT);
 
   public void in() {
-    motor.set(ControlMode.PercentOutput, -0.4);
+    motor.set(ControlMode.PercentOutput, -0.2);
   }
 
   public void out() {

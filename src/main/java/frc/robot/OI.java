@@ -18,18 +18,25 @@ import frc.robot.camera.CAMERA;
 import frc.robot.commands.FollowArc;
 import frc.robot.commands.Auto.FollowArcTesting;
 import frc.robot.commands.Auto.MoveJesterTo;
+import frc.robot.commands.cargo_grabber.GrabCargo;
+import frc.robot.commands.cargo_grabber.ReleaseCargo;
+import frc.robot.commands.cargo_grabber.stopCargoGrabber;
+import frc.robot.commands.cargo_intake.DeployIntake;
+import frc.robot.commands.cargo_intake.RetractIntake;
 import frc.robot.commands.drivetrain.driveByAssistJosh;
 import frc.robot.commands.drivetrain.driveByCamera;
 import frc.robot.commands.drivetrain.driveByDocking;
 import frc.robot.commands.drivetrain.driveByDockingPID;
 import frc.robot.commands.drivetrain.driveByVision;
-
+import frc.robot.commands.hatch.GrabHatch;
+import frc.robot.commands.hatch.ReleaseHatch;
 import frc.robot.commands.jester_arm.MoveArmTo;
 import frc.robot.commands.jester_arm.ToggleArmCommand;
 import frc.robot.commands.jester_arm.downCommand;
 import frc.robot.commands.jester_arm.upCommand;
 import frc.robot.commands.robot_lifter.ExtendLifter;
 import frc.robot.commands.robot_lifter.burstExtendLifter;
+import frc.robot.commands.robot_lifter.reverseLifter;
 
 
 // import frc.robot.commands.drivetrain.driveByDockingPID;
@@ -76,8 +83,25 @@ public class OI {
       // new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByDockingPID(CAMERA.BACK));
 
       // new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArcTesting());
-//       new JoystickButton(driver, ControllerMap.B).whileHeld(new burstExtendLifter());
-//       new JoystickButton(driver, ControllerMap.Y).whileHeld(new ExtendLifter());
+
+      // new JoystickButton(driver, ControllerMap.B).whileHeld(new burstExtendLifter());
+      // new JoystickButton(driver, ControllerMap.Y).whenPressed(new ExtendLifter());
+      new JoystickButton(driver, ControllerMap.A).whileHeld(new reverseLifter());
+
+      // new JoystickButton(driver, ControllerMap.B).whenPressed(new ReleaseCargo());
+      // new JoystickButton(driver, ControllerMap.X).whenPressed(new GrabCargo());
+      // new JoystickButton(driver, ControllerMap.A).whenPressed(new stopCargoGrabber());
+
+      // new JoystickButton(driver, ControllerMap.B).whenPressed(new ReleaseHatch());
+      // new JoystickButton(driver, ControllerMap.X).whenPressed(new GrabHatch());
+      new JoystickButton(driver, ControllerMap.B).whenPressed(new DeployIntake());
+      new JoystickButton(driver, ControllerMap.X).whenPressed(new RetractIntake());
+
+
+
+
+
+
 
 
       // new JoystickButton(operator, ControllerMap.B).whenPressed(new MoveArmTo(ArmPreset.FRONT_BALL_UPPER));
@@ -85,9 +109,9 @@ public class OI {
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new MoveArmTo(ArmPreset.BACK_HATCH_UPPER));
 
       // new JoystickButton(operator, ControllerMap.B).whenPressed(new MoveJesterTo(ArmPreset.FRONT_HATCH_UPPER));
-      new JoystickButton(operator, ControllerMap.A).whenPressed(new downCommand());
-      new JoystickButton(operator, ControllerMap.Y).whenPressed(new upCommand());
-      new JoystickButton(operator, ControllerMap.B).whenPressed(new ToggleArmCommand());
+      // new JoystickButton(operator, ControllerMap.A).whenPressed(new downCommand());
+      // new JoystickButton(operator, ControllerMap.Y).whenPressed(new upCommand());
+      // new JoystickButton(operator, ControllerMap.B).whenPressed(new ToggleArmCommand());
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new MoveArmTo(ArmPreset.FRONT_BALL_LOWER));
       // new JoystickButton(operator, ControllerMap.A).whenPressed(new MoveArmTo(ArmPreset.FRONT_HATCH_LOWER));
 
