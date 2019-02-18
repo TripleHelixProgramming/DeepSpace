@@ -10,8 +10,8 @@ package frc.robot.commands.jester_arm;
 import com.team2363.logger.HelixEvents;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.JesterArm;
-import frc.robot.subsystems.JesterArm.ArmPos;
 
 public class ToggleArmCommand extends Command {
   public ToggleArmCommand() {
@@ -29,38 +29,8 @@ public class ToggleArmCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    
-    ArmPos currentArmPos = JesterArm.getInstance().getCurrentArmPreset();
-
-    switch (currentArmPos) {
-    case FRONT_HATCH_LOWER:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.BACK_HATCH_LOWER);
-      break;
-    case BACK_HATCH_LOWER:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_HATCH_LOWER);
-      break;
-    case FRONT_HATCH_MIDDLE:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.BACK_HATCH_MIDDLE);
-      break;
-    case BACK_HATCH_MIDDLE:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_HATCH_MIDDLE);
-      break;
-    case FRONT_BALL_LOWER:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.BACK_BALL_LOWER);
-      break;
-    case BACK_BALL_LOWER:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_BALL_LOWER);
-      break;
-    case FRONT_BALL_MIDDLE:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.BACK_BALL_MIDDLE);
-      break;
-    case BACK_BALL_MIDDLE:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_BALL_MIDDLE);
-      break;
-    default:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_HATCH_LOWER);
-      break;
-    }
+    SmartDashboard.putString("ToggleArmCommand: ", "executing");
+    JesterArm.getInstance().toggleArm();
   }
 
   // Make this return true when this Command no longer needs to run execute()

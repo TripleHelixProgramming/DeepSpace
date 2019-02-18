@@ -8,10 +8,11 @@
 package frc.robot.commands.jester_arm;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.JesterArm;
-import frc.robot.subsystems.JesterArm.ArmPos;
 
 public class upCommand extends Command {
+
   public upCommand() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -26,57 +27,15 @@ public class upCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
-    ArmPos currentArmPos = JesterArm.getInstance().getCurrentArmPreset();
-
-    switch (currentArmPos) {
-    case FRONT_HATCH_LOWER:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_BALL_LOWER);
-      break;
-    case FRONT_BALL_LOWER:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_HATCH_MIDDLE);
-      break;
-    case FRONT_HATCH_MIDDLE:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_BALL_MIDDLE);
-      break;
-    case FRONT_BALL_MIDDLE:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_HATCH_UPPER);
-      break;
-    case FRONT_HATCH_UPPER:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_BALL_UPPER);
-      break;
-    case FRONT_BALL_UPPER:
-      break;
-    case BACK_HATCH_LOWER:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.BACK_BALL_LOWER);
-      break;
-    case BACK_BALL_LOWER:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.BACK_HATCH_MIDDLE);
-      break;
-    case BACK_HATCH_MIDDLE:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.BACK_BALL_MIDDLE);
-      break;
-    case BACK_BALL_MIDDLE:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.BACK_HATCH_UPPER);
-      break;
-    case BACK_HATCH_UPPER:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.BACK_BALL_UPPER);
-      break;
-    case BACK_BALL_UPPER:
-      break;
-    case BACK_LIMIT:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.BACK_HATCH_LOWER);
-      break;
-    case FRONT_LIMIT:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_HATCH_LOWER);
-      break;
-    }
+    // isDone = false;
+    SmartDashboard.putString("UpCommand: ", "Executing");
+    JesterArm.getInstance().Up();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return (true);
   }
 
   // Called once after isFinished returns true

@@ -18,38 +18,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.jester_wrist.FollowArm;
 import frc.robot.commands.jester_wrist.StopWrist;
+import frc.robot.subsystems.JesterArm;
+import frc.robot.ArmPreset;
 
 public class JesterWrist extends Subsystem {
-  
+
     private TalonSRX wristMotor = new TalonSRX(RobotMap.WRIST_ID);
 
-    public static int WRIST_ACCELERATION = 2;
-    public static int WRIST_CRUISE = 2;
-
-    private int OFFSET = 0;    // Difference in pot readings between bots.
- 
-    //  Bot B (Practice Bot)  FRONT_LIMIT - 272   TRANSITION - 492   BACK_LIMIT - 681  MAX VEL-
-    //  Bot A (Comp Bot)  FRONT_LIMIT -     TRANSITION -      BACK_LIMIT -       MAX VEL -
-
-    // Standard wrist positions potentiometer positions. 
-    public enum Wrist {
-        START(272),                                   // Wrist position at start of the match
-        FRONT_LIMIT(300),                             // True Limit given to PID control
-        FRONT(Wrist.FRONT_LIMIT.pos + 25),            // Normal Position when arm is to the front
-        TRANSITION(Wrist.FRONT_LIMIT.pos + 50),      // Position to in when above the highest hatch level
-        BACK(Wrist.FRONT_LIMIT.pos + 75),            // Normal Position when arm is to back
-        BACK_LIMIT(Wrist.FRONT_LIMIT.pos + 100);      // Ture Limit given to PID Control
-
-        private final int pos;
-
-        private Wrist(int pos) {
-            this.pos = pos;
-        }
-
-        public int getPos() {
-            return pos;
-        }
-    }
+    public static int WRIST_ACCELERATION = 180;
+    public static int WRIST_CRUISE = 25;
 
     private static JesterWrist INSTANCE = new JesterWrist();
 
@@ -77,10 +54,12 @@ public class JesterWrist extends Subsystem {
 
         wristMotor.setNeutralMode(NeutralMode.Brake);
         wristMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, RobotMap.CTRE_TIMEOUT_INIT);
+        wristMotor.configFeedbackNotContinuous(true, RobotMap.CTRE_TIMEOUT_INIT);
 
-        // Need to verify and set.  With positive motor direction sensor values should increase.
-        wristMotor.setSensorPhase(false);   
-        wristMotor.setInverted(false);  
+        // Need to verify and set. With positive motor direction sensor values should
+        // increase.
+        wristMotor.setSensorPhase(false);
+        wristMotor.setInverted(false);
 
         // PID settings
         wristMotor.config_kF(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
@@ -88,17 +67,29 @@ public class JesterWrist extends Subsystem {
         wristMotor.config_kI(0, 0.01, RobotMap.CTRE_TIMEOUT_INIT);
         wristMotor.config_kD(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
         wristMotor.configAllowableClosedloopError(0, 2, RobotMap.CTRE_TIMEOUT_INIT);
-        
-        // setWristSoftLimits(Wrist.FRONT_LIMIT.pos, Wrist.BACK_LIMIT.pos);
-        // setWristMotionProfile(WRIST_ACCELERATION, WRIST_CRUISE);
+
+        setWristSoftLimits();
+        setWristMotionProfile(WRIST_ACCELERATION, WRIST_CRUISE);
     }
 
-    public void setWristSoftLimits(int reverseSoftLimit, int forwardSoftLimit) {
+    public void setWristSoftLimits() {
+
+        int lowerLimit, upperLimit;
+        ArmPreset curArmPreset; 
+
+        // Dynamially set wrist soft limits as arm positions changes.
+        curArmPreset = JesterArm.getInstance().getCurrentArmPreset();
+        lowerLimit = curArmPreset.getWristLowerLimit(curArmPreset.getShoulderAngle());
+        upperLimit = curArmPreset.getWristUpperLimit(curArmPreset.getShoulderAngle());
+
         wristMotor.configReverseSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
-        wristMotor.configReverseSoftLimitThreshold(reverseSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
+        wristMotor.configReverseSoftLimitThreshold(lowerLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
 
         wristMotor.configForwardSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
-        wristMotor.configForwardSoftLimitThreshold(forwardSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
+        wristMotor.configForwardSoftLimitThreshold(upperLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
+
+        SmartDashboard.putNumber("Wrist Lower Limit", lowerLimit);
+        SmartDashboard.putNumber("Wrist Upper Limit", upperLimit);
     }
 
     public int getWristPos() {
@@ -114,16 +105,26 @@ public class JesterWrist extends Subsystem {
         wristMotor.configMotionCruiseVelocity(cruise, RobotMap.CTRE_TIMEOUT_INIT);
     }
 
-    public void setWristPos(Wrist pos) {
-         setWristMotionMagic(pos);
+    public void setWristPos(ArmPreset preset) {
+        int newPos = preset.CalculateWristPos();
+
+        SmartDashboard.putNumber("Calc Wrist Pos", newPos);
+        setWristMotionMagic(newPos);
     }
 
-    private void setWristMotionMagic(Wrist pos) {
-        setWristMotionMagic(pos.getPos());
+    public void GoToRelatedPreset(int armPos) {
+
+        for (ArmPreset preset : ArmPreset.values()) {
+            if (preset.getShoulderAngle() == preset.getShoulderAngle(armPos)) {
+                SmartDashboard.putString("Related Preset", preset.toString());
+                setWristPos(preset);
+                return;
+            }
+        }
     }
 
-    private void setWristMotionMagic(int pos) {
-        // wristMotor.set(ControlMode.MotionMagic, pos);
+    public void setWristMotionMagic(int pos) {
+        wristMotor.set(ControlMode.MotionMagic, pos);
     }
 
     public void stop() {
@@ -137,7 +138,7 @@ public class JesterWrist extends Subsystem {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Wrist Pos", getWristPos());
+        setWristSoftLimits();
     }
 
     private void setupLogs() {
@@ -150,8 +151,7 @@ public class JesterWrist extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        // setDefaultCommand(new FollowArm());
-        setDefaultCommand(new StopWrist());
+        setDefaultCommand(new FollowArm());
+        // setDefaultCommand(new StopWrist());
     }
-    
 }

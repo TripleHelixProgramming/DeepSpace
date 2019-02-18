@@ -11,10 +11,9 @@ import com.team2363.logger.HelixEvents;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.ArmPreset;
 import frc.robot.subsystems.JesterArm;
-import frc.robot.subsystems.JesterArm.ArmPos;
 import frc.robot.subsystems.JesterWrist;
-import frc.robot.subsystems.JesterWrist.Wrist;
 
 public class FollowArm extends Command {
   public FollowArm() {
@@ -34,27 +33,13 @@ public class FollowArm extends Command {
   protected void execute() {
     // Set the wrist position based of the arm position.
 
-    int arm_pos = JesterArm.getInstance().getArmPos();
-    Wrist new_wrist_pos;
+    // int armPos = JesterArm.getInstance().getArmPos();
+    // int wristPos = 
+    // JesterWrist.getInstance().setWristMotionMagic(wristPos);
     
-    SmartDashboard.putNumber("Arm Pos", arm_pos);
-
-    // Caclualate next wrist Pos
-    if (arm_pos > ArmPos.FRONT_LIMIT.getPos()) { 
-        new_wrist_pos = Wrist.FRONT_LIMIT;
-
-    } else if ((arm_pos <= ArmPos.FRONT_LIMIT.getPos() ) && (arm_pos >= ArmPos.FRONT_BALL_UPPER.getPos())) {
-        new_wrist_pos = Wrist.FRONT;
-
-    } else if ((arm_pos < ArmPos.FRONT_BALL_UPPER.getPos()) && (arm_pos > ArmPos.BACK_BALL_UPPER.getPos())) {
-        new_wrist_pos = Wrist.TRANSITION;
-
-    } else {
-        new_wrist_pos = Wrist.BACK;
-    }
-    
-    JesterWrist.getInstance().setWristPos(new_wrist_pos);
-  }
+    ArmPreset armPreset = JesterArm.getInstance().getCurrentArmPreset();
+    JesterWrist.getInstance().setWristPos(armPreset);
+}
 
   // Make this return true when this Command no longer needs to run execute()
   @Override

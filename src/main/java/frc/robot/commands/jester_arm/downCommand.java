@@ -8,12 +8,12 @@
 package frc.robot.commands.jester_arm;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.cargo_intake.RetractIntake;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.JesterArm;
-import frc.robot.subsystems.JesterArm.ArmPos;
 
 public class downCommand extends Command {
+
   public downCommand() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -29,53 +29,8 @@ public class downCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
-    ArmPos currentArmPos = JesterArm.getInstance().getCurrentArmPreset();
-
-    switch (currentArmPos) {
-    case FRONT_HATCH_LOWER:
-      break;
-    case FRONT_BALL_LOWER:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_HATCH_LOWER);
-      break;
-    case FRONT_HATCH_MIDDLE:
-      if (CargoIntake.getInstance().isDown()) {
-        CargoIntake.getInstance().up();
-        CargoIntake.getInstance().off();
-      } else {
-        JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_BALL_LOWER);
-      }
-      break;
-    case FRONT_BALL_MIDDLE:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_HATCH_MIDDLE);
-      break;
-    case FRONT_HATCH_UPPER:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_BALL_MIDDLE);
-      break;
-    case FRONT_BALL_UPPER:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_HATCH_UPPER);
-      break;
-    case BACK_HATCH_LOWER:
-      break;
-    case BACK_BALL_LOWER:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.BACK_HATCH_LOWER);
-      break;
-    case BACK_HATCH_MIDDLE:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.BACK_BALL_LOWER);
-      break;
-    case BACK_BALL_MIDDLE:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.BACK_HATCH_LOWER);
-      break;
-    case BACK_HATCH_UPPER:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.BACK_BALL_MIDDLE);
-      break;
-    case BACK_BALL_UPPER:
-      JesterArm.getInstance().setArmMotionMagic(ArmPos.BACK_HATCH_UPPER);
-      break;
-    case BACK_LIMIT:
-    case FRONT_LIMIT:
-      break;
-    }
+    SmartDashboard.putString("DownCommand: ", "Execute");
+    JesterArm.getInstance().down();
   }
 
   // Make this return true when this Command no longer needs to run execute()

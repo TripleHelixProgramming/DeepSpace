@@ -50,21 +50,22 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   private static final int VELOCITY_CONTROL_SLOT = 2;
 
   // Programming Robot =  All Talons
-  private BobTalonSRX rightSlave1 = new BobTalonSRX(RobotMap.RIGHT_SLAVE_1_ID);
-  private BobTalonSRX rightSlave2 = new BobTalonSRX(RobotMap.RIGHT_SLAVE_2_ID);
-  private BobTalonSRX leftSlave1 = new BobTalonSRX(RobotMap.LEFT_SLAVE_1_ID);
-  private BobTalonSRX leftSlave2 = new BobTalonSRX(RobotMap.LEFT_SLAVE_2_ID);
+  // private BobTalonSRX rightSlave1 = new BobTalonSRX(RobotMap.RIGHT_SLAVE_1_ID);
+  // private BobTalonSRX rightSlave2 = new BobTalonSRX(RobotMap.RIGHT_SLAVE_2_ID);
+  // private BobTalonSRX leftSlave1 = new BobTalonSRX(RobotMap.LEFT_SLAVE_1_ID);
+  // private BobTalonSRX leftSlave2 = new BobTalonSRX(RobotMap.LEFT_SLAVE_2_ID);
 
   //  Competition & Practice Bot  Talon Masters with Victors as Slaves.
-  // private BobVictorSPX rightSlave1 = new BobVictorSPX(RobotMap.RIGHT_SLAVE_1_ID);
-  // private BobVictorSPX rightSlave2 = new BobVictorSPX(RobotMap.RIGHT_SLAVE_2_ID);
-  // private BobVictorSPX leftSlave1 = new BobVictorSPX(RobotMap.LEFT_SLAVE_1_ID);
-  // private BobVictorSPX leftSlave2 = new BobVictorSPX(RobotMap.LEFT_SLAVE_2_ID);
+  private BobVictorSPX rightSlave1 = new BobVictorSPX(RobotMap.RIGHT_SLAVE_1_ID);
+  private BobVictorSPX rightSlave2 = new BobVictorSPX(RobotMap.RIGHT_SLAVE_2_ID);
+  private BobVictorSPX leftSlave1 = new BobVictorSPX(RobotMap.LEFT_SLAVE_1_ID);
+  private BobVictorSPX leftSlave2 = new BobVictorSPX(RobotMap.LEFT_SLAVE_2_ID);
 
   private LeaderBobTalonSRX left = new LeaderBobTalonSRX(RobotMap.LEFT_MASTER_ID,
       leftSlave1, leftSlave2);
   private LeaderBobTalonSRX right = new LeaderBobTalonSRX(RobotMap.RIGHT_MASTER_ID,
       rightSlave1, rightSlave2);
+
   private TalonSRX cargoGrabberLeft = new TalonSRX(RobotMap.CARGO_LEFT_ID);
     
   PowerDistributionPanel pdp = new PowerDistributionPanel();
