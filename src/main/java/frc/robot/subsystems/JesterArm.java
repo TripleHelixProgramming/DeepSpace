@@ -70,12 +70,23 @@ public class JesterArm extends Subsystem {
         armMaster.setSensorPhase(true);
         armMaster.setInverted(false);
 
-        // PID Settings
+        // PID Settings-=
+        // armMaster.config_kF(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
+        // armMaster.config_kP(0, 15, RobotMap.CTRE_TIMEOUT_INIT);
+        // armMaster.config_kI(0, 0.03, RobotMap.CTRE_TIMEOUT_INIT);
+        // armMaster.config_kD(0, 300, RobotMap.CTRE_TIMEOUT_INIT);
+
         armMaster.config_kF(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
-        armMaster.config_kP(0, 1, RobotMap.CTRE_TIMEOUT_INIT);
-        armMaster.config_kI(0, 0.01, RobotMap.CTRE_TIMEOUT_INIT);
-        armMaster.config_kD(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
-        armMaster.configAllowableClosedloopError(0, 2, RobotMap.CTRE_TIMEOUT_INIT);
+        armMaster.config_kP(0, 20.0, RobotMap.CTRE_TIMEOUT_INIT);
+        armMaster.config_kI(0, 0.04, RobotMap.CTRE_TIMEOUT_INIT);
+        armMaster.config_kD(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
+        armMaster.config_IntegralZone(0, 12);
+
+        // armMaster.config_kF(0, 25, RobotMap.CTRE_TIMEOUT_INIT);
+        // armMaster.config_kP(0, 10, RobotMap.CTRE_TIMEOUT_INIT);
+        // armMaster.config_kI(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
+        // armMaster.config_kD(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
+        armMaster.configAllowableClosedloopError(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
 
         // Set current limiting
         armMaster.configContinuousCurrentLimit(40, 0);

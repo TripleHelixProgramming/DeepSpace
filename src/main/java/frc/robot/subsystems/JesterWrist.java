@@ -124,7 +124,7 @@ public class JesterWrist extends Subsystem {
     }
 
     public void setWristMotionMagic(int pos) {
-        wristMotor.set(ControlMode.MotionMagic, pos);
+        // wristMotor.set(ControlMode.MotionMagic, pos);
     }
 
     public void stop() {
