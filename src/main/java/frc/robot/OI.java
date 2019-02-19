@@ -94,8 +94,8 @@ public class OI {
 
       // new JoystickButton(driver, ControllerMap.B).whenPressed(new ReleaseHatch());
       // new JoystickButton(driver, ControllerMap.X).whenPressed(new GrabHatch());
-      new JoystickButton(driver, ControllerMap.B).whenPressed(new DeployIntake());
-      new JoystickButton(driver, ControllerMap.X).whenPressed(new RetractIntake());
+      // new JoystickButton(driver, ControllerMap.B).whenPressed(new DeployIntake());
+      // new JoystickButton(driver, ControllerMap.X).whenPressed(new RetractIntake());
 
 
 
@@ -109,9 +109,9 @@ public class OI {
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new MoveArmTo(ArmPreset.BACK_HATCH_UPPER));
 
       // new JoystickButton(operator, ControllerMap.B).whenPressed(new MoveJesterTo(ArmPreset.FRONT_HATCH_UPPER));
-      // new JoystickButton(operator, ControllerMap.A).whenPressed(new downCommand());
-      // new JoystickButton(operator, ControllerMap.Y).whenPressed(new upCommand());
-      // new JoystickButton(operator, ControllerMap.B).whenPressed(new ToggleArmCommand());
+      new JoystickButton(operator, ControllerMap.A).whenPressed(new downCommand());
+      new JoystickButton(operator, ControllerMap.Y).whenPressed(new upCommand());
+      new JoystickButton(operator, ControllerMap.B).whenPressed(new ToggleArmCommand());
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new MoveArmTo(ArmPreset.FRONT_BALL_LOWER));
       // new JoystickButton(operator, ControllerMap.A).whenPressed(new MoveArmTo(ArmPreset.FRONT_HATCH_LOWER));
 
