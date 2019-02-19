@@ -30,8 +30,8 @@ public class DriveArmByJoystick extends Command {
     protected void execute() {
 
         double error;
-        int backLimit = ArmPreset.BACK_HATCH_LOWER.CalculateArmPos();
-        int frontLimit = ArmPreset.FRONT_HATCH_LOWER.CalculateArmPos();
+        int backLimit = ArmPreset.DELIVER_HATCH_LOWER.CalculateArmPos();
+        int frontLimit = ArmPreset.PICKUP_HATCH.CalculateArmPos();
 
         position += OI.getInstance().getArmPower() * 10;
         if (position > backLimit) {

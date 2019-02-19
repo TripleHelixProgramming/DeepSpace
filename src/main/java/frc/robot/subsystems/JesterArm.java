@@ -32,7 +32,7 @@ public class JesterArm extends Subsystem {
     public static int ARM_CRUISE = 4;
 
     private static JesterArm INSTANCE = new JesterArm();
-    private ArmPreset currentArmPreset = ArmPreset.FRONT_HATCH_LOWER;
+    private ArmPreset currentArmPreset = ArmPreset.DELIVER_HATCH_LOWER;
 
     private int reverseSoftLimit, fwdSoftLimit;
 
@@ -55,7 +55,7 @@ public class JesterArm extends Subsystem {
         armSlave.configFactoryDefault();
         armMaster.configFactoryDefault();
 
-        currentArmPreset = ArmPreset.FRONT_HATCH_LOWER;
+        currentArmPreset = ArmPreset.DELIVER_HATCH_LOWER;
 
         armSlave.follow(armMaster);
         armSlave.setNeutralMode(NeutralMode.Brake);
@@ -94,8 +94,8 @@ public class JesterArm extends Subsystem {
         armMaster.configPeakCurrentDuration(100, 0);
         armMaster.enableCurrentLimit(true);
 
-        reverseSoftLimit = ArmPreset.FRONT_HATCH_LOWER.CalculateArmPos();
-        fwdSoftLimit = ArmPreset.BACK_HATCH_LOWER.CalculateArmPos();
+        reverseSoftLimit = ArmPreset.PICKUP_HATCH.CalculateArmPos();  // lower sensor reading side
+        fwdSoftLimit = ArmPreset.DELIVER_HATCH_LOWER.CalculateArmPos();   // higher sensor reading side
         setArmSoftLimits(reverseSoftLimit, fwdSoftLimit);
         setArmMotionProfile(ARM_ACCELERATION, ARM_CRUISE);
 
@@ -125,127 +125,78 @@ public class JesterArm extends Subsystem {
 
     public void Up() {
         switch (currentArmPreset) {
-        case FRONT_BALL_UPPER:
-        case BACK_BALL_UPPER:
-            // Case where at top
-            break;
-        case FRONT_HATCH_LOWER:
-            goTo(ArmPreset.FRONT_BALL_LOWER);
-            break;
-        case FRONT_BALL_LOWER:
-            goTo(ArmPreset.FRONT_HATCH_MIDDLE);
-            break;
-        case FRONT_HATCH_MIDDLE:
-            goTo(ArmPreset.FRONT_BALL_MIDDLE);
-            break;
-        case FRONT_BALL_MIDDLE:
-            goTo(ArmPreset.FRONT_HATCH_UPPER);
-            break;
-        case FRONT_HATCH_UPPER:
-            goTo(ArmPreset.FRONT_BALL_UPPER);
-            break;
-        case BACK_HATCH_LOWER:
-            goTo(ArmPreset.BACK_BALL_LOWER);
-            break;
-        case BACK_BALL_LOWER:
-            goTo(ArmPreset.BACK_HATCH_MIDDLE);
-            break;
-        case BACK_HATCH_MIDDLE:
-            goTo(ArmPreset.BACK_BALL_MIDDLE);
-            break;
-        case BACK_BALL_MIDDLE:
-            goTo(ArmPreset.BACK_HATCH_UPPER);
-            break;
-        case BACK_HATCH_UPPER:
-            goTo(ArmPreset.BACK_BALL_UPPER);
-            break;
-        default:
-            break;
+            case DELIVER_HATCH_LOWER:
+                goTo(ArmPreset.DELIVER_BALL_LOWER);
+                break;
+            case DELIVER_BALL_LOWER:
+                goTo(ArmPreset.DELIVER_HATCH_MIDDLE);
+                break;
+            case DELIVER_HATCH_MIDDLE:
+                goTo(ArmPreset.DELIVER_BALL_MIDDLE);
+                break;
+            case DELIVER_BALL_MIDDLE:
+                goTo(ArmPreset.DELIVER_HATCH_UPPER);
+                break;
+            case DELIVER_HATCH_UPPER:
+                goTo(ArmPreset.DELIVER_BALL_UPPER);
+                break;
+            case DELIVER_BALL_UPPER:  // At Top Deliver Side
+            case CARGO:               // At Top Pickup Side
+                // At top
+                break;
+            case PICKUP_CARGO_FLOOR:
+                goTo(ArmPreset.CARGO);
+                break;
+            case PICKUP_HATCH:
+                goTo(ArmPreset.PICKUP_CARGO_FLOOR);
+                break;
+            default:    
+                break;
         }
-    }
+    }   
 
-    public void down() {
+    public void Down() {
         switch (currentArmPreset) {
-        case FRONT_HATCH_LOWER:
-        case BACK_HATCH_LOWER:
-            // Case where at bottom
-            break;
-        case FRONT_BALL_LOWER:
-            goTo(ArmPreset.FRONT_HATCH_LOWER);
-            break;
-        case FRONT_HATCH_MIDDLE:
-            // if (CargoIntake.getInstance().isDown()) {
-            // CargoIntake.getInstance().up();
-            // CargoIntake.getInstance().off();
-            // } else {
-            goTo(ArmPreset.FRONT_BALL_LOWER);
-            // }
-            break;
-        case FRONT_BALL_MIDDLE:
-            goTo(ArmPreset.FRONT_HATCH_MIDDLE);
-            break;
-        case FRONT_HATCH_UPPER:
-            goTo(ArmPreset.FRONT_BALL_MIDDLE);
-            break;
-        case FRONT_BALL_UPPER:
-            goTo(ArmPreset.FRONT_HATCH_UPPER);
-            break;
-        case BACK_BALL_LOWER:
-            goTo(ArmPreset.BACK_HATCH_LOWER);
-            break;
-        case BACK_HATCH_MIDDLE:
-            goTo(ArmPreset.BACK_BALL_LOWER);
-            break;
-        case BACK_BALL_MIDDLE:
-            goTo(ArmPreset.BACK_HATCH_MIDDLE);
-            break;
-        case BACK_HATCH_UPPER:
-            goTo(ArmPreset.BACK_BALL_MIDDLE);
-            break;
-        case BACK_BALL_UPPER:
-            goTo(ArmPreset.BACK_HATCH_UPPER);
-            break;
-        default:
-            break;
+            case DELIVER_HATCH_LOWER:
+            case PICKUP_HATCH:
+                // At Bottom
+                break;
+            case DELIVER_BALL_LOWER:
+                goTo(ArmPreset.DELIVER_HATCH_LOWER);
+                break;
+            case DELIVER_HATCH_MIDDLE:
+                goTo(ArmPreset.DELIVER_BALL_LOWER);
+                break;
+            case DELIVER_BALL_MIDDLE:
+                goTo(ArmPreset.DELIVER_HATCH_MIDDLE);
+                break;
+            case DELIVER_HATCH_UPPER:
+                goTo(ArmPreset.DELIVER_BALL_MIDDLE);
+                break;
+            case DELIVER_BALL_UPPER:
+                goTo(ArmPreset.DELIVER_HATCH_UPPER);
+                break;
+            case CARGO:       
+                goTo(ArmPreset.PICKUP_CARGO_FLOOR);
+                break;
+            case PICKUP_CARGO_FLOOR:
+                goTo(ArmPreset.PICKUP_HATCH);
+                break;
+            default:    
+                break;
         }
-    }
+    } 
 
     public void toggleArm() {
         switch (currentArmPreset) {
-        // case FRONT_HATCH_LOWER:
-        // goTo(ArmPreset.BACK_HATCH_LOWER);
-        // break;
-        // case BACK_HATCH_LOWER:
-        // goTo(ArmPreset.FRONT_HATCH_LOWER);
-        // break;
-        // case FRONT_HATCH_MIDDLE:
-        // goTo(ArmPreset.BACK_HATCH_MIDDLE);
-        // break;
-        // case BACK_HATCH_MIDDLE:
-        // goTo(ArmPreset.FRONT_HATCH_MIDDLE);
-        // break;
-        // case FRONT_BALL_LOWER:
-        // goTo(ArmPreset.BACK_BALL_LOWER);
-        // break;
-        // case BACK_BALL_LOWER:
-        // goTo(ArmPreset.FRONT_BALL_LOWER);
-        // break;
-        case FRONT_BALL_MIDDLE:
-            goTo(ArmPreset.BACK_BALL_MIDDLE);
+        case CARGO:
+            goTo(ArmPreset.DELIVER_BALL_UPPER);
             break;
-        case BACK_BALL_MIDDLE:
-            goTo(ArmPreset.FRONT_BALL_MIDDLE);
+        case DELIVER_BALL_UPPER:
+            goTo(ArmPreset.CARGO);
             break;
-        case FRONT_BALL_UPPER:
-            goTo(ArmPreset.BACK_BALL_UPPER);
-            break;
-        case BACK_BALL_UPPER:
-            goTo(ArmPreset.FRONT_BALL_UPPER);
-        case FRONT_HATCH_UPPER:
-            goTo(ArmPreset.BACK_HATCH_UPPER);
-            break;
-        case BACK_HATCH_UPPER:
-            goTo(ArmPreset.FRONT_HATCH_UPPER);
+        case DELIVER_HATCH_UPPER:
+            goTo(ArmPreset.CARGO);
             break;
         default:
             break;

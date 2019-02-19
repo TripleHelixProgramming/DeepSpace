@@ -9,23 +9,18 @@ package frc.robot;
 
 public enum ArmPreset {
 
-    // shoulder angle, wrist angle, next_fwd index, next_aft index, mirror index
-    FRONT_HATCH_LOWER(-70, 0), 
-    FRONT_BALL_LOWER(-50, 0), 
-    FRONT_HATCH_MIDDLE(0, 0), 
-    FRONT_BALL_MIDDLE(20, 0),
-    FRONT_HATCH_UPPER(70, 30), 
-    FRONT_BALL_UPPER(80, 30), 
-    TRANSITION(90, 90), 
-    BACK_BALL_UPPER(100, 150),
-    BACK_HATCH_UPPER(110, 150), 
-    BACK_BALL_MIDDLE(160, 180), 
-    BACK_HATCH_MIDDLE(180, 180), 
-    BACK_BALL_LOWER(230, 180),
-    BACK_HATCH_LOWER(250, 180), 
-    START(230, 280), 
+    // shoulder angle, wrist angle
+    PICKUP_HATCH(-70, 0), 
+    PICKUP_CARGO_FLOOR(-50, -60), 
+    CARGO(0, 0), 
+    DELIVER_BALL_UPPER(110, 135),
+    DELIVER_HATCH_UPPER(110, 175), 
+    DELIVER_BALL_MIDDLE(153, 180), 
+    DELIVER_HATCH_MIDDLE(173, 180), 
+    DELIVER_BALL_LOWER(220, 180),
+    DELIVER_HATCH_LOWER(250, 180), 
     UNPACK_WP(210, 180), 
-    PICK_UP(250, 200);
+    START(241, 277);
 
     private final int shoulder_angle;
     private final int wrist_angle;

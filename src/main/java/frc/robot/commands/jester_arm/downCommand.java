@@ -30,7 +30,7 @@ public class downCommand extends Command {
   @Override
   protected void execute() {
     SmartDashboard.putString("DownCommand: ", "Execute");
-    JesterArm.getInstance().down();
+    JesterArm.getInstance().Down();
   }
 
   // Make this return true when this Command no longer needs to run execute()
