@@ -26,7 +26,7 @@ public enum ArmPreset {
     BACK_HATCH_LOWER(240, 180), 
     START(230, 280), 
     UNPACK_WP(210, 180), 
-    PICK_UP(-30, -60);
+    PICK_UP(-25, -90);
 
     private final int shoulder_angle;
     private final int wrist_angle;

@@ -9,6 +9,7 @@ package frc.robot.commands.Auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.ArmPreset;
+import frc.robot.commands.cargo_grabber.GrabCargo;
 import frc.robot.commands.cargo_intake.RetractIntake;
 import frc.robot.commands.jester_arm.MoveArmTo;
 
@@ -18,7 +19,9 @@ public class resetCargoJester extends CommandGroup {
    */
   public resetCargoJester() {
     // Add Commands here:
+    addParallel(new GrabCargo());
     addSequential(new MoveArmTo(ArmPreset.FRONT_HATCH_MIDDLE));
     addSequential(new RetractIntake());
+
   }
 }

@@ -120,10 +120,13 @@ public class OI {
       // new JoystickButton(operator, ControllerMap.LB).whenPressed(new GrabHatch());
       // new JoystickButton(operator, ControllerMap.RB).whenPressed(new ReleaseHatch());
 
-      // new JoystickButton(operator, ControllerMap.LOGO_LEFT).whenPressed(new ReleaseCargo());
-      // new JoystickButton(operator, ControllerMap.LOGO_RIGHT).whenPressed(new GrabCargo());
-      // new JoystickButton(operator, ControllerMap.B).whenPressed(new openGrabber());
-      // new JoystickButton(operator, ControllerMap.LEFT_STICK_BUTTON).whenPressed(new stopCargoGrabber());
+      new JoystickButton(operator, ControllerMap.LB).whenPressed(new ReleaseCargo());
+      new JoystickButton(operator, ControllerMap.RB).whenPressed(new GrabCargo());
+      new JoystickButton(operator, ControllerMap.Y).whenPressed(new openGrabber());
+      new JoystickButton(operator, ControllerMap.LEFT_STICK_BUTTON).whenPressed(new stopCargoGrabber());
+
+      new JoystickButton(driver, ControllerMap.B).whenPressed(new GrabHatch());
+      new JoystickButton(driver, ControllerMap.X).whenPressed(new ReleaseHatch());
 
       // new JoystickButton(operator, ControllerMap.A).whenPressed(new MoveWristTo(ArmPreset.TEST_WRIST));
       // new JoystickButton(operator, ControllerMap.B).whenPressed(new MoveWristTo(ArmPreset.FRONT_HATCH_UPPER));

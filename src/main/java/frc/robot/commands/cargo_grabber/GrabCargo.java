@@ -16,6 +16,9 @@ import com.team2363.logger.HelixEvents;
 
 public class GrabCargo extends Command {
 
+  private boolean isFinished = false;
+
+
   private int stalledCount = 0;
 	
   Command rumbleCommand = new RumbleController();
@@ -33,11 +36,14 @@ public class GrabCargo extends Command {
    HatchGrabber.getInstance().hatchGrab();
    CargoGrabber.getInstance().closeGrabber();
    HelixEvents.getInstance().addEvent("GRAB_CARGO", "Starting to grab cargo");
+
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    boolean isFinished = false;
+
    //when we retrieve cargo, extend hatch grabber
    if (CargoGrabber.getInstance().isOverCurrent()) {
     stalledCount++;
@@ -46,7 +52,8 @@ public class GrabCargo extends Command {
   }
   CargoGrabber.getInstance().intake();
 
-if (stalledCount > 20) {
+if (stalledCount > 5) {
+  isFinished = true;
   if (!rumbleCommand.isRunning()) {
     rumbleCommand.start();
   }
@@ -57,13 +64,15 @@ if (stalledCount > 20) {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return isFinished;
+    // return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
     HelixEvents.getInstance().addEvent("GRAB_CARGO", "Ending grab cargo");
+    CargoGrabber.getInstance().stop();
   }
 
   // Called when another command which requires one or more of the same

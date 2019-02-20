@@ -13,6 +13,7 @@ import frc.robot.ArmPreset;
 import frc.robot.commands.cargo_grabber.GrabCargo;
 import frc.robot.commands.cargo_intake.DeployIntake;
 import frc.robot.commands.cargo_intake.IntakeMotorIn;
+import frc.robot.commands.hatch.GrabHatch;
 import frc.robot.commands.jester_arm.JesterPickupCargo;
 import frc.robot.commands.jester_arm.MoveArmTo;
 
@@ -40,10 +41,12 @@ public class PickUpCargo extends CommandGroup {
 
     addSequential(new MoveArmTo(ArmPreset.FRONT_HATCH_MIDDLE));
     addSequential(new DeployIntake());
-    addSequential(new WaitCommand(1.5));
+    addSequential(new WaitCommand(0.5));
     addSequential(new MoveArmTo(ArmPreset.PICK_UP));
-    addSequential(new JesterPickupCargo());
+    // addSequential(new JesterPickupCargo());
     addSequential(new GrabCargo());
+    // addSequential(new GrabHatch());
+    // addSequential(new GrabCargo());
     
   }
 }
