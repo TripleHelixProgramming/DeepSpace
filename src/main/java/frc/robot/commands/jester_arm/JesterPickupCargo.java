@@ -5,53 +5,47 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.cargo_intake;
+package frc.robot.commands.jester_arm;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.ArmPreset;
+import frc.robot.subsystems.CargoGrabber;
 import frc.robot.subsystems.CargoIntake;
+import frc.robot.subsystems.HatchGrabber;
 import frc.robot.subsystems.JesterArm;
-// import frc.robot.subsystems.JesterArm.ArmPos;
 
-public class DeployIntake extends Command {
-
-  public DeployIntake() {
+public class JesterPickupCargo extends Command {
+  public JesterPickupCargo() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(JesterArm.getInstance());
     requires(CargoIntake.getInstance());
-    // requires(JesterArm.getInstance());
+    requires(CargoGrabber.getInstance());
+    requires(HatchGrabber.getInstance());
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // ArmPos currentArmPos = JesterArm.getInstance().getCurrentArmPreset();
-
-    // if (currentArmPos.getPos() < ArmPos.FRONT_HATCH_MIDDLE.getPos())
-    //   JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_HATCH_MIDDLE);
-
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // ArmPos currentArmPos = JesterArm.getInstance().getCurrentArmPreset();
-    // boolean armClear = (currentArmPos.getPos() >= ArmPos.FRONT_HATCH_MIDDLE.getPos());
-    // if (armClear){
-      CargoIntake.getInstance().down();
-      CargoIntake.getInstance().in();
-    // }
+      // JesterArm.getInstance().goTo(ArmPreset.PICK_UP);
+      HatchGrabber.getInstance().hatchGrab();      
+      CargoGrabber.getInstance().intake();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    // JesterArm.getInstance().setArmMotionMagic(CalculateArmPos.FRONT_HATCH_LOWER);
   }
 
   // Called when another command which requires one or more of the same

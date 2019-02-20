@@ -18,8 +18,11 @@ import frc.robot.camera.CAMERA;
 import frc.robot.commands.FollowArc;
 import frc.robot.commands.Auto.FollowArcTesting;
 import frc.robot.commands.Auto.MoveJesterTo;
+import frc.robot.commands.Auto.PickUpCargo;
+import frc.robot.commands.Auto.resetCargoJester;
 import frc.robot.commands.cargo_grabber.GrabCargo;
 import frc.robot.commands.cargo_grabber.ReleaseCargo;
+import frc.robot.commands.cargo_grabber.openGrabber;
 import frc.robot.commands.cargo_grabber.stopCargoGrabber;
 import frc.robot.commands.cargo_intake.DeployIntake;
 import frc.robot.commands.cargo_intake.RetractIntake;
@@ -34,6 +37,7 @@ import frc.robot.commands.jester_arm.MoveArmTo;
 import frc.robot.commands.jester_arm.ToggleArmCommand;
 import frc.robot.commands.jester_arm.downCommand;
 import frc.robot.commands.jester_arm.upCommand;
+import frc.robot.commands.jester_wrist.MoveWristTo;
 import frc.robot.commands.robot_lifter.ExtendLifter;
 import frc.robot.commands.robot_lifter.burstExtendLifter;
 import frc.robot.commands.robot_lifter.reverseLifter;
@@ -109,10 +113,27 @@ public class OI {
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new MoveArmTo(ArmPreset.BACK_HATCH_UPPER));
 
       // new JoystickButton(operator, ControllerMap.B).whenPressed(new MoveJesterTo(ArmPreset.FRONT_HATCH_UPPER));
-      new JoystickButton(operator, ControllerMap.A).whenPressed(new downCommand());
-      new JoystickButton(operator, ControllerMap.Y).whenPressed(new upCommand());
-      new JoystickButton(operator, ControllerMap.B).whenPressed(new ToggleArmCommand());
-      // new JoystickButton(operator, ControllerMap.Y).whenPressed(new MoveArmTo(ArmPreset.FRONT_BALL_LOWER));
+      new JoystickButton(operator, ControllerMap.X).whenPressed(new downCommand());
+      new JoystickButton(operator, ControllerMap.B).whenPressed(new upCommand());
+      // new JoystickButton(operator, ControllerMap.X).whenPressed(new ToggleArmCommand());
+
+      // new JoystickButton(operator, ControllerMap.LB).whenPressed(new GrabHatch());
+      // new JoystickButton(operator, ControllerMap.RB).whenPressed(new ReleaseHatch());
+
+      // new JoystickButton(operator, ControllerMap.LOGO_LEFT).whenPressed(new ReleaseCargo());
+      // new JoystickButton(operator, ControllerMap.LOGO_RIGHT).whenPressed(new GrabCargo());
+      // new JoystickButton(operator, ControllerMap.B).whenPressed(new openGrabber());
+      // new JoystickButton(operator, ControllerMap.LEFT_STICK_BUTTON).whenPressed(new stopCargoGrabber());
+
+      // new JoystickButton(operator, ControllerMap.A).whenPressed(new MoveWristTo(ArmPreset.TEST_WRIST));
+      // new JoystickButton(operator, ControllerMap.B).whenPressed(new MoveWristTo(ArmPreset.FRONT_HATCH_UPPER));
+      // new JoystickButton(operator, ControllerMap.X).whenPressed(new MoveWristTo(ArmPreset.FRONT_HATCH_MIDDLE));
+      // new JoystickButton(operator, ControllerMap.A).whenPressed(new MoveWristTo(ArmPreset.BACK_HATCH_UPPER);
+      // new JoystickButton(operator, ControllerMap.Y).whenPressed(new MoveWristTo(ArmPreset.BACK_HATCH_MIDDLE));
+
+      new JoystickButton(operator, ControllerMap.A).whenPressed(new PickUpCargo());
+      new JoystickButton(operator, ControllerMap.A).whenReleased(new resetCargoJester());
+      
       // new JoystickButton(operator, ControllerMap.A).whenPressed(new MoveArmTo(ArmPreset.FRONT_HATCH_LOWER));
 
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new ToggleHeightCommand());

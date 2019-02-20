@@ -10,6 +10,8 @@ package frc.robot.commands.cargo_grabber;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.RumbleController;
 import frc.robot.subsystems.CargoGrabber;
+import frc.robot.subsystems.HatchGrabber;
+
 import com.team2363.logger.HelixEvents;
 
 public class GrabCargo extends Command {
@@ -21,14 +23,14 @@ public class GrabCargo extends Command {
   public GrabCargo() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-   // requires(HatchGrabber.getInstance());
+   requires(HatchGrabber.getInstance());
     requires(CargoGrabber.getInstance());
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-       // HatchGrabber.getInstance().hatchGrab();
+   HatchGrabber.getInstance().hatchGrab();
    CargoGrabber.getInstance().closeGrabber();
    HelixEvents.getInstance().addEvent("GRAB_CARGO", "Starting to grab cargo");
   }

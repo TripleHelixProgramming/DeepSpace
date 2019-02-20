@@ -10,6 +10,7 @@ package frc.robot;
 public enum ArmPreset {
 
     // shoulder angle, wrist angle, next_fwd index, next_aft index, mirror index
+    TEST_WRIST(0, -60),
     FRONT_HATCH_LOWER(-70, 0), 
     FRONT_BALL_LOWER(-50, 0), 
     FRONT_HATCH_MIDDLE(0, 0), 
@@ -22,10 +23,10 @@ public enum ArmPreset {
     BACK_BALL_MIDDLE(160, 180), 
     BACK_HATCH_MIDDLE(180, 180), 
     BACK_BALL_LOWER(230, 180),
-    BACK_HATCH_LOWER(250, 180), 
+    BACK_HATCH_LOWER(240, 180), 
     START(230, 280), 
     UNPACK_WP(210, 180), 
-    PICK_UP(250, 200);
+    PICK_UP(-30, -60);
 
     private final int shoulder_angle;
     private final int wrist_angle;
@@ -41,8 +42,8 @@ public enum ArmPreset {
     // (requires linear sensor)
     public double m_wrist = -0.494;
     public double b_wrist = 560;
-    public double m_shoulder = 0.859;
-    public double b_shoulder = -260;
+    public double m_shoulder = 0.861;
+    public double b_shoulder = -255;
 
     private ArmPreset(int shoulder_angle, int wrist_angle) {
         this.shoulder_angle = shoulder_angle;
