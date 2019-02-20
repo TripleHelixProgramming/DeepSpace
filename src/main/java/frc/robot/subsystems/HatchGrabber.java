@@ -23,7 +23,7 @@ public class HatchGrabber extends Subsystem {
   private DigitalInput HatchLimit = new DigitalInput(RobotMap.HATCH_LIMIT_CHANNEL);
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  public DoubleSolenoid grabber = new DoubleSolenoid(RobotMap.HATCH_RELEASE, RobotMap.HATCH_GRAB);
+  public DoubleSolenoid grabber = new DoubleSolenoid(RobotMap.HATCH_GRAB, RobotMap.HATCH_RELEASE);
   
   public static HatchGrabber INSTANCE = new HatchGrabber();
   

@@ -62,11 +62,11 @@ public class JesterWrist extends Subsystem {
         wristMotor.setInverted(false);
 
         // PID settings
-        wristMotor.config_kF(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
-        wristMotor.config_kP(0, 1, RobotMap.CTRE_TIMEOUT_INIT);
-        wristMotor.config_kI(0, 0.01, RobotMap.CTRE_TIMEOUT_INIT);
-        wristMotor.config_kD(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
-        wristMotor.configAllowableClosedloopError(0, 2, RobotMap.CTRE_TIMEOUT_INIT);
+        wristMotor.config_kF(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
+        wristMotor.config_kP(0, 96.0, RobotMap.CTRE_TIMEOUT_INIT);
+        wristMotor.config_kI(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
+        wristMotor.config_kD(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
+        wristMotor.configAllowableClosedloopError(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
 
         setWristSoftLimits();
         setWristMotionProfile(WRIST_ACCELERATION, WRIST_CRUISE);
@@ -87,6 +87,8 @@ public class JesterWrist extends Subsystem {
 
         wristMotor.configForwardSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
         wristMotor.configForwardSoftLimitThreshold(upperLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
+
+        wristMotor.configClosedloopRamp(0.2,0);
 
         SmartDashboard.putNumber("Wrist Lower Limit", lowerLimit);
         SmartDashboard.putNumber("Wrist Upper Limit", upperLimit);
@@ -124,7 +126,7 @@ public class JesterWrist extends Subsystem {
     }
 
     public void setWristMotionMagic(int pos) {
-        // wristMotor.set(ControlMode.MotionMagic, pos);
+        wristMotor.set(ControlMode.MotionMagic, pos);
     }
 
     public void stop() {
@@ -139,6 +141,7 @@ public class JesterWrist extends Subsystem {
     @Override
     public void periodic() {
         setWristSoftLimits();
+        updateSmartDash();
     }
 
     private void setupLogs() {
