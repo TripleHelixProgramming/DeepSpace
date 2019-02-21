@@ -20,7 +20,7 @@ public class resetCargoJester extends CommandGroup {
   public resetCargoJester() {
     // Add Commands here:
     addParallel(new GrabCargo());
-    addSequential(new MoveArmTo(ArmPreset.PICKUP_HATCH));
+    addSequential(new MoveArmTo(ArmPreset.CARGO));
     addSequential(new RetractIntake());
 
   }

@@ -39,7 +39,7 @@ public class PickUpCargo extends CommandGroup {
     // a CommandGroup containing them would require both the chassis and the
     // arm.
 
-    addSequential(new MoveArmTo(ArmPreset.PICKUP_HATCH));
+    addSequential(new MoveArmTo(ArmPreset.CARGO));
     addSequential(new DeployIntake());
     addSequential(new WaitCommand(0.5));
     addSequential(new MoveArmTo(ArmPreset.PICKUP_CARGO_FLOOR));
