@@ -11,7 +11,7 @@ public enum ArmPreset {
 
     // shoulder angle, wrist angle
     PICKUP_HATCH(-70, 0), 
-    PICKUP_CARGO_FLOOR(-50, -60), 
+    PICKUP_CARGO_FLOOR(-25, -90), 
     CARGO(0, 0), 
     DELIVER_BALL_UPPER(110, 135),
     DELIVER_HATCH_UPPER(110, 175), 
