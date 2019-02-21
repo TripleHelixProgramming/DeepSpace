@@ -16,7 +16,7 @@ public class ReleaseCargo extends Command {
   public ReleaseCargo() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-   // requires(HatchGrabber.getInstance());
+  //  requires(HatchGrabber.getInstance());
     requires(CargoGrabber.getInstance());
 
   }

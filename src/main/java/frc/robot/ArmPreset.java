@@ -21,7 +21,7 @@ public enum ArmPreset {
     DELIVER_HATCH_LOWER(250, 180), 
     UNPACK_WP(210, 180), 
     START(241, 277);
-
+    
     private final int shoulder_angle;
     private final int wrist_angle;
 
@@ -36,8 +36,8 @@ public enum ArmPreset {
     // (requires linear sensor)
     public double m_wrist = -0.494;
     public double b_wrist = 560;
-    public double m_shoulder = 0.859;
-    public double b_shoulder = -260;
+    public double m_shoulder = 0.861;
+    public double b_shoulder = -255;
 
     private ArmPreset(int shoulder_angle, int wrist_angle) {
         this.shoulder_angle = shoulder_angle;

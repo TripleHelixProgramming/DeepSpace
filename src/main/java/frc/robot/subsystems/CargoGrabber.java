@@ -52,8 +52,8 @@ public class CargoGrabber extends Subsystem {
   }
 
   public void intake() {
-    leftWheel.set(ControlMode.PercentOutput, 0.15);
-    rightWheel.set(ControlMode.PercentOutput, 0.15);
+    leftWheel.set(ControlMode.PercentOutput, 0.3);
+    rightWheel.set(ControlMode.PercentOutput, 0.3);
   }
 
   public void eject() {
@@ -62,8 +62,8 @@ public class CargoGrabber extends Subsystem {
   }
 
   public void stop() {
-    leftWheel.set(ControlMode.PercentOutput, 0.0);
-    rightWheel.set(ControlMode.PercentOutput, 0.0);
+    leftWheel.set(ControlMode.PercentOutput, 0.15);
+    rightWheel.set(ControlMode.PercentOutput, 0.15);
   }
 
   public boolean isOpen() {
@@ -83,7 +83,7 @@ public class CargoGrabber extends Subsystem {
    * @return true if over 20 amps
    */
   public boolean isOverCurrent() {
-    if (getOutputCurrent() > 15) {
+    if (getOutputCurrent() > 3) {
       return true;
     } else {
       return false;

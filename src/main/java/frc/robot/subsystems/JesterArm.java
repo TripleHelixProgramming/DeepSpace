@@ -18,9 +18,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
-import frc.robot.commands.jester_arm.DriveArmByJoystick;
-import frc.robot.commands.jester_arm.MoveArmTo;
-import frc.robot.commands.jester_arm.StopArm;
+
 import frc.robot.ArmPreset;
 
 public class JesterArm extends Subsystem {
@@ -29,7 +27,7 @@ public class JesterArm extends Subsystem {
     private VictorSPX armSlave = new VictorSPX(RobotMap.ARM_SLAVE_ID);
 
     public static int ARM_ACCELERATION = 30;
-    public static int ARM_CRUISE = 4;
+    public static int ARM_CRUISE = 3;
 
     private static JesterArm INSTANCE = new JesterArm();
     private ArmPreset currentArmPreset = ArmPreset.DELIVER_HATCH_LOWER;
@@ -64,28 +62,18 @@ public class JesterArm extends Subsystem {
         armMaster.setNeutralMode(NeutralMode.Brake);
         armMaster.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, RobotMap.CTRE_TIMEOUT_INIT);
         armMaster.configFeedbackNotContinuous(true, RobotMap.CTRE_TIMEOUT_INIT);
+        armMaster.configClosedloopRamp(0.2, 0);
 
         // Need to verify and set. With positive motor direction sensor values should
         // increase.
         armMaster.setSensorPhase(true);
         armMaster.setInverted(false);
 
-        // PID Settings-=
-        // armMaster.config_kF(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
-        // armMaster.config_kP(0, 15, RobotMap.CTRE_TIMEOUT_INIT);
-        // armMaster.config_kI(0, 0.03, RobotMap.CTRE_TIMEOUT_INIT);
-        // armMaster.config_kD(0, 300, RobotMap.CTRE_TIMEOUT_INIT);
-
-        armMaster.config_kF(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
-        armMaster.config_kP(0, 20.0, RobotMap.CTRE_TIMEOUT_INIT);
-        armMaster.config_kI(0, 0.04, RobotMap.CTRE_TIMEOUT_INIT);
+        // PID Settings for Competition Bot
+        armMaster.config_kF(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
+        armMaster.config_kP(0, 23.0, RobotMap.CTRE_TIMEOUT_INIT);
+        armMaster.config_kI(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
         armMaster.config_kD(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
-        armMaster.config_IntegralZone(0, 12);
-
-        // armMaster.config_kF(0, 25, RobotMap.CTRE_TIMEOUT_INIT);
-        // armMaster.config_kP(0, 10, RobotMap.CTRE_TIMEOUT_INIT);
-        // armMaster.config_kI(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
-        // armMaster.config_kD(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
         armMaster.configAllowableClosedloopError(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
 
         // Set current limiting
@@ -257,7 +245,7 @@ public class JesterArm extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        // setDefaultCommand(new StopArm());
-        // setDefaultCommand(new MoveArmTo(currentArmPreset));
+        //  There should be no default command for Jester Arm!!! Motion Magic PID control
+        //  handles it.
     }
 }
