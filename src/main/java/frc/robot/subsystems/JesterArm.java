@@ -89,18 +89,12 @@ public class JesterArm extends Subsystem {
 
         // The arm starts the match in a one-time docked position. Move arm from
         // docked position to front lower scoring position.
-        unDockArm();
+        // unDockArm();
     }
 
     private void setupLogs() {
         HelixLogger.getInstance().addDoubleSource("ARM MASTER CURRENT", armMaster::getOutputCurrent);
         HelixLogger.getInstance().addDoubleSource("ARM SLAVE", () -> pdp.getCurrent(RobotMap.ARM_SLAVE_ID));
-    }
-
-    // Move arm from docked position (at start of match) to front lower scoring
-    // position.
-    public void unDockArm() {
-        // setArmMotionMagic(ArmPos.FRONT_HATCH_LOWER);
     }
 
     public void goTo(ArmPreset preset) {
@@ -189,6 +183,23 @@ public class JesterArm extends Subsystem {
         default:
             break;
         }
+    }
+
+    // Place arm in defense position
+    public void stowArm() {
+        goTo(ArmPreset.STOW);
+    }
+
+    // Move arm from defense position to lower deliver position.
+    public void unStowArm() {
+        goTo(ArmPreset.DELIVER_HATCH_LOWER);
+    }
+
+    // Move arm from docked position (at start of match) to front lower scoring
+    // position.
+    public void unDockArm() {
+        goTo(ArmPreset.UNPACK_WP);
+        goTo(ArmPreset.DELIVER_HATCH_LOWER);
     }
 
     public void goTo(int pos) {
