@@ -25,7 +25,7 @@ public class stopCargoGrabber extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    CargoGrabber.getInstance().stop();
+    CargoGrabber.getInstance().stopMotors();
   }
 
   // Make this return true when this Command no longer needs to run execute()

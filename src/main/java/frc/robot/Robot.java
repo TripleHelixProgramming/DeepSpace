@@ -122,7 +122,7 @@ public class Robot extends TimedRobot {
     // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new Figure8Arc());
     // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new Straight10FeetArc(), false, false, false);
 
-    // autonomousCommand = null;
+    autonomousCommand = null;
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.start();

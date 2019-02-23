@@ -8,6 +8,7 @@
 package frc.robot.commands.cargo_grabber;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.RumbleController;
 import frc.robot.subsystems.CargoGrabber;
 import frc.robot.subsystems.HatchGrabber;
@@ -16,10 +17,11 @@ import com.team2363.logger.HelixEvents;
 
 public class GrabCargo extends Command {
 
-  private boolean isFinished = false;
+  private boolean finished = false;
 
 
   private int stalledCount = 0;
+  private double speed = 0.30;
 	
   Command rumbleCommand = new RumbleController();
   
@@ -42,18 +44,21 @@ public class GrabCargo extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    boolean isFinished = false;
+  finished = false;
 
    //when we retrieve cargo, extend hatch grabber
    if (CargoGrabber.getInstance().isOverCurrent()) {
     stalledCount++;
+    SmartDashboard.putNumber("Cargo Stall Count", stalledCount);
   } else {
     stalledCount = 0;
+    SmartDashboard.putNumber("Cargo Stall Reset", stalledCount);
   }
-  CargoGrabber.getInstance().intake();
+  CargoGrabber.getInstance().intake(speed);
 
 if (stalledCount > 5) {
-  isFinished = true;
+  finished = true;
+  CargoGrabber.getInstance().intake(0.0);
   if (!rumbleCommand.isRunning()) {
     rumbleCommand.start();
   }
@@ -64,15 +69,17 @@ if (stalledCount > 5) {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return isFinished;
+    return finished;
     // return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    SmartDashboard.putString("Grab Cargo", "Ending grab cargo");
     HelixEvents.getInstance().addEvent("GRAB_CARGO", "Ending grab cargo");
-    CargoGrabber.getInstance().stop();
+    CargoGrabber.getInstance().stopMotors();
+    // HatchGrabber.getInstance().hatchRelease();
   }
 
   // Called when another command which requires one or more of the same

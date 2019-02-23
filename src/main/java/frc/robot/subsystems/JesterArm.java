@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.team2363.logger.HelixLogger;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,10 +31,10 @@ public class JesterArm extends Subsystem {
     public static int ARM_CRUISE = 3;
 
     private static JesterArm INSTANCE = new JesterArm();
-    private ArmPreset currentArmPreset = ArmPreset.DELIVER_HATCH_LOWER;
+    private ArmPreset currentArmPreset = ArmPreset.START;
 
     private int reverseSoftLimit, fwdSoftLimit;
-    // private static DigitalInput mode = new DigitalInput(4);
+    private static DigitalInput mode = new DigitalInput(0);
 
     PowerDistributionPanel pdp = new PowerDistributionPanel();
 
@@ -54,7 +55,7 @@ public class JesterArm extends Subsystem {
         armSlave.configFactoryDefault();
         armMaster.configFactoryDefault();
 
-        currentArmPreset = ArmPreset.DELIVER_HATCH_LOWER;
+        currentArmPreset = ArmPreset.START;
 
         armSlave.follow(armMaster);
         armSlave.setNeutralMode(NeutralMode.Brake);
@@ -74,7 +75,7 @@ public class JesterArm extends Subsystem {
         armMaster.config_kF(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
         armMaster.config_kP(0, 23.0, RobotMap.CTRE_TIMEOUT_INIT);
         armMaster.config_kI(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
-        armMaster.config_kD(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
+        armMaster.config_kD(0, 10.0, RobotMap.CTRE_TIMEOUT_INIT);
         armMaster.configAllowableClosedloopError(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
 
         // Set current limiting
@@ -90,9 +91,9 @@ public class JesterArm extends Subsystem {
 
         // The arm starts the match in a one-time docked position. Move arm from
         // docked position to front lower scoring position.
-        //  int pitMode = mode.get();
-        boolean pitMode = true;
-        if (!pitMode) unDockArm();
+        boolean compMode = mode.get();
+        // boolean pitMode = true;
+        if (compMode) unDockArm();
     }
 
     private void setupLogs() {

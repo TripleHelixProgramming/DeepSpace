@@ -33,9 +33,13 @@ public class CargoIntake extends Subsystem {
 
   private VictorSPX motor = new VictorSPX(CARGO_INTAKE_ID);
   private DoubleSolenoid solenoid = new DoubleSolenoid(CARGO_INTAKE_DEPLOY, CARGO_INTAKE_RETRACT);
-
+//CompBot
+  // public void in() {
+  //   motor.set(ControlMode.PercentOutput, -0.2);
+  // }
+//PracticeBot
   public void in() {
-    motor.set(ControlMode.PercentOutput, -0.2);
+    motor.set(ControlMode.PercentOutput, -0.50);
   }
 
   public void out() {
