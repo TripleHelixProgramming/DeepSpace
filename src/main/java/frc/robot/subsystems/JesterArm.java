@@ -33,6 +33,7 @@ public class JesterArm extends Subsystem {
     private ArmPreset currentArmPreset = ArmPreset.DELIVER_HATCH_LOWER;
 
     private int reverseSoftLimit, fwdSoftLimit;
+    // private static DigitalInput mode = new DigitalInput(4);
 
     PowerDistributionPanel pdp = new PowerDistributionPanel();
 
@@ -89,12 +90,14 @@ public class JesterArm extends Subsystem {
 
         // The arm starts the match in a one-time docked position. Move arm from
         // docked position to front lower scoring position.
-        // unDockArm();
+        //  int pitMode = mode.get();
+        boolean pitMode = true;
+        if (!pitMode) unDockArm();
     }
 
     private void setupLogs() {
         HelixLogger.getInstance().addDoubleSource("ARM MASTER CURRENT", armMaster::getOutputCurrent);
-        HelixLogger.getInstance().addDoubleSource("ARM SLAVE", () -> pdp.getCurrent(RobotMap.ARM_SLAVE_ID));
+        // HelixLogger.getInstance().addDoubleSource("ARM SLAVE", () -> pdp.getCurrent(RobotMap.ARM_SLAVE_ID));
     }
 
     public void goTo(ArmPreset preset) {

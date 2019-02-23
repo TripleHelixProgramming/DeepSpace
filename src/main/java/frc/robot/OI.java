@@ -8,36 +8,23 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import frc.arcs.DistanceScalingArc;
-import frc.arcs.SpeedTestingArc;
-import frc.arcs.Straight10FeetArc;
-import frc.arcs.TurnScalingArc;
 import frc.robot.camera.CAMERA;
-import frc.robot.commands.FollowArc;
 import frc.robot.commands.Auto.FollowArcTesting;
-import frc.robot.commands.Auto.MoveJesterTo;
 import frc.robot.commands.Auto.PickUpCargo;
 import frc.robot.commands.Auto.resetCargoJester;
 import frc.robot.commands.cargo_grabber.GrabCargo;
 import frc.robot.commands.cargo_grabber.ReleaseCargo;
-import frc.robot.commands.cargo_grabber.openGrabber;
 import frc.robot.commands.cargo_grabber.stopCargoGrabber;
-import frc.robot.commands.cargo_intake.DeployIntake;
-import frc.robot.commands.cargo_intake.RetractIntake;
-import frc.robot.commands.drivetrain.driveByAssistJosh;
 import frc.robot.commands.drivetrain.driveByCamera;
-import frc.robot.commands.drivetrain.driveByDocking;
 import frc.robot.commands.drivetrain.driveByDockingPID;
-import frc.robot.commands.drivetrain.driveByVision;
 import frc.robot.commands.hatch.GrabHatch;
 import frc.robot.commands.hatch.ReleaseHatch;
-import frc.robot.commands.jester_arm.MoveArmTo;
 import frc.robot.commands.jester_arm.ToggleArmCommand;
 import frc.robot.commands.jester_arm.downCommand;
 import frc.robot.commands.jester_arm.upCommand;
-import frc.robot.commands.jester_wrist.MoveWristTo;
 import frc.robot.commands.robot_lifter.ExtendLifter;
 import frc.robot.commands.robot_lifter.burstExtendLifter;
 import frc.robot.commands.robot_lifter.reverseLifter;
@@ -74,73 +61,60 @@ public class OI {
   private OI() {
     //Driver Controls
 
-      // new JoystickButton(driver, ControllerMap.X).whileHeld(new driveByDocking(CAMERA.FRONT));
-      // new JoystickButton(driver, ControllerMap.B).whileHeld(new driveByDocking(CAMERA.BACK));
-
-      // new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.FRONT));
-      // new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.BACK));
-
+      new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.FRONT));
+      new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.BACK));
       // new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByVision(CAMERA.FRONT));
       // new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByVision(CAMERA.BACK));
-
-      // new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByDockingPID(CAMERA.FRONT));
-      // new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByDockingPID(CAMERA.BACK));
-
-      // new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArcTesting());
-
-      // new JoystickButton(driver, ControllerMap.B).whileHeld(new burstExtendLifter());
-      // new JoystickButton(driver, ControllerMap.Y).whenPressed(new ExtendLifter());
-      new JoystickButton(driver, ControllerMap.A).whileHeld(new reverseLifter());
-
-      // new JoystickButton(driver, ControllerMap.B).whenPressed(new ReleaseCargo());
-      // new JoystickButton(driver, ControllerMap.X).whenPressed(new GrabCargo());
-      // new JoystickButton(driver, ControllerMap.A).whenPressed(new stopCargoGrabber());
-
-      // new JoystickButton(driver, ControllerMap.B).whenPressed(new ReleaseHatch());
-      // new JoystickButton(driver, ControllerMap.X).whenPressed(new GrabHatch());
-      // new JoystickButton(driver, ControllerMap.B).whenPressed(new DeployIntake());
-      // new JoystickButton(driver, ControllerMap.X).whenPressed(new RetractIntake());
-
-
-
-
-
-
-
-
-      // new JoystickButton(operator, ControllerMap.B).whenPressed(new MoveArmTo(ArmPreset.FRONT_BALL_UPPER));
-      // new JoystickButton(operator, ControllerMap.X).whenPressed(new MoveArmTo(ArmPreset.FRONT_HATCH_UPPER));
-      // new JoystickButton(operator, ControllerMap.Y).whenPressed(new MoveArmTo(ArmPreset.BACK_HATCH_UPPER));
-
-      // new JoystickButton(operator, ControllerMap.B).whenPressed(new MoveJesterTo(ArmPreset.FRONT_HATCH_UPPER));
-      new JoystickButton(operator, ControllerMap.X).whenPressed(new downCommand());
-      new JoystickButton(operator, ControllerMap.B).whenPressed(new upCommand());
-      // new JoystickButton(operator, ControllerMap.X).whenPressed(new ToggleArmCommand());
-
-      // new JoystickButton(operator, ControllerMap.LB).whenPressed(new GrabHatch());
-      // new JoystickButton(operator, ControllerMap.RB).whenPressed(new ReleaseHatch());
-
-      new JoystickButton(operator, ControllerMap.LB).whenPressed(new ReleaseCargo());
-      new JoystickButton(operator, ControllerMap.RB).whenPressed(new GrabCargo());
-      new JoystickButton(operator, ControllerMap.Y).whenPressed(new openGrabber());
-      new JoystickButton(operator, ControllerMap.LEFT_STICK_BUTTON).whenPressed(new stopCargoGrabber());
-
-      new JoystickButton(driver, ControllerMap.B).whenPressed(new GrabHatch());
+      new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByDockingPID(CAMERA.FRONT));
+      new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByDockingPID(CAMERA.BACK));
+      new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArcTesting());
+      new JoystickButton(driver, ControllerMap.B).whenPressed(new ReleaseCargo());
       new JoystickButton(driver, ControllerMap.X).whenPressed(new ReleaseHatch());
+      new JoystickButton(driver, ControllerMap.LOGO_LEFT).whenPressed(new stopCargoGrabber());
 
-      // new JoystickButton(operator, ControllerMap.A).whenPressed(new MoveWristTo(ArmPreset.TEST_WRIST));
-      // new JoystickButton(operator, ControllerMap.B).whenPressed(new MoveWristTo(ArmPreset.FRONT_HATCH_UPPER));
-      // new JoystickButton(operator, ControllerMap.X).whenPressed(new MoveWristTo(ArmPreset.FRONT_HATCH_MIDDLE));
-      // new JoystickButton(operator, ControllerMap.A).whenPressed(new MoveWristTo(ArmPreset.BACK_HATCH_UPPER);
-      // new JoystickButton(operator, ControllerMap.Y).whenPressed(new MoveWristTo(ArmPreset.BACK_HATCH_MIDDLE));
 
-      new JoystickButton(operator, ControllerMap.A).whenPressed(new PickUpCargo());
-      new JoystickButton(operator, ControllerMap.A).whenReleased(new resetCargoJester());
-      
-      // new JoystickButton(operator, ControllerMap.A).whenPressed(new MoveArmTo(ArmPreset.FRONT_HATCH_LOWER));
 
-      // new JoystickButton(operator, ControllerMap.Y).whenPressed(new ToggleHeightCommand());
+    //Operator Buttons
 
+      new JoystickButton(operator, ControllerMap.LOGO_LEFT).whileHeld(new burstExtendLifter());
+      new JoystickButton(operator, ControllerMap.LOGO_RIGHT).whenPressed(new ExtendLifter());
+      // new JoystickButton(operator, ControllerMap.A).whileHeld(new reverseLifter());
+      new JoystickButton(operator, ControllerMap.RB).whenPressed(new PickUpCargo());
+      new JoystickButton(operator, ControllerMap.RB).whenReleased(new resetCargoJester());
+      new JoystickButton(operator, ControllerMap.LB).whenPressed(new ReleaseCargo());
+      new JoystickButton(operator, ControllerMap.X).whenPressed(new GrabCargo());
+      new JoystickButton(operator, ControllerMap.B).whenPressed(new ReleaseCargo());
+      new JoystickButton(operator, ControllerMap.LEFT_STICK_BUTTON).whenPressed(new stopCargoGrabber());
+      new JoystickButton(operator, ControllerMap.Y).whenPressed(new ReleaseHatch());
+      new JoystickButton(operator, ControllerMap.A).whenPressed(new GrabHatch());
+
+
+      // new JoystickButton(operator, ControllerMap.Y).whenPressed(new openGrabber());
+
+
+      new Button() {
+
+        @Override
+        public boolean get() {
+          return (operator.getPOV() == 0);
+        }
+      }.whenPressed(new upCommand());
+
+      new Button() {
+
+        @Override
+        public boolean get() {
+          return operator.getPOV() == 180;
+        }
+      }.whenPressed(new downCommand());
+
+      new Button() {
+
+        @Override
+        public boolean get() {
+          return operator.getPOV() == 90;
+        }
+      }.whenPressed(new ToggleArmCommand());
   }
 
   /**
@@ -189,4 +163,3 @@ public class OI {
 		}
 	}
 }
-
