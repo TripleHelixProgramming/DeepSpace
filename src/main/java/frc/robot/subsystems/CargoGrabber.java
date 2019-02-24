@@ -34,6 +34,14 @@ public class CargoGrabber extends Subsystem {
 
   public CargoGrabber() {
     // setupLogs();
+    leftWheel.configContinuousCurrentLimit(40, 0);
+    leftWheel.configPeakCurrentLimit(60, 0);
+    leftWheel.configPeakCurrentDuration(100, 0);
+    leftWheel.enableCurrentLimit(true);
+    rightWheel.configContinuousCurrentLimit(40, 0);
+    rightWheel.configPeakCurrentLimit(60, 0);
+    rightWheel.configPeakCurrentDuration(100, 0);
+    rightWheel.enableCurrentLimit(true);
   }
 
   public static CargoGrabber getInstance() {
@@ -51,19 +59,24 @@ public class CargoGrabber extends Subsystem {
     cargo_solenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
+  public void intake(double speed) {
+    leftWheel.set(ControlMode.PercentOutput, speed);
+    rightWheel.set(ControlMode.PercentOutput, speed);
+  }
+
   public void intake() {
     leftWheel.set(ControlMode.PercentOutput, 0.3);
     rightWheel.set(ControlMode.PercentOutput, 0.3);
   }
 
   public void eject() {
-    leftWheel.set(ControlMode.PercentOutput, -0.5);
-    rightWheel.set(ControlMode.PercentOutput, -0.50);
+    leftWheel.set(ControlMode.PercentOutput, -0.75);
+    rightWheel.set(ControlMode.PercentOutput, -0.75);
   }
 
-  public void stop() {
-    leftWheel.set(ControlMode.PercentOutput, 0.15);
-    rightWheel.set(ControlMode.PercentOutput, 0.15);
+  public void stopMotors() {
+    leftWheel.set(ControlMode.PercentOutput, 0.20);
+    rightWheel.set(ControlMode.PercentOutput, 0.20);
   }
 
   public boolean isOpen() {
@@ -93,7 +106,7 @@ public class CargoGrabber extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new openGrabber());
+    // setDefaultCommand(new openGrabber());
   }
 
   private void setupLogs() {

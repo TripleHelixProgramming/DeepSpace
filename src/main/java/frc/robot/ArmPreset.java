@@ -9,41 +9,40 @@ package frc.robot;
 
 public enum ArmPreset {
 
-    // shoulder angle, wrist angle, next_fwd index, next_aft index, mirror index
-    TEST_WRIST(0, -60),
-    FRONT_HATCH_LOWER(-70, 0), 
-    FRONT_BALL_LOWER(-50, 0), 
-    FRONT_HATCH_MIDDLE(0, 0), 
-    FRONT_BALL_MIDDLE(20, 0),
-    FRONT_HATCH_UPPER(70, 30), 
-    FRONT_BALL_UPPER(80, 30), 
-    TRANSITION(90, 90), 
-    BACK_BALL_UPPER(100, 150),
-    BACK_HATCH_UPPER(110, 150), 
-    BACK_BALL_MIDDLE(160, 180), 
-    BACK_HATCH_MIDDLE(180, 180), 
-    BACK_BALL_LOWER(230, 180),
-    BACK_HATCH_LOWER(240, 180), 
-    START(230, 280), 
-    UNPACK_WP(210, 180), 
-    PICK_UP(-25, -90);
-
+    // shoulder angle, wrist angle
+    PICKUP_HATCH(-70, 0), 
+    CARGO_WP(0, -60), 
+    PICKUP_CARGO_FLOOR(-20, -90), 
+    CARGO(0, 0), 
+    DELIVER_BALL_UPPER(110, 135),
+    DELIVER_HATCH_UPPER(110, 175), 
+    DELIVER_BALL_MIDDLE(153, 180), 
+    DELIVER_HATCH_MIDDLE(173, 180), 
+    DELIVER_BALL_LOWER(220, 180),
+    DELIVER_HATCH_LOWER(250, 180),
+    STOW(250, 180),
+    UNPACK_WP3(210, 270), 
+    UNPACK_WP1(225, 294),
+    UNPACK_WP2(221,271),
+    START(235, 292);
+    
     private final int shoulder_angle;
     private final int wrist_angle;
 
     // Practice Bot slope & y-intercept for arm & wrist to calculate sensor positions
     // (requires linear sensor)
-    // public double m_wrist = -0.489;
-    // public double b_wrist = 246;
-    // public double m_shoulder = 0.859;
-    // public double b_shoulder = -499;
+    public double m_wrist = -0.489;
+    public double b_wrist = 246;
+    public double m_shoulder = 0.859;
+    public double b_shoulder = -499;
 
     // Comp Bot slope & y-intercept for arm & wrist to calculate sensor positions
     // (requires linear sensor)
-    public double m_wrist = -0.494;
-    public double b_wrist = 560;
-    public double m_shoulder = 0.861;
-    public double b_shoulder = -255;
+    // public double m_wrist = -0.494;
+    // public double b_wrist = 560;
+    // public double m_shoulder = 0.861;
+    // public double b_shoulder = -255;
+
 
     private ArmPreset(int shoulder_angle, int wrist_angle) {
         this.shoulder_angle = shoulder_angle;

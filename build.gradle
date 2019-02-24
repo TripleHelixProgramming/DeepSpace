@@ -51,7 +51,8 @@ dependencies {
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     testCompile 'junit:junit:4.12'
-    compile 'com.github.Team319:BobTrajectory:continuous_heading-SNAPSHOT'
+    // compile 'com.github.Team319:BobTrajectory:continuous_heading-SNAPSHOT'
+    compile 'com.github.Team319:BobTrajectory:1.0.2'
     compile 'com.github.notmattlythgoe:HelixUtilities:master-SNAPSHOT'
 //    compile files('C:/Users/d4lythm/Documents/Robotics/Projects/BobTrajectory/build/libs/BobTrajectory.jar')
 //    compile files('C:/Users/d4lythm/Documents/Robotics/Projects/HelixUtilities/build/libs/HelixUtilities.jar')

@@ -26,7 +26,7 @@ public class JesterWrist extends Subsystem {
     private TalonSRX wristMotor = new TalonSRX(RobotMap.WRIST_ID);
 
     public static int WRIST_ACCELERATION = 180;
-    public static int WRIST_CRUISE = 25;
+    public static int WRIST_CRUISE = 20;
 
     private static JesterWrist INSTANCE = new JesterWrist();
 
@@ -65,7 +65,7 @@ public class JesterWrist extends Subsystem {
         wristMotor.config_kF(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
         wristMotor.config_kP(0, 96.0, RobotMap.CTRE_TIMEOUT_INIT);
         wristMotor.config_kI(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
-        wristMotor.config_kD(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
+        wristMotor.config_kD(0, 10.0, RobotMap.CTRE_TIMEOUT_INIT);
         wristMotor.configAllowableClosedloopError(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
 
         setWristSoftLimits();

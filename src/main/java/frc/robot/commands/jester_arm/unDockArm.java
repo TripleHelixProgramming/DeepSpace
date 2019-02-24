@@ -8,17 +8,13 @@
 package frc.robot.commands.jester_arm;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.JesterArm;
 
-public class downCommand extends Command {
-
-  public downCommand() {
+public class unDockArm extends Command {
+  public unDockArm() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(JesterArm.getInstance());
-    requires(CargoIntake.getInstance());
   }
 
   // Called just before this Command runs the first time
@@ -29,14 +25,13 @@ public class downCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    SmartDashboard.putString("DownCommand: ", "Execute");
-    JesterArm.getInstance().Down();
+    JesterArm.getInstance().unDockArm();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return false;
   }
 
   // Called once after isFinished returns true
