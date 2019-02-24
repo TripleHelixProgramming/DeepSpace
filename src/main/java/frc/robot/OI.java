@@ -15,6 +15,7 @@ import frc.robot.camera.CAMERA;
 import frc.robot.commands.Auto.FollowArcTesting;
 import frc.robot.commands.Auto.PickUpCargo;
 import frc.robot.commands.Auto.resetCargoJester;
+import frc.robot.commands.Auto.undockJester;
 import frc.robot.commands.cargo_grabber.GrabCargo;
 import frc.robot.commands.cargo_grabber.ReleaseCargo;
 import frc.robot.commands.cargo_grabber.stopCargoGrabber;
@@ -73,7 +74,8 @@ public class OI {
       new JoystickButton(driver, ControllerMap.B).whenPressed(new ReleaseCargo());
       new JoystickButton(driver, ControllerMap.X).whenPressed(new ReleaseHatch());
       new JoystickButton(driver, ControllerMap.LOGO_LEFT).whenPressed(new stopCargoGrabber());
-      new JoystickButton(driver, ControllerMap.LOGO_RIGHT).whenPressed(new unDockArm());
+      new JoystickButton(driver, ControllerMap.LOGO_RIGHT).whenPressed(new undockJester());
+      // new JoystickButton(driver, ControllerMap.)
 
 
 

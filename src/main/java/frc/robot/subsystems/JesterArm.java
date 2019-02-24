@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.concurrent.TimeUnit;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -17,6 +19,7 @@ import com.team2363.logger.HelixLogger;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.Auto.undockJester;
@@ -32,7 +35,7 @@ public class JesterArm extends Subsystem {
 
     private static JesterArm INSTANCE = new JesterArm();
     // private ArmPreset currentArmPreset = ArmPreset.START;
-    private ArmPreset currentArmPreset = ArmPreset.UNPACK_WP1;
+    private ArmPreset currentArmPreset = ArmPreset.START;
     // private ArmPreset currentArmPreset = null;
 
 
@@ -58,8 +61,8 @@ public class JesterArm extends Subsystem {
         armSlave.configFactoryDefault();
         armMaster.configFactoryDefault();
 
-        // currentArmPreset = ArmPreset.START;
-        currentArmPreset = ArmPreset.UNPACK_WP1;
+        currentArmPreset = ArmPreset.START;
+        // currentArmPreset = ArmPreset.UNPACK_WP1;
 
 
         armSlave.follow(armMaster);
@@ -98,7 +101,7 @@ public class JesterArm extends Subsystem {
         // docked position to front lower scoring position.
         // boolean compMode = botState.get();
         // boolean pitMode = true;
-        unDockArm();
+        // unDockArm();
     }
 
     private void setupLogs() {
@@ -207,10 +210,16 @@ public class JesterArm extends Subsystem {
     // Move arm from docked position (at start of match) to front lower scoring
     // position.
     public void unDockArm() {
-        new undockJester().start();
+        // goTo(Arm);
+        // new undockJester();
         // goTo(ArmPreset.UNPACK_WP1);
-        // goTo(ArmPreset.UNPACK_WP2);
-        // goTo(ArmPreset.UNPACK_WP3);
+        // goTo(ArmPreset.UNPACK_WP1);
+        // new WaitCommand(1000);
+        // try {
+        //     wait(10000);
+        // }catch (Exception e) {}
+        goTo(ArmPreset.UNPACK_WP3);
+        
         // goTo(ArmPreset.DELIVER_HATCH_LOWER);
     }
 

@@ -22,7 +22,5 @@ public class undockJester extends CommandGroup {
     addSequential(new MoveArmTo(ArmPreset.UNPACK_WP2));
     addSequential(new MoveArmTo(ArmPreset.UNPACK_WP3));
     addSequential(new MoveArmTo(ArmPreset.DELIVER_HATCH_LOWER));
-
-
   }
 }
