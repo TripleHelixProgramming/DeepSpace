@@ -25,6 +25,7 @@ import frc.robot.commands.hatch.GrabHatch;
 import frc.robot.commands.hatch.ReleaseHatch;
 import frc.robot.commands.jester_arm.ToggleArmCommand;
 import frc.robot.commands.jester_arm.downCommand;
+import frc.robot.commands.jester_arm.unDockArm;
 import frc.robot.commands.jester_arm.upCommand;
 import frc.robot.commands.robot_lifter.ExtendLifter;
 import frc.robot.commands.robot_lifter.burstExtendLifter;
@@ -72,6 +73,7 @@ public class OI {
       new JoystickButton(driver, ControllerMap.B).whenPressed(new ReleaseCargo());
       new JoystickButton(driver, ControllerMap.X).whenPressed(new ReleaseHatch());
       new JoystickButton(driver, ControllerMap.LOGO_LEFT).whenPressed(new stopCargoGrabber());
+      new JoystickButton(driver, ControllerMap.LOGO_RIGHT).whenPressed(new unDockArm());
 
 
 

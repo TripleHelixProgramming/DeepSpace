@@ -21,7 +21,9 @@ public enum ArmPreset {
     DELIVER_BALL_LOWER(220, 180),
     DELIVER_HATCH_LOWER(250, 180),
     STOW(250, 180),
-    UNPACK_WP(226, 284), 
+    UNPACK_WP3(210, 270), 
+    UNPACK_WP1(228, 292),
+    UNPACK_WP2(221,271),
     START(238, 284);
     
     private final int shoulder_angle;

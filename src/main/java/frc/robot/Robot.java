@@ -121,7 +121,7 @@ public class Robot extends TimedRobot {
     // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new DistanceScalingArc());
     // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new Figure8Arc());
     // autonomousCommand = new FollowArc(Drivetrain.getInstance(), new Straight10FeetArc(), false, false, false);
-
+    // JesterArm.getInstance().goTo(ArmPreset.START);
     autonomousCommand = null;
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {

@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
-
+import frc.robot.commands.Auto.undockJester;
 import frc.robot.ArmPreset;
 
 public class JesterArm extends Subsystem {
@@ -31,10 +31,13 @@ public class JesterArm extends Subsystem {
     public static int ARM_CRUISE = 3;
 
     private static JesterArm INSTANCE = new JesterArm();
-    private ArmPreset currentArmPreset = ArmPreset.START;
+    // private ArmPreset currentArmPreset = ArmPreset.START;
+    private ArmPreset currentArmPreset = ArmPreset.UNPACK_WP1;
+    // private ArmPreset currentArmPreset = null;
+
 
     private int reverseSoftLimit, fwdSoftLimit;
-    private static DigitalInput mode = new DigitalInput(0);
+    // private static DigitalInput botState = new DigitalInput(1);
 
     PowerDistributionPanel pdp = new PowerDistributionPanel();
 
@@ -55,7 +58,9 @@ public class JesterArm extends Subsystem {
         armSlave.configFactoryDefault();
         armMaster.configFactoryDefault();
 
-        currentArmPreset = ArmPreset.START;
+        // currentArmPreset = ArmPreset.START;
+        currentArmPreset = ArmPreset.UNPACK_WP1;
+
 
         armSlave.follow(armMaster);
         armSlave.setNeutralMode(NeutralMode.Brake);
@@ -91,9 +96,9 @@ public class JesterArm extends Subsystem {
 
         // The arm starts the match in a one-time docked position. Move arm from
         // docked position to front lower scoring position.
-        boolean compMode = mode.get();
+        // boolean compMode = botState.get();
         // boolean pitMode = true;
-        if (compMode) unDockArm();
+        unDockArm();
     }
 
     private void setupLogs() {
@@ -202,8 +207,11 @@ public class JesterArm extends Subsystem {
     // Move arm from docked position (at start of match) to front lower scoring
     // position.
     public void unDockArm() {
-        goTo(ArmPreset.UNPACK_WP);
-        goTo(ArmPreset.DELIVER_HATCH_LOWER);
+        new undockJester().start();
+        // goTo(ArmPreset.UNPACK_WP1);
+        // goTo(ArmPreset.UNPACK_WP2);
+        // goTo(ArmPreset.UNPACK_WP3);
+        // goTo(ArmPreset.DELIVER_HATCH_LOWER);
     }
 
     public void goTo(int pos) {
