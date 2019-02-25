@@ -38,6 +38,9 @@ public class JesterArm extends Subsystem {
     private ArmPreset currentArmPreset = ArmPreset.START;
     // private ArmPreset currentArmPreset = null;
 
+    // States which allow only certain destinations based on what the robot is carrrying
+    public enum BotState {EMPTY, BALL, HATCH};
+    private BotState curBotState = BotState.HATCH;  // Bot is holding a hatch at the start of match
 
     private int reverseSoftLimit, fwdSoftLimit;
     // private static DigitalInput botState = new DigitalInput(1);
@@ -64,6 +67,8 @@ public class JesterArm extends Subsystem {
         currentArmPreset = ArmPreset.START;
         // currentArmPreset = ArmPreset.UNPACK_WP1;
 
+        // Bot is holding a hatch at the start of match
+        curBotState = BotState.HATCH;
 
         armSlave.follow(armMaster);
         armSlave.setNeutralMode(NeutralMode.Brake);
@@ -118,6 +123,40 @@ public class JesterArm extends Subsystem {
     }
 
     public void Up() {
+        switch (curBotState) {
+            case EMPTY:
+                UpEmpty();
+                break;
+            case BALL:
+                UpBall();
+                break;
+            case HATCH:
+                UpHatch();
+                break;
+            default:
+                UpEmpty();
+                break;
+        }
+    }
+
+    public void Down() {
+        switch (curBotState) {
+            case EMPTY:
+                DownEmpty();
+                break;
+            case BALL:
+                DownBall();
+                break;
+            case HATCH:
+                DownHatch();
+                break;
+            default:
+                DownEmpty();
+                break;
+        }
+    }
+
+    public void UpEmpty() {
         switch (currentArmPreset) {
             case DELIVER_HATCH_LOWER:
                 goTo(ArmPreset.DELIVER_BALL_LOWER);
@@ -149,7 +188,76 @@ public class JesterArm extends Subsystem {
         }
     }   
 
-    public void Down() {
+    public void UpBall() {
+        switch (currentArmPreset) {
+            case DELIVER_BALL_LOWER:
+                goTo(ArmPreset.DELIVER_BALL_MIDDLE);
+                break;
+            case DELIVER_BALL_MIDDLE:
+                goTo(ArmPreset.DELIVER_BALL_UPPER);
+                break;
+            case DELIVER_BALL_UPPER: 
+                goTo(ArmPreset.CARGO);
+                break;
+            case CARGO:    
+                goTo(ArmPreset.DELIVER_BALL_UPPER);
+                break;        
+            default:    
+                break;
+        }
+    }  
+
+    public void UpHatch() {
+        switch (currentArmPreset) {
+            case PICKUP_HATCH:
+                goTo(ArmPreset.DELIVER_HATCH_UPPER);
+                break;
+            case DELIVER_HATCH_LOWER:
+                goTo(ArmPreset.DELIVER_HATCH_MIDDLE);
+                break;
+            case DELIVER_HATCH_MIDDLE:
+                goTo(ArmPreset.DELIVER_HATCH_UPPER);
+                break;
+            case DELIVER_HATCH_UPPER:
+            default:    
+                break;
+        }
+    }  
+
+    public void DownHatch() {
+        switch (currentArmPreset) {
+            case DELIVER_HATCH_LOWER:
+                break;
+            case DELIVER_HATCH_MIDDLE:
+                goTo(ArmPreset.DELIVER_HATCH_LOWER);
+                break;
+            case DELIVER_HATCH_UPPER:
+                goTo(ArmPreset.DELIVER_HATCH_MIDDLE);
+                break;
+            default:    
+                break;
+        }
+    }  
+
+    public void DownBall() {
+        switch (currentArmPreset) {
+            case DELIVER_BALL_LOWER:
+                break;
+            case DELIVER_BALL_MIDDLE:
+                goTo(ArmPreset.DELIVER_BALL_LOWER);
+                break;
+            case DELIVER_BALL_UPPER: 
+                goTo(ArmPreset.DELIVER_BALL_MIDDLE);
+                break;
+            case CARGO: 
+                goTo(ArmPreset.DELIVER_BALL_UPPER);
+                break;              
+            default:    
+                break;
+        }
+    }
+
+    public void DownEmpty() {
         switch (currentArmPreset) {
             case DELIVER_HATCH_LOWER:
             case PICKUP_HATCH:
@@ -187,14 +295,16 @@ public class JesterArm extends Subsystem {
             goTo(ArmPreset.DELIVER_BALL_UPPER);
             break;
         case DELIVER_BALL_UPPER:
-            goTo(ArmPreset.CARGO);
-            break;
         case DELIVER_HATCH_UPPER:
             goTo(ArmPreset.CARGO);
             break;
         default:
             break;
         }
+    }
+
+    public void setState(BotState bot_state) {
+        curBotState = bot_state;
     }
 
     // Place arm in defense position

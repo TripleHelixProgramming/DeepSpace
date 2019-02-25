@@ -16,6 +16,8 @@ import frc.robot.commands.cargo_intake.IntakeMotorIn;
 import frc.robot.commands.hatch.GrabHatch;
 import frc.robot.commands.jester_arm.JesterPickupCargo;
 import frc.robot.commands.jester_arm.MoveArmTo;
+import frc.robot.commands.jester_arm.SetBotState;
+import frc.robot.subsystems.JesterArm.BotState;
 
 public class PickUpCargo extends CommandGroup {
   /**
@@ -39,6 +41,7 @@ public class PickUpCargo extends CommandGroup {
     // a CommandGroup containing them would require both the chassis and the
     // arm.
 
+    addSequential(new SetBotState(BotState.BALL));
     addSequential(new MoveArmTo(ArmPreset.CARGO));
     addSequential(new DeployIntake());
     addSequential(new WaitCommand(0.5));

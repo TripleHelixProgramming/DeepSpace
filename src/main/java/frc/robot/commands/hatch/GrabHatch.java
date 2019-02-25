@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.RumbleController;
 import frc.robot.subsystems.CargoGrabber;
 import frc.robot.subsystems.HatchGrabber;
+import frc.robot.subsystems.JesterArm;
+import frc.robot.subsystems.JesterArm.BotState;
 
 public class GrabHatch extends Command {
 
@@ -31,11 +33,13 @@ public class GrabHatch extends Command {
     HelixEvents.getInstance().addEvent("GRAB_HATCH", "Starting to grab hatch");
     CargoGrabber.getInstance().openGrabber();
     HatchGrabber.getInstance().hatchRelease();
+
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    JesterArm.getInstance().setState(BotState.HATCH);
     HatchGrabber.getInstance().hatchGrab();
   }
 
