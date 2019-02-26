@@ -31,6 +31,7 @@ public class JesterArm extends Subsystem {
 
     private static JesterArm INSTANCE = new JesterArm();
 
+    // Arm & Wrist do not move in START preset, until told to move
     private ArmPreset currentArmPreset = ArmPreset.START;
 
     private ArmPreset lastUpperPos = ArmPreset.DELIVER_BALL_UPPER;
@@ -69,8 +70,10 @@ public class JesterArm extends Subsystem {
         armMaster.configFactoryDefault();
 
         // Setting initial state modes -  Holding Hatch at START of match
+        // Arm & Wrist do not move in START preset, until told to move
         currentArmPreset = ArmPreset.START;
         curBotState = BotState.HATCH;
+
         // Since holding HATCH at beginning, last settings for dest settings should be BALL states.
         lastUpperPos = ArmPreset.DELIVER_BALL_UPPER;
         lastMiddlePos = ArmPreset.DELIVER_BALL_MIDDLE;
@@ -124,18 +127,23 @@ public class JesterArm extends Subsystem {
         setArmMotionMagic(newPos);
     }
 
+    // Called from Robot.java disablePeriodic(), so that robot doesn't move on enable.
     public void resetArmPreset() {
         currentArmPreset = ArmPreset.START;
     }
 
+    // Set the current carrying state - BALL, HATCH, EMPTY
     public void setState(BotState bot_state) {
         curBotState = bot_state;
     }
 
+    // Returns the current carrying state - BALL, HATCH, EMPTY.  Used by set commands in 
+    // the isFinished().
     public BotState getState() {
         return(curBotState);
     }
 
+    // Used by DPAD commands to be check if movement command finished.
     public boolean isLastMoveDone() {
         return(Math.abs(getArmPos() - currentArmPreset.CalculateArmPos()) <= 2);
     }
@@ -256,10 +264,6 @@ public class JesterArm extends Subsystem {
 
     public ArmPreset getCurrentArmPreset() {
         return currentArmPreset;
-    }
-
-    public void setCurrentArmPreset(ArmPreset preset) {
-        currentArmPreset = preset;
     }
 
     public void setArmSoftLimits(int reverseSoftLimit, int forwardSoftLimit) {
