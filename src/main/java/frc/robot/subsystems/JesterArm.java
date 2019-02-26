@@ -128,6 +128,10 @@ public class JesterArm extends Subsystem {
         curBotState = bot_state;
     }
 
+    public BotState getState() {
+        return(curBotState);
+    }
+
     public boolean isLastMoveDone() {
         return(Math.abs(getArmPos() - currentArmPreset.CalculateArmPos()) <= 2);
     }
