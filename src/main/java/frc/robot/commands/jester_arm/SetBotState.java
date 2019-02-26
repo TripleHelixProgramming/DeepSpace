@@ -12,7 +12,7 @@ import frc.robot.subsystems.JesterArm;
 import frc.robot.subsystems.JesterArm.BotState;
 
 public class SetBotState extends Command {
-  private BotState bot_state;
+  public BotState bot_state;
 
   public SetBotState(BotState bot_state) {
     // Use requires() here to declare subsystem dependencies

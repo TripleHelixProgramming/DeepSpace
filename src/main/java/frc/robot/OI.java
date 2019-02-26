@@ -24,10 +24,10 @@ import frc.robot.commands.drivetrain.driveByDocking;
 import frc.robot.commands.drivetrain.driveByDockingPID;
 import frc.robot.commands.hatch.GrabHatch;
 import frc.robot.commands.hatch.ReleaseHatch;
-import frc.robot.commands.jester_arm.ToggleArmCommand;
-import frc.robot.commands.jester_arm.downCommand;
-import frc.robot.commands.jester_arm.unDockArm;
-import frc.robot.commands.jester_arm.upCommand;
+import frc.robot.commands.jester_arm.MoveToLower;
+import frc.robot.commands.jester_arm.MoveToMiddle;
+import frc.robot.commands.jester_arm.MoveToPickup;
+import frc.robot.commands.jester_arm.MoveToUpper;
 import frc.robot.commands.robot_lifter.ExtendLifter;
 import frc.robot.commands.robot_lifter.burstExtendLifter;
 import frc.robot.commands.robot_lifter.reverseLifter;
@@ -103,7 +103,7 @@ public class OI {
         public boolean get() {
           return (operator.getPOV() == 0);
         }
-      }.whenPressed(new upCommand());
+      }.whenPressed(new MoveToUpper());
 
       new Button() {
 
@@ -111,7 +111,7 @@ public class OI {
         public boolean get() {
           return operator.getPOV() == 180;
         }
-      }.whenPressed(new downCommand());
+      }.whenPressed(new MoveToLower());
 
       new Button() {
 
@@ -119,7 +119,15 @@ public class OI {
         public boolean get() {
           return operator.getPOV() == 90;
         }
-      }.whenPressed(new ToggleArmCommand());
+      }.whenPressed(new MoveToMiddle());
+
+      new Button() {
+
+        @Override
+        public boolean get() {
+          return operator.getPOV() == 270;
+        }
+      }.whenPressed(new MoveToPickup());
   }
 
   /**
@@ -146,9 +154,9 @@ public class OI {
     return stick;
   }
 
-  public double getGMPOV() {
-    return operator.getPOV();
-  }
+  // public double getGMPOV() {
+  //   return operator.getPOV();
+  // }
   
   /**
 	 * Turns on and off the rumble function on the driver and operator controllers

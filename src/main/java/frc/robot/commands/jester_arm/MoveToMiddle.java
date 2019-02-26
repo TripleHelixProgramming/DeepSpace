@@ -10,8 +10,8 @@ package frc.robot.commands.jester_arm;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.JesterArm;
 
-public class unDockArm extends Command {
-  public unDockArm() {
+public class MoveToMiddle extends Command {
+  public MoveToMiddle() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(JesterArm.getInstance());
@@ -25,13 +25,13 @@ public class unDockArm extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    JesterArm.getInstance().unDockArm();
+    JesterArm.getInstance().middlePos();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return JesterArm.getInstance().isLastMoveDone();
   }
 
   // Called once after isFinished returns true
