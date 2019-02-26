@@ -10,7 +10,7 @@ package frc.robot;
 public enum ArmPreset {
 
     // shoulder angle, wrist angle
-    PICKUP_HATCH(-70, 0), 
+    PICKUP_HATCH(-72, -2), 
     CARGO_WP(0, -60), 
     PICKUP_CARGO_FLOOR(-20, -90), 
     CARGO(0, 0), 
@@ -19,7 +19,7 @@ public enum ArmPreset {
     DELIVER_BALL_MIDDLE(153, 180), 
     DELIVER_HATCH_MIDDLE(173, 180), 
     DELIVER_BALL_LOWER(220, 180),
-    DELIVER_HATCH_LOWER(250, 180),
+    DELIVER_HATCH_LOWER(252, 180),
     STOW(250, 180),
     UNPACK_WP3(210, 270), 
     UNPACK_WP1(225, 294),
@@ -31,10 +31,14 @@ public enum ArmPreset {
 
     // Practice Bot slope & y-intercept for arm & wrist to calculate sensor positions
     // (requires linear sensor)
-    public double m_wrist = -0.489;
-    public double b_wrist = 246;
-    public double m_shoulder = 0.859;
-    public double b_shoulder = -499;
+    // public double m_wrist = -0.489;
+    // public double b_wrist = 246;
+    // public double m_shoulder = 0.859;
+    // public double b_shoulder = -499;
+    public double m_wrist = -0.478;
+    public double b_wrist = 244;
+    public double m_shoulder = 0.850;
+    public double b_shoulder = -498;
 
     // Comp Bot slope & y-intercept for arm & wrist to calculate sensor positions
     // (requires linear sensor)
