@@ -99,6 +99,7 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Pigeon Yaw", Drivetrain.getInstance().getYaw());
     JesterArm.getInstance().updateSmartDash();
     JesterWrist.getInstance().updateSmartDash();
+    JesterArm.getInstance().resetArmPreset();
 
   }
 

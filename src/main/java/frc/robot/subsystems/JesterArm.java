@@ -124,6 +124,10 @@ public class JesterArm extends Subsystem {
         setArmMotionMagic(newPos);
     }
 
+    public void resetArmPreset() {
+        currentArmPreset = ArmPreset.START;
+    }
+
     public void setState(BotState bot_state) {
         curBotState = bot_state;
     }
