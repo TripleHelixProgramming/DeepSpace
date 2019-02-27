@@ -32,6 +32,7 @@ public class GrabHatch extends Command {
   protected void initialize() {
     HelixEvents.getInstance().addEvent("GRAB_HATCH", "Starting to grab hatch");
     CargoGrabber.getInstance().openGrabber();
+    JesterArm.getInstance().setState(BotState.HATCH);
     HatchGrabber.getInstance().hatchRelease();
 
   }

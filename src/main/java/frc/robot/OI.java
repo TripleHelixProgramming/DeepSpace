@@ -66,8 +66,6 @@ public class OI {
 
       new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.BACK));
-      // new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByVision(CAMERA.FRONT));
-      // new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByVision(CAMERA.BACK));
       new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByDockingPID(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByDockingPID(CAMERA.BACK));
       new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArcTesting());
@@ -75,7 +73,6 @@ public class OI {
       new JoystickButton(driver, ControllerMap.X).whenPressed(new ReleaseHatch());
       new JoystickButton(driver, ControllerMap.LOGO_LEFT).whenPressed(new stopCargoGrabber());
       new JoystickButton(driver, ControllerMap.LOGO_RIGHT).whenPressed(new undockJester());
-      // new JoystickButton(driver, ControllerMap.)
 
 
 
@@ -86,12 +83,11 @@ public class OI {
       // new JoystickButton(operator, ControllerMap.A).whileHeld(new reverseLifter());
       new JoystickButton(operator, ControllerMap.RB).whenPressed(new PickUpCargo());
       new JoystickButton(operator, ControllerMap.RB).whenReleased(new resetCargoJester());
-      new JoystickButton(operator, ControllerMap.LB).whenPressed(new ReleaseCargo());
-      new JoystickButton(operator, ControllerMap.X).whenPressed(new GrabCargo());
+      new JoystickButton(operator, ControllerMap.X).whenPressed(new GrabHatch());
       new JoystickButton(operator, ControllerMap.B).whenPressed(new ReleaseCargo());
       new JoystickButton(operator, ControllerMap.LEFT_STICK_BUTTON).whenPressed(new stopCargoGrabber());
       new JoystickButton(operator, ControllerMap.Y).whenPressed(new ReleaseHatch());
-      new JoystickButton(operator, ControllerMap.A).whenPressed(new GrabHatch());
+      new JoystickButton(operator, ControllerMap.A).whenPressed(new GrabCargo());
 
 
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new openGrabber());
