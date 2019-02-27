@@ -7,8 +7,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.concurrent.TimeUnit;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -16,13 +14,11 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.team2363.logger.HelixLogger;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.command.WaitCommand;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
-import frc.robot.commands.Auto.undockJester;
 import frc.robot.ArmPreset;
 
 public class JesterArm extends Subsystem {
@@ -34,13 +30,25 @@ public class JesterArm extends Subsystem {
     public static int ARM_CRUISE = 3;
 
     private static JesterArm INSTANCE = new JesterArm();
-    // private ArmPreset currentArmPreset = ArmPreset.START;
-    private ArmPreset currentArmPreset = ArmPreset.START;
-    // private ArmPreset currentArmPreset = null;
 
+    // Arm & Wrist do not move in START preset, until told to move
+    private ArmPreset currentArmPreset = ArmPreset.START;
+
+    private ArmPreset lastUpperPos = ArmPreset.DELIVER_BALL_UPPER;
+    private ArmPreset lastMiddlePos = ArmPreset.DELIVER_BALL_MIDDLE;
+    private ArmPreset lastLowerPos = ArmPreset.DELIVER_BALL_LOWER;
+    private ArmPreset lastPickupPos = ArmPreset.CARGO;
+
+    // States which allow only certain destinations based on what the robot is
+    // carrrying
+    public enum BotState {
+        EMPTY, BALL, HATCH
+    };
+
+    // Bot is holding a hatch at the start of match
+    private BotState curBotState = BotState.HATCH; 
 
     private int reverseSoftLimit, fwdSoftLimit;
-    // private static DigitalInput botState = new DigitalInput(1);
 
     PowerDistributionPanel pdp = new PowerDistributionPanel();
 
@@ -61,9 +69,16 @@ public class JesterArm extends Subsystem {
         armSlave.configFactoryDefault();
         armMaster.configFactoryDefault();
 
+        // Setting initial state modes -  Holding Hatch at START of match
+        // Arm & Wrist do not move in START preset, until told to move
         currentArmPreset = ArmPreset.START;
-        // currentArmPreset = ArmPreset.UNPACK_WP1;
+        curBotState = BotState.HATCH;
 
+        // Since holding HATCH at beginning, last settings for dest settings should be BALL states.
+        lastUpperPos = ArmPreset.DELIVER_BALL_UPPER;
+        lastMiddlePos = ArmPreset.DELIVER_BALL_MIDDLE;
+        lastLowerPos = ArmPreset.DELIVER_BALL_LOWER;
+        lastPickupPos = ArmPreset.CARGO;
 
         armSlave.follow(armMaster);
         armSlave.setNeutralMode(NeutralMode.Brake);
@@ -92,21 +107,16 @@ public class JesterArm extends Subsystem {
         armMaster.configPeakCurrentDuration(100, 0);
         armMaster.enableCurrentLimit(true);
 
-        reverseSoftLimit = ArmPreset.PICKUP_HATCH.CalculateArmPos();  // lower sensor reading side
-        fwdSoftLimit = ArmPreset.DELIVER_HATCH_LOWER.CalculateArmPos();   // higher sensor reading side
+        reverseSoftLimit = ArmPreset.PICKUP_HATCH.CalculateArmPos(); // lower sensor reading side
+        fwdSoftLimit = ArmPreset.DELIVER_HATCH_LOWER.CalculateArmPos(); // higher sensor reading side
         setArmSoftLimits(reverseSoftLimit, fwdSoftLimit);
         setArmMotionProfile(ARM_ACCELERATION, ARM_CRUISE);
-
-        // The arm starts the match in a one-time docked position. Move arm from
-        // docked position to front lower scoring position.
-        // boolean compMode = botState.get();
-        // boolean pitMode = true;
-        // unDockArm();
     }
 
     private void setupLogs() {
         HelixLogger.getInstance().addDoubleSource("ARM MASTER CURRENT", armMaster::getOutputCurrent);
-        // HelixLogger.getInstance().addDoubleSource("ARM SLAVE", () -> pdp.getCurrent(RobotMap.ARM_SLAVE_ID));
+        // HelixLogger.getInstance().addDoubleSource("ARM SLAVE", () ->
+        // pdp.getCurrent(RobotMap.ARM_SLAVE_ID));
     }
 
     public void goTo(ArmPreset preset) {
@@ -117,82 +127,115 @@ public class JesterArm extends Subsystem {
         setArmMotionMagic(newPos);
     }
 
-    public void Up() {
-        switch (currentArmPreset) {
-            case DELIVER_HATCH_LOWER:
-                goTo(ArmPreset.DELIVER_BALL_LOWER);
-                break;
-            case DELIVER_BALL_LOWER:
-                goTo(ArmPreset.DELIVER_HATCH_MIDDLE);
-                break;
-            case DELIVER_HATCH_MIDDLE:
-                goTo(ArmPreset.DELIVER_BALL_MIDDLE);
-                break;
-            case DELIVER_BALL_MIDDLE:
-                goTo(ArmPreset.DELIVER_HATCH_UPPER);
-                break;
-            case DELIVER_HATCH_UPPER:
-                goTo(ArmPreset.DELIVER_BALL_UPPER);
-                break;
-            case DELIVER_BALL_UPPER:  // At Top Deliver Side
-            case CARGO:               // At Top Pickup Side
-                // At top
-                break;
-            case PICKUP_CARGO_FLOOR:
-                goTo(ArmPreset.CARGO);
-                break;
-            case PICKUP_HATCH:
-                goTo(ArmPreset.PICKUP_CARGO_FLOOR);
-                break;
-            default:    
-                break;
-        }
-    }   
+    // Called from Robot.java disablePeriodic(), so that robot doesn't move on enable.
+    public void resetArmPreset() {
+        currentArmPreset = ArmPreset.START;
+    }
 
-    public void Down() {
-        switch (currentArmPreset) {
-            case DELIVER_HATCH_LOWER:
-            case PICKUP_HATCH:
-                // At Bottom
-                break;
-            case DELIVER_BALL_LOWER:
-                goTo(ArmPreset.DELIVER_HATCH_LOWER);
-                break;
-            case DELIVER_HATCH_MIDDLE:
-                goTo(ArmPreset.DELIVER_BALL_LOWER);
-                break;
-            case DELIVER_BALL_MIDDLE:
-                goTo(ArmPreset.DELIVER_HATCH_MIDDLE);
-                break;
-            case DELIVER_HATCH_UPPER:
-                goTo(ArmPreset.DELIVER_BALL_MIDDLE);
-                break;
-            case DELIVER_BALL_UPPER:
-                goTo(ArmPreset.DELIVER_HATCH_UPPER);
-                break;
-            case CARGO:       
-                goTo(ArmPreset.PICKUP_CARGO_FLOOR);
-                break;
-            case PICKUP_CARGO_FLOOR:
-                goTo(ArmPreset.PICKUP_HATCH);
-                break;
-            default:    
-                break;
-        }
-    } 
+    // Set the current carrying state - BALL, HATCH, EMPTY
+    public void setState(BotState bot_state) {
+        curBotState = bot_state;
+    }
 
-    public void toggleArm() {
-        switch (currentArmPreset) {
-        case CARGO:
+    // Returns the current carrying state - BALL, HATCH, EMPTY.  Used by set commands in 
+    // the isFinished().
+    public BotState getState() {
+        return(curBotState);
+    }
+
+    // Used by DPAD commands to be check if movement command finished.
+    public boolean isLastMoveDone() {
+        return(Math.abs(getArmPos() - currentArmPreset.CalculateArmPos()) <= 2);
+    }
+
+    public void upperPos() {
+        switch (curBotState) {
+        case BALL:
             goTo(ArmPreset.DELIVER_BALL_UPPER);
+            lastUpperPos = ArmPreset.DELIVER_BALL_UPPER;
             break;
-        case DELIVER_BALL_UPPER:
-            goTo(ArmPreset.CARGO);
+        case HATCH:
+            goTo(ArmPreset.DELIVER_HATCH_UPPER);
+            lastUpperPos = ArmPreset.DELIVER_HATCH_UPPER;
             break;
-        case DELIVER_HATCH_UPPER:
-            goTo(ArmPreset.CARGO);
-            break;
+        case EMPTY:
         default:
+            if (lastUpperPos == ArmPreset.DELIVER_BALL_UPPER) {
+                goTo(ArmPreset.DELIVER_HATCH_UPPER);
+                lastUpperPos = ArmPreset.DELIVER_HATCH_UPPER;
+            } else {
+                goTo(ArmPreset.DELIVER_BALL_UPPER);
+                lastUpperPos = ArmPreset.DELIVER_BALL_UPPER;
+            }
+            break;
+        }
+    }
+
+    public void middlePos() {
+        switch (curBotState) {
+        case BALL:
+            goTo(ArmPreset.DELIVER_BALL_MIDDLE);
+            lastMiddlePos = ArmPreset.DELIVER_BALL_MIDDLE;
+            break;
+        case HATCH:
+            goTo(ArmPreset.DELIVER_HATCH_MIDDLE);
+            lastMiddlePos = ArmPreset.DELIVER_HATCH_MIDDLE;
+            break;
+        case EMPTY:
+        default:
+            if (lastMiddlePos == ArmPreset.DELIVER_BALL_MIDDLE) {
+                goTo(ArmPreset.DELIVER_HATCH_MIDDLE);
+                lastMiddlePos = ArmPreset.DELIVER_HATCH_MIDDLE;
+            } else {
+                goTo(ArmPreset.DELIVER_BALL_MIDDLE);
+                lastMiddlePos = ArmPreset.DELIVER_BALL_MIDDLE;
+            }
+            break;
+        }
+    }
+
+    public void lowerPos() {
+        switch (curBotState) {
+        case BALL:
+            goTo(ArmPreset.DELIVER_BALL_LOWER);
+            lastLowerPos = ArmPreset.DELIVER_BALL_LOWER;
+            break;
+        case HATCH:
+            goTo(ArmPreset.DELIVER_HATCH_LOWER);
+            lastLowerPos = ArmPreset.DELIVER_HATCH_LOWER;
+            break;
+        case EMPTY:
+        default:
+            if (lastLowerPos == ArmPreset.DELIVER_BALL_LOWER) {
+                goTo(ArmPreset.DELIVER_HATCH_LOWER);
+                lastLowerPos = ArmPreset.DELIVER_HATCH_LOWER;
+            } else {
+                goTo(ArmPreset.DELIVER_BALL_LOWER);
+                lastLowerPos = ArmPreset.DELIVER_BALL_LOWER;
+            }
+            break;
+        }
+    }
+
+    public void pickupPos() {
+        switch (curBotState) {
+        case BALL:
+            goTo(ArmPreset.CARGO);
+            lastPickupPos = ArmPreset.CARGO;
+            break;
+        case HATCH:
+            goTo(ArmPreset.PICKUP_HATCH);
+            lastPickupPos = ArmPreset.PICKUP_HATCH;
+            break;
+        case EMPTY:
+        default:
+            if (lastPickupPos == ArmPreset.CARGO) {
+                goTo(ArmPreset.PICKUP_HATCH);
+                lastPickupPos = ArmPreset.PICKUP_HATCH;
+            } else {
+                goTo(ArmPreset.CARGO);
+                lastPickupPos = ArmPreset.CARGO;
+            }
             break;
         }
     }
@@ -205,22 +248,6 @@ public class JesterArm extends Subsystem {
     // Move arm from defense position to lower deliver position.
     public void unStowArm() {
         goTo(ArmPreset.DELIVER_HATCH_LOWER);
-    }
-
-    // Move arm from docked position (at start of match) to front lower scoring
-    // position.
-    public void unDockArm() {
-        // goTo(Arm);
-        // new undockJester();
-        // goTo(ArmPreset.UNPACK_WP1);
-        // goTo(ArmPreset.UNPACK_WP1);
-        // new WaitCommand(1000);
-        // try {
-        //     wait(10000);
-        // }catch (Exception e) {}
-        goTo(ArmPreset.UNPACK_WP3);
-        
-        // goTo(ArmPreset.DELIVER_HATCH_LOWER);
     }
 
     public void goTo(int pos) {
@@ -237,10 +264,6 @@ public class JesterArm extends Subsystem {
 
     public ArmPreset getCurrentArmPreset() {
         return currentArmPreset;
-    }
-
-    public void setCurrentArmPreset(ArmPreset preset) {
-        currentArmPreset = preset;
     }
 
     public void setArmSoftLimits(int reverseSoftLimit, int forwardSoftLimit) {
@@ -265,6 +288,11 @@ public class JesterArm extends Subsystem {
         SmartDashboard.putNumber("Arm Pos", getArmPos());
         SmartDashboard.putNumber("WristAngle", currentArmPreset.getWristAngle());
         SmartDashboard.putString("Current Preset", currentArmPreset.toString());
+        SmartDashboard.putString("Current State", curBotState.toString());
+        SmartDashboard.putString("Last Lower Pos", lastLowerPos.toString());
+        SmartDashboard.putString("Last Middle Pos", lastMiddlePos.toString());
+        SmartDashboard.putString("Last Upper Pos", lastUpperPos.toString());
+        SmartDashboard.putString("Last Pickup Pos", lastPickupPos.toString());
         SmartDashboard.putNumber("Shoulder Angle", currentArmPreset.getShoulderAngle());
         SmartDashboard.putNumber("Arm Lower Limit", reverseSoftLimit);
         SmartDashboard.putNumber("Arm Upper Limit", fwdSoftLimit);
@@ -277,7 +305,7 @@ public class JesterArm extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        //  There should be no default command for Jester Arm!!! Motion Magic PID control
-        //  handles it.
+        // There should be no default command for Jester Arm!!! Motion Magic PID control
+        // handles it.
     }
 }

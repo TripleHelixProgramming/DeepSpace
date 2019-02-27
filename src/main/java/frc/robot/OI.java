@@ -24,10 +24,10 @@ import frc.robot.commands.drivetrain.driveByDocking;
 import frc.robot.commands.drivetrain.driveByDockingPID;
 import frc.robot.commands.hatch.GrabHatch;
 import frc.robot.commands.hatch.ReleaseHatch;
-import frc.robot.commands.jester_arm.ToggleArmCommand;
-import frc.robot.commands.jester_arm.downCommand;
-import frc.robot.commands.jester_arm.unDockArm;
-import frc.robot.commands.jester_arm.upCommand;
+import frc.robot.commands.jester_arm.MoveToLower;
+import frc.robot.commands.jester_arm.MoveToMiddle;
+import frc.robot.commands.jester_arm.MoveToPickup;
+import frc.robot.commands.jester_arm.MoveToUpper;
 import frc.robot.commands.robot_lifter.ExtendLifter;
 import frc.robot.commands.robot_lifter.burstExtendLifter;
 import frc.robot.commands.robot_lifter.reverseLifter;
@@ -66,8 +66,6 @@ public class OI {
 
       new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.BACK));
-      // new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByVision(CAMERA.FRONT));
-      // new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByVision(CAMERA.BACK));
       new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByDockingPID(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByDockingPID(CAMERA.BACK));
       new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArcTesting());
@@ -75,7 +73,6 @@ public class OI {
       new JoystickButton(driver, ControllerMap.X).whenPressed(new ReleaseHatch());
       new JoystickButton(driver, ControllerMap.LOGO_LEFT).whenPressed(new stopCargoGrabber());
       new JoystickButton(driver, ControllerMap.LOGO_RIGHT).whenPressed(new undockJester());
-      // new JoystickButton(driver, ControllerMap.)
 
 
 
@@ -86,12 +83,11 @@ public class OI {
       // new JoystickButton(operator, ControllerMap.A).whileHeld(new reverseLifter());
       new JoystickButton(operator, ControllerMap.RB).whenPressed(new PickUpCargo());
       new JoystickButton(operator, ControllerMap.RB).whenReleased(new resetCargoJester());
-      new JoystickButton(operator, ControllerMap.LB).whenPressed(new ReleaseCargo());
-      new JoystickButton(operator, ControllerMap.X).whenPressed(new GrabCargo());
+      new JoystickButton(operator, ControllerMap.X).whenPressed(new GrabHatch());
       new JoystickButton(operator, ControllerMap.B).whenPressed(new ReleaseCargo());
       new JoystickButton(operator, ControllerMap.LEFT_STICK_BUTTON).whenPressed(new stopCargoGrabber());
       new JoystickButton(operator, ControllerMap.Y).whenPressed(new ReleaseHatch());
-      new JoystickButton(operator, ControllerMap.A).whenPressed(new GrabHatch());
+      new JoystickButton(operator, ControllerMap.A).whenPressed(new GrabCargo());
 
 
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new openGrabber());
@@ -103,7 +99,7 @@ public class OI {
         public boolean get() {
           return (operator.getPOV() == 0);
         }
-      }.whenPressed(new upCommand());
+      }.whenPressed(new MoveToUpper());
 
       new Button() {
 
@@ -111,7 +107,7 @@ public class OI {
         public boolean get() {
           return operator.getPOV() == 180;
         }
-      }.whenPressed(new downCommand());
+      }.whenPressed(new MoveToLower());
 
       new Button() {
 
@@ -119,7 +115,15 @@ public class OI {
         public boolean get() {
           return operator.getPOV() == 90;
         }
-      }.whenPressed(new ToggleArmCommand());
+      }.whenPressed(new MoveToMiddle());
+
+      new Button() {
+
+        @Override
+        public boolean get() {
+          return operator.getPOV() == 270;
+        }
+      }.whenPressed(new MoveToPickup());
   }
 
   /**
@@ -146,9 +150,9 @@ public class OI {
     return stick;
   }
 
-  public double getGMPOV() {
-    return operator.getPOV();
-  }
+  // public double getGMPOV() {
+  //   return operator.getPOV();
+  // }
   
   /**
 	 * Turns on and off the rumble function on the driver and operator controllers

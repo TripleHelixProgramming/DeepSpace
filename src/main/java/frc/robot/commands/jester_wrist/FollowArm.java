@@ -38,7 +38,10 @@ public class FollowArm extends Command {
     // JesterWrist.getInstance().setWristMotionMagic(wristPos);
     
     ArmPreset armPreset = JesterArm.getInstance().getCurrentArmPreset();
-    JesterWrist.getInstance().setWristPos(armPreset);
+    //  Don't do anything with wrist until arm recieves a command
+    if (armPreset != ArmPreset.START) {
+      JesterWrist.getInstance().setWristPos(armPreset);
+    }
 }
 
   // Make this return true when this Command no longer needs to run execute()

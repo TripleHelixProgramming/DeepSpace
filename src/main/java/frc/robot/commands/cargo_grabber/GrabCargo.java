@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.RumbleController;
 import frc.robot.subsystems.CargoGrabber;
 import frc.robot.subsystems.HatchGrabber;
+import frc.robot.subsystems.JesterArm;
+import frc.robot.subsystems.JesterArm.BotState;
 
 import com.team2363.logger.HelixEvents;
 
@@ -30,6 +32,7 @@ public class GrabCargo extends Command {
     // eg. requires(chassis);
    requires(HatchGrabber.getInstance());
     requires(CargoGrabber.getInstance());
+    requires(JesterArm.getInstance());
   }
 
   // Called just before this Command runs the first time
@@ -44,6 +47,8 @@ public class GrabCargo extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+  JesterArm.getInstance().setState(BotState.BALL);
+
   finished = false;
 
    //when we retrieve cargo, extend hatch grabber
