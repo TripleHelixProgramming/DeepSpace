@@ -19,6 +19,8 @@ import frc.robot.commands.Auto.undockJester;
 import frc.robot.commands.cargo_grabber.GrabCargo;
 import frc.robot.commands.cargo_grabber.ReleaseCargo;
 import frc.robot.commands.cargo_grabber.stopCargoGrabber;
+import frc.robot.commands.drivetrain.driveByAssist;
+import frc.robot.commands.drivetrain.driveByAssistJosh;
 import frc.robot.commands.drivetrain.driveByCamera;
 import frc.robot.commands.drivetrain.driveByDocking;
 import frc.robot.commands.drivetrain.driveByDockingPID;
@@ -66,8 +68,8 @@ public class OI {
 
       new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.BACK));
-      new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByDockingPID(CAMERA.FRONT));
-      new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByDockingPID(CAMERA.BACK));
+      new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByAssistJosh(CAMERA.FRONT));
+      new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByAssistJosh(CAMERA.BACK));
       new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArcTesting());
       new JoystickButton(driver, ControllerMap.B).whenPressed(new ReleaseCargo());
       new JoystickButton(driver, ControllerMap.X).whenPressed(new ReleaseHatch());
