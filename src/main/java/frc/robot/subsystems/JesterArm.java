@@ -98,7 +98,7 @@ public class JesterArm extends Subsystem {
         armMaster.config_kF(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
         armMaster.config_kP(0, 23.0, RobotMap.CTRE_TIMEOUT_INIT);
         armMaster.config_kI(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
-        armMaster.config_kD(0, 10.0, RobotMap.CTRE_TIMEOUT_INIT);
+        armMaster.config_kD(0, 200.0, RobotMap.CTRE_TIMEOUT_INIT);
         armMaster.configAllowableClosedloopError(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
 
         // Set current limiting
@@ -196,9 +196,9 @@ public class JesterArm extends Subsystem {
 
     public void lowerPos() {
         switch (curBotState) {
-        case BALL:
-            goTo(ArmPreset.DELIVER_BALL_LOWER);
-            lastLowerPos = ArmPreset.DELIVER_BALL_LOWER;
+         case BALL:
+        //     goTo(ArmPreset.DELIVER_BALL_LOWER);
+        //     lastLowerPos = ArmPreset.DELIVER_BALL_LOWER;
             break;
         case HATCH:
             goTo(ArmPreset.DELIVER_HATCH_LOWER);
@@ -206,13 +206,13 @@ public class JesterArm extends Subsystem {
             break;
         case EMPTY:
         default:
-            if (lastLowerPos == ArmPreset.DELIVER_BALL_LOWER) {
+            // if (lastLowerPos == ArmPreset.DELIVER_BALL_LOWER) {
                 goTo(ArmPreset.DELIVER_HATCH_LOWER);
                 lastLowerPos = ArmPreset.DELIVER_HATCH_LOWER;
-            } else {
-                goTo(ArmPreset.DELIVER_BALL_LOWER);
-                lastLowerPos = ArmPreset.DELIVER_BALL_LOWER;
-            }
+            // } else {
+                // goTo(ArmPreset.DELIVER_BALL_LOWER);
+                // lastLowerPos = ArmPreset.DELIVER_BALL_LOWER;
+            // }
             break;
         }
     }

@@ -21,7 +21,7 @@ public enum ArmPreset {
     DELIVER_HATCH_UPPER(110, 135), 
     BALL_TRANSITION_UPPER(123, 190),
     // DELIVER_BALL_MIDDLE(143, 182),      //original value
-    DELIVER_BALL_MIDDLE(170, 155),       //possible testing value
+    DELIVER_BALL_MIDDLE(170, 147),       //possible testing value
     BALL_TRANSITION_LOWER(163, 150),
     DELIVER_HATCH_MIDDLE(168, 180), 
     // DELIVER_BALL_LOWER(200, 180),    //original
