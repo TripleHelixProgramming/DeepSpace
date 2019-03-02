@@ -28,8 +28,8 @@ public class DeliverMiddleGroup extends CommandGroup {
       case CARGO:
       case DELIVER_BALL_UPPER:
         addSequential(new MoveArmTo(ArmPreset.BALL_TRANSITION_UPPER));
-        // addSequential(new MoveArmTo(ArmPreset.DELIVER_BALL_MIDDLE));
-        // JesterArm.getInstance().setLastMiddlePos(ArmPreset.DELIVER_BALL_MIDDLE);
+        addSequential(new MoveArmTo(ArmPreset.DELIVER_BALL_MIDDLE));
+        JesterArm.getInstance().setLastMiddlePos(ArmPreset.DELIVER_BALL_MIDDLE);
         break;
       case DELIVER_BALL_LOWER:
         addSequential(new MoveArmTo(ArmPreset.BALL_TRANSITION_LOWER));

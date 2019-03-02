@@ -13,15 +13,19 @@ public enum ArmPreset {
     PICKUP_HATCH(-72, -2), 
     CARGO_WP(0, -60), 
     PICKUP_CARGO_FLOOR(-29, -94), 
+
     CARGO_TRANSITION_WP(-15, -50),
+
     CARGO(-30, 30), 
     DELIVER_BALL_UPPER(95, 139),
     DELIVER_HATCH_UPPER(110, 135), 
     BALL_TRANSITION_UPPER(123, 190),
-    DELIVER_BALL_MIDDLE(143, 182), 
+    DELIVER_BALL_MIDDLE(143, 182),      //original value
+    // DELIVER_BALL_MIDDLE(135, 139),       //possible testing value
     BALL_TRANSITION_LOWER(163, 150),
     DELIVER_HATCH_MIDDLE(168, 180), 
-    DELIVER_BALL_LOWER(200, 180),
+    DELIVER_BALL_LOWER(200, 180),    //original
+    // DELIVER_BALL_LOWER(190, 150),    //possible testing angle
     DELIVER_HATCH_LOWER(241, 180),
     STOW(250, 180),
     UNPACK_WP3(210, 270), 
@@ -30,6 +34,7 @@ public enum ArmPreset {
     UNPACK_WP2(221,271),
     // START(235, 292); //practice bot
     START(236, 314);    //comp bot
+
 
      // shoulder angle, wrist angle PracticeBot
     //  PICKUP_HATCH(-72, -2), 
