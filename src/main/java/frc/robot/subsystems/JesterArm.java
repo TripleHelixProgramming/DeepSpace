@@ -258,6 +258,14 @@ public class JesterArm extends Subsystem {
         armMaster.set(ControlMode.MotionMagic, pos);
     }
 
+    public void setLastMiddlePos(ArmPreset preset) {
+        lastMiddlePos = preset;
+    }
+
+    public ArmPreset getLastMiddlePos() {
+        return lastMiddlePos;
+    }
+
     public int getArmPos() {
         return armMaster.getSelectedSensorPosition(0);
     }

@@ -43,6 +43,7 @@ public class PickUpCargo extends CommandGroup {
 
     addSequential(new SetBotState(BotState.BALL));
     addSequential(new MoveArmTo(ArmPreset.CARGO));
+    addParallel(new GrabCargo());
     addSequential(new DeployIntake());
     addSequential(new WaitCommand(0.5));
     addSequential(new MoveArmTo(ArmPreset.PICKUP_CARGO_FLOOR));
