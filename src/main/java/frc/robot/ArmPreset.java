@@ -67,7 +67,7 @@ public enum ArmPreset {
     // Comp Bot slope & y-intercept for arm & wrist to calculate sensor positions
     // (requires linear sensor)
     public double m_wrist = -0.489;
-    public double b_wrist = 546;
+    public double b_wrist = 549;
     public double m_shoulder = 0.839;
     public double b_shoulder = -247;
 

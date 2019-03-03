@@ -96,7 +96,7 @@ public class CargoGrabber extends Subsystem {
    * @return true if over 20 amps
    */
   public boolean isOverCurrent() {
-    if (getOutputCurrent() > 3) {
+    if (getOutputCurrent() > 4) {
       return true;
     } else {
       return false;

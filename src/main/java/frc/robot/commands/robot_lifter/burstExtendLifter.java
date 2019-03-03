@@ -26,7 +26,7 @@ public class burstExtendLifter extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    RobotLifter.getInstance().setPower(0.1);
+    RobotLifter.getInstance().setPower(0.2);
   }
 
   // Make this return true when this Command no longer needs to run execute()
