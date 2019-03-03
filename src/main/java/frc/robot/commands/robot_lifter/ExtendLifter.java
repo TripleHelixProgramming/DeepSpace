@@ -27,7 +27,7 @@ public class ExtendLifter extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    RobotLifter.getInstance().setPower(.65);
+    RobotLifter.getInstance().setPower(.75);
     
   }
 
