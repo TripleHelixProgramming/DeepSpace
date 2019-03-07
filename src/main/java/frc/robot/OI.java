@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.camera.CAMERA;
+import frc.robot.commands.Auto.DeliverMiddleGroup;
 import frc.robot.commands.Auto.FollowArcTesting;
 import frc.robot.commands.Auto.PickUpCargo;
 import frc.robot.commands.Auto.resetCargoJester;

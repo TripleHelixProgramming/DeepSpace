@@ -13,12 +13,19 @@ public enum ArmPreset {
     PICKUP_HATCH(-72, -2), 
     CARGO_WP(0, -60), 
     PICKUP_CARGO_FLOOR(-29, -94), 
-    CARGO(5, 3), 
+
+    CARGO_TRANSITION_WP(-15, -50),
+
+    CARGO(-30, 30), 
     DELIVER_BALL_UPPER(95, 139),
     DELIVER_HATCH_UPPER(110, 135), 
-    DELIVER_BALL_MIDDLE(143, 182), 
+    BALL_TRANSITION_UPPER(123, 190),
+    // DELIVER_BALL_MIDDLE(143, 182),      //original value
+    DELIVER_BALL_MIDDLE(170, 147),       //possible testing value
+    BALL_TRANSITION_LOWER(163, 150),
     DELIVER_HATCH_MIDDLE(168, 180), 
-    DELIVER_BALL_LOWER(200, 180),
+    // DELIVER_BALL_LOWER(200, 180),    //original
+    DELIVER_BALL_LOWER(230, 167),    //possible testing angle
     DELIVER_HATCH_LOWER(241, 180),
     STOW(250, 180),
     UNPACK_WP3(210, 270), 
@@ -27,6 +34,7 @@ public enum ArmPreset {
     UNPACK_WP2(221,271),
     // START(235, 292); //practice bot
     START(236, 314);    //comp bot
+
 
      // shoulder angle, wrist angle PracticeBot
     //  PICKUP_HATCH(-72, -2), 
@@ -51,17 +59,17 @@ public enum ArmPreset {
     // Practice Bot slope & y-intercept for arm & wrist to calculate sensor positions
     // (requires linear sensor)
 
-    public double m_wrist = -0.478;
-    public double b_wrist = 271;
-    public double m_shoulder = 0.839;
-    public double b_shoulder = -498;
+    // public double m_wrist = -0.478;
+    // public double b_wrist = 271;
+    // public double m_shoulder = 0.839;
+    // public double b_shoulder = -498;
 
     // Comp Bot slope & y-intercept for arm & wrist to calculate sensor positions
     // (requires linear sensor)
-    // public double m_wrist = -0.489;
-    // public double b_wrist = 546;
-    // public double m_shoulder = 0.839;
-    // public double b_shoulder = -247;
+    public double m_wrist = -0.483;
+    public double b_wrist = 549;
+    public double m_shoulder = 0.839;
+    public double b_shoulder = -248;
 
 
     private ArmPreset(int shoulder_angle, int wrist_angle) {

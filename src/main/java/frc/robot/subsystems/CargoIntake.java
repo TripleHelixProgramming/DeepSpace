@@ -39,7 +39,7 @@ public class CargoIntake extends Subsystem {
   // }
 //PracticeBot
   public void in() {
-    motor.set(ControlMode.PercentOutput, -0.50);
+    motor.set(ControlMode.PercentOutput, -0.70);
   }
 
   public void out() {
