@@ -30,7 +30,7 @@ public class ExtendLifter extends Command {
   protected void execute() {
     isFinishedVal = isFinished();
     if(isFinishedVal == false){
-      RobotLifter.getInstance().setPower(.75);
+      RobotLifter.getInstance().setPower(.65);
     }
   }
 

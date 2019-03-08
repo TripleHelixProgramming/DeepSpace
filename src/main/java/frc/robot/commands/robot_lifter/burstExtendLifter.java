@@ -29,7 +29,7 @@ public class burstExtendLifter extends Command {
   protected void execute() {
     isFinishedVal = isFinished();
     if(isFinishedVal == false){
-      RobotLifter.getInstance().setPower(0.4);
+      RobotLifter.getInstance().setPower(0.2);
     }
   }
 
