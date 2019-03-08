@@ -10,6 +10,7 @@ package frc.robot.commands.robot_lifter;
 import edu.wpi.first.wpilibj.Utility;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.RobotLifter;
+import edu.wpi.first.wpilibj.DriverStation;
 
 public class burstExtendLifter extends Command {
   public boolean isFinishedVal;
@@ -17,6 +18,7 @@ public class burstExtendLifter extends Command {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(RobotLifter.getInstance());
+    
   }
 
   // Called just before this Command runs the first time
