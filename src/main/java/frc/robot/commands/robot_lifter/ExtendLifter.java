@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.RobotLifter;
 
 public class ExtendLifter extends Command {
+  public boolean isFinishedVal;
   public ExtendLifter() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -27,8 +28,10 @@ public class ExtendLifter extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    RobotLifter.getInstance().setPower(.75);
-    
+    isFinishedVal = isFinished();
+    if(isFinishedVal == false){
+      RobotLifter.getInstance().setPower(.75);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
