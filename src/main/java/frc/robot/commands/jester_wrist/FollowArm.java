@@ -10,7 +10,6 @@ package frc.robot.commands.jester_wrist;
 import com.team2363.logger.HelixEvents;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.ArmPreset;
 import frc.robot.subsystems.JesterArm;
 import frc.robot.subsystems.JesterWrist;
@@ -32,10 +31,6 @@ public class FollowArm extends Command {
   @Override
   protected void execute() {
     // Set the wrist position based of the arm position.
-
-    // int armPos = JesterArm.getInstance().getArmPos();
-    // int wristPos = 
-    // JesterWrist.getInstance().setWristMotionMagic(wristPos);
     
     ArmPreset currentPreset = JesterArm.getInstance().getCurrentArmPreset();
     int curArmAngle;
