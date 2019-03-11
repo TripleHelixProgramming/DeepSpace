@@ -22,17 +22,16 @@ public enum ArmPreset {
     DELIVER_HATCH_UPPER(110, 135), 
     BALL_TRANSITION_UPPER(123, 190),
     // DELIVER_BALL_MIDDLE(143, 182),      //original value
-    DELIVER_BALL_MIDDLE(170, 147),       //possible testing value
+    DELIVER_BALL_MIDDLE(193, 137),       //possible testing value
     BALL_TRANSITION_LOWER(163, 150),
     DELIVER_HATCH_MIDDLE(168, 180), 
     // DELIVER_BALL_LOWER(200, 180),    //original
-    DELIVER_BALL_LOWER(230, 167),    //possible testing angle
+    DELIVER_BALL_LOWER(231, 173),    //possible testing angle
     DELIVER_HATCH_LOWER(241, 180),
     STOW(250, 180),
     UNPACK_WP3(210, 270), 
     // UNPACK_WP1(225, 294),    //practive bot
     UNPACK_WP1(222, 298),   //comp bot
-    UNPACK_WP2(221,271),
     // START(235, 292); //practice bot
     START(236, 314);    //comp bot
 
