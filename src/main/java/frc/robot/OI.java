@@ -34,7 +34,7 @@ import frc.robot.commands.jester_arm.MoveToUpper;
 import frc.robot.commands.robot_lifter.ExtendLifter;
 import frc.robot.commands.robot_lifter.burstExtendLifter;
 import frc.robot.commands.robot_lifter.reverseLifter;
-
+import frc.robot.commands.robot_lifter.StopLifter;
 
 // import frc.robot.commands.drivetrain.driveByDockingPID;
 // import frc.robot.commands.drivetrain.aimByVision;
@@ -71,18 +71,20 @@ public class OI {
       new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.BACK));
       new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByAssistJosh(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByAssistJosh(CAMERA.BACK));
-      new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArcTesting());
+      new JoystickButton(driver, ControllerMap.LB).whenPressed(new undockJester());
       new JoystickButton(driver, ControllerMap.B).whenPressed(new ReleaseCargo());
       new JoystickButton(driver, ControllerMap.X).whenPressed(new ReleaseHatch());
       new JoystickButton(driver, ControllerMap.LOGO_LEFT).whenPressed(new stopCargoGrabber());
-      new JoystickButton(driver, ControllerMap.LOGO_RIGHT).whenPressed(new undockJester());
+      //new JoystickButton(driver, ControllerMap.LOGO_RIGHT).whenPressed(new undockJester());
 
 
 
     //Operator Buttons
 
-      new JoystickButton(operator, ControllerMap.LOGO_LEFT).whileHeld(new burstExtendLifter());
+      new JoystickButton(operator, ControllerMap.LOGO_LEFT).whenPressed(new burstExtendLifter());
+      new JoystickButton(operator, ControllerMap.LOGO_LEFT).whenReleased(new StopLifter());
       new JoystickButton(operator, ControllerMap.LOGO_RIGHT).whenPressed(new ExtendLifter());
+      new JoystickButton(operator, ControllerMap.LOGO_RIGHT).whenReleased(new StopLifter());
       // new JoystickButton(operator, ControllerMap.A).whileHeld(new reverseLifter());
       new JoystickButton(operator, ControllerMap.RB).whenPressed(new PickUpCargo());
       new JoystickButton(operator, ControllerMap.RB).whenReleased(new resetCargoJester());
