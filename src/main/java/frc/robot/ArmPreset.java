@@ -17,6 +17,7 @@ public enum ArmPreset {
     CARGO_TRANSITION_WP(-15, -50),
 
     CARGO(-30, 30), 
+    DELIVER_SIDE (80, 120),
     DELIVER_BALL_UPPER(95, 139),
     DELIVER_HATCH_UPPER(110, 135), 
     BALL_TRANSITION_UPPER(123, 190),
@@ -58,18 +59,17 @@ public enum ArmPreset {
 
     // Practice Bot slope & y-intercept for arm & wrist to calculate sensor positions
     // (requires linear sensor)
-
-    // public double m_wrist = -0.478;
-    // public double b_wrist = 271;
-    // public double m_shoulder = 0.839;
-    // public double b_shoulder = -498;
+    public double m_wrist = -0.483;
+    public double b_wrist = 284;
+    public double m_shoulder = 0.844;
+    public double b_shoulder = -499;
 
     // Comp Bot slope & y-intercept for arm & wrist to calculate sensor positions
     // (requires linear sensor)
-    public double m_wrist = -0.483;
-    public double b_wrist = 549;
-    public double m_shoulder = 0.839;
-    public double b_shoulder = -248;
+    // public double m_wrist = -0.483;
+    // public double b_wrist = 549;
+    // public double m_shoulder = 0.839;
+    // public double b_shoulder = -248;
 
 
     private ArmPreset(int shoulder_angle, int wrist_angle) {

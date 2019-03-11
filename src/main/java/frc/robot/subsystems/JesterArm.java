@@ -148,6 +148,11 @@ public class JesterArm extends Subsystem {
         return(Math.abs(getArmPos() - currentArmPreset.CalculateArmPos()) <= 2);
     }
 
+    // Used by DPAD commands to be check if movement command finished.
+    public boolean ArmIsCloseToPreset() {
+         return(Math.abs(getArmPos() - currentArmPreset.CalculateArmPos()) <= 6);
+    }
+
     public void upperPos() {
         switch (curBotState) {
         case BALL:
