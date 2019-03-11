@@ -153,8 +153,8 @@ public class JesterArm extends Subsystem {
          return(Math.abs(getArmPos() - currentArmPreset.CalculateArmPos()) <= 6);
     }
 
-    public boolean OnDeliverSide() {
-        return (getArmPos() >= ArmPreset.DELIVER_SIDE.CalculateArmPos());
+    public boolean OnDeliverSide(int armAngle) {
+        return (armAngle >= ArmPreset.DELIVER_SIDE.getShoulderAngle());
     }
 
     public void upperPos() {

@@ -78,14 +78,9 @@ public class JesterWrist extends Subsystem {
         ArmPreset curArmPreset; 
 
         // Dynamially set wrist soft limits as arm positions changes.
-        // curArmPreset = JesterArm.getInstance().getCurrentArmPreset();
-        // lowerLimit = curArmPreset.getWristLowerLimit(curArmPreset.getShoulderAngle());
-        // upperLimit = curArmPreset.getWristUpperLimit(curArmPreset.getShoulderAngle());
-
         curArmPreset = JesterArm.getInstance().getCurrentArmPreset();
-        curPos = JesterArm.getInstance().getArmPos();
-        lowerLimit = curArmPreset.getWristLowerLimit(curPos);
-        upperLimit = curArmPreset.getWristUpperLimit(curPos);
+        lowerLimit = curArmPreset.getWristLowerLimit(curArmPreset.getShoulderAngle());
+        upperLimit = curArmPreset.getWristUpperLimit(curArmPreset.getShoulderAngle());
 
         wristMotor.configReverseSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
         wristMotor.configReverseSoftLimitThreshold(lowerLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);

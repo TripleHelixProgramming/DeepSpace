@@ -71,7 +71,6 @@ public enum ArmPreset {
     // public double m_shoulder = 0.839;
     // public double b_shoulder = -248;
 
-
     private ArmPreset(int shoulder_angle, int wrist_angle) {
         this.shoulder_angle = shoulder_angle;
         this.wrist_angle = wrist_angle;
@@ -83,6 +82,16 @@ public enum ArmPreset {
 
     public int getShoulderAngle() {
         return shoulder_angle;
+    }
+
+    //  Calculate Arm angle given arm sensor position
+    public int CalcArmAngle(int armPos) {
+        return (int) ((armPos - b_shoulder)/ m_shoulder);
+    }
+
+    //Caclulate Wrist Angle given wrist sensor position
+    public int CalcWristAngle(int wristPos) {
+        return (int) ((wristPos - b_wrist)/ m_wrist);
     }
 
     public int CalculateArmPos() {
@@ -97,20 +106,20 @@ public enum ArmPreset {
         return (int) ((armPos + b_shoulder) / m_shoulder);
     }
 
-    public int getWristLowerLimit(int curArmPos) {
+    public int getWristLowerLimit(int curArmAngle) {
         int wristLowerLimit;
 
-        wristLowerLimit = Math.min(280, curArmPos + 70);
+        wristLowerLimit = Math.min(280, curArmAngle + 70);
         wristLowerLimit = (int) (m_wrist * wristLowerLimit + b_wrist);
 
         return wristLowerLimit;
 
     }
 
-    public int getWristUpperLimit(int curArmPos) {
+    public int getWristUpperLimit(int curArmAngle) {
         int wristUpperLimit;
 
-        wristUpperLimit = Math.max(-100, curArmPos - 70);
+        wristUpperLimit = Math.max(-100, curArmAngle - 70);
         wristUpperLimit = (int) (m_wrist * wristUpperLimit + b_wrist);
 
         return wristUpperLimit;

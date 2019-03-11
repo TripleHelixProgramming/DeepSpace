@@ -38,21 +38,20 @@ public class FollowArm extends Command {
     // JesterWrist.getInstance().setWristMotionMagic(wristPos);
     
     ArmPreset currentPreset = JesterArm.getInstance().getCurrentArmPreset();
-    int limitPos;
-    //  Don't do anything with wrist until arm recieves a command
+    int curArmAngle;
+
+    //  Don't move wrist until arm is sent a preset.
     if (currentPreset != ArmPreset.START) {
-      if (JesterArm.getInstance().ArmIsCloseToPreset()) {
-        JesterWrist.getInstance().setWristPos(currentPreset);
-      } else {
-        if (JesterArm.getInstance().OnDeliverSide())  {
-          limitPos = currentPreset.getWristLowerLimit(JesterArm.getInstance().getArmPos());
+        // Get angle cooresponding to current arm sensor position.
+        curArmAngle = currentPreset.CalcArmAngle(JesterArm.getInstance().getArmPos());
+        if ((curArmAngle > 172) && (curArmAngle < 220)) {
+          JesterWrist.getInstance().setWristMotionMagic(220);
         } else {
-          limitPos = currentPreset.getWristUpperLimit(JesterArm.getInstance().getArmPos());
+          JesterWrist.getInstance().setWristPos(currentPreset);
         }
-        JesterWrist.getInstance().setWristMotionMagic(limitPos);
-      }
     }
   }
+
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
