@@ -148,9 +148,13 @@ public class JesterArm extends Subsystem {
         return(Math.abs(getArmPos() - currentArmPreset.CalculateArmPos()) <= 2);
     }
 
-    // Used by DPAD commands to be check if movement command finished.
+    // Keep wrist at limit until 6 position off the currentPreset dest pos.
     public boolean ArmIsCloseToPreset() {
          return(Math.abs(getArmPos() - currentArmPreset.CalculateArmPos()) <= 6);
+    }
+
+    public boolean OnDeliverSide() {
+        return (getArmPos() >= ArmPreset.DELIVER_SIDE.CalculateArmPos());
     }
 
     public void upperPos() {
