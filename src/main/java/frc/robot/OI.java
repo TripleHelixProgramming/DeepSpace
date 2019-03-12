@@ -71,7 +71,7 @@ public class OI {
       new JoystickButton(driver, ControllerMap.RB).whenPressed(new driveByCamera(CAMERA.BACK));
       new JoystickButton(driver, ControllerMap.Y).whileHeld(new driveByAssistJosh(CAMERA.FRONT));
       new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByAssistJosh(CAMERA.BACK));
-      new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArcTesting());
+      // new JoystickButton(driver, ControllerMap.LB).whileHeld(new FollowArcTesting());
       new JoystickButton(driver, ControllerMap.B).whenPressed(new ReleaseCargo());
       new JoystickButton(driver, ControllerMap.X).whenPressed(new ReleaseHatch());
       new JoystickButton(driver, ControllerMap.LOGO_LEFT).whenPressed(new stopCargoGrabber());
@@ -81,16 +81,27 @@ public class OI {
 
     //Operator Buttons
 
-      new JoystickButton(operator, ControllerMap.LOGO_LEFT).whileHeld(new burstExtendLifter());
-      new JoystickButton(operator, ControllerMap.LOGO_RIGHT).whenPressed(new ExtendLifter());
+      // new JoystickButton(operator, ControllerMap.LOGO_LEFT).whileHeld(new burstExtendLifter());
+      // new JoystickButton(operator, ControllerMap.LOGO_RIGHT).whenPressed(new ExtendLifter());
+      // // new JoystickButton(operator, ControllerMap.A).whileHeld(new reverseLifter());
+      // new JoystickButton(operator, ControllerMap.RB).whenPressed(new PickUpCargo());
+      // new JoystickButton(operator, ControllerMap.RB).whenReleased(new resetCargoJester());
+      // new JoystickButton(operator, ControllerMap.X).whenPressed(new GrabHatch());
+      // new JoystickButton(operator, ControllerMap.B).whenPressed(new ReleaseCargo());
+      // new JoystickButton(operator, ControllerMap.LEFT_STICK_BUTTON).whenPressed(new stopCargoGrabber());
+      // new JoystickButton(operator, ControllerMap.Y).whenPressed(new ReleaseHatch());
+      // new JoystickButton(operator, ControllerMap.A).whenPressed(new GrabCargo());
+
+      new JoystickButton(operator, ControllerMap.PS4_SHARE).whileHeld(new burstExtendLifter());
+      new JoystickButton(operator, ControllerMap.PS4_OPTIONS).whenPressed(new ExtendLifter());
       // new JoystickButton(operator, ControllerMap.A).whileHeld(new reverseLifter());
-      new JoystickButton(operator, ControllerMap.RB).whenPressed(new PickUpCargo());
-      new JoystickButton(operator, ControllerMap.RB).whenReleased(new resetCargoJester());
-      new JoystickButton(operator, ControllerMap.X).whenPressed(new GrabHatch());
-      new JoystickButton(operator, ControllerMap.B).whenPressed(new ReleaseCargo());
-      new JoystickButton(operator, ControllerMap.LEFT_STICK_BUTTON).whenPressed(new stopCargoGrabber());
-      new JoystickButton(operator, ControllerMap.Y).whenPressed(new ReleaseHatch());
-      new JoystickButton(operator, ControllerMap.A).whenPressed(new GrabCargo());
+      new JoystickButton(operator, ControllerMap.PS4_R1).whenPressed(new PickUpCargo());
+      new JoystickButton(operator, ControllerMap.PS4_R1).whenReleased(new resetCargoJester());
+      new JoystickButton(operator, ControllerMap.PS4_SQUARE).whenPressed(new GrabHatch());
+      new JoystickButton(operator, ControllerMap.PS4_CIRCLE).whenPressed(new ReleaseCargo());
+      new JoystickButton(operator, ControllerMap.PS4_L3).whenPressed(new stopCargoGrabber());
+      new JoystickButton(operator, ControllerMap.PS4_TRIANGLE).whenPressed(new ReleaseHatch());
+      new JoystickButton(operator, ControllerMap.PS4_X).whenPressed(new GrabCargo());
 
 
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new openGrabber());

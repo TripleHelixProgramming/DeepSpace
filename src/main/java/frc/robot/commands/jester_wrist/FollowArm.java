@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.ArmPreset;
 import frc.robot.subsystems.JesterArm;
 import frc.robot.subsystems.JesterWrist;
+import frc.robot.subsystems.JesterArm.BotState;
 
 public class FollowArm extends Command {
   public FollowArm() {
@@ -33,16 +34,16 @@ public class FollowArm extends Command {
     // Set the wrist position based of the arm position.
     
     ArmPreset currentPreset = JesterArm.getInstance().getCurrentArmPreset();
+    BotState bot_state = JesterArm.getInstance().getState();
     int curArmAngle;
 
     //  Don't move wrist until arm is sent a preset.
     if (currentPreset != ArmPreset.START) {
         // Get angle cooresponding to current arm sensor position.
         curArmAngle = currentPreset.CalcArmAngle(JesterArm.getInstance().getArmPos());
-        if ((curArmAngle > 120) && (curArmAngle < 180)) {
+        if (((curArmAngle > 120) && (curArmAngle < 180)) && bot_state == BotState.BALL) {
           // JesterWrist.getInstance().setWristMotionMagic(230);
-          JesterWrist.getInstance().setWristMotionMagic(495
-          );
+          JesterWrist.getInstance().setWristMotionMagic(495);
 
         } else {
           JesterWrist.getInstance().setWristPos(currentPreset);
