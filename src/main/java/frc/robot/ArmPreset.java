@@ -58,17 +58,17 @@ public enum ArmPreset {
 
     // Practice Bot slope & y-intercept for arm & wrist to calculate sensor positions
     // (requires linear sensor)
-    public double m_wrist = -0.483;
-    public double b_wrist = 284;
-    public double m_shoulder = 0.844;
-    public double b_shoulder = -499;
+    // public double m_wrist = -0.483;
+    // public double b_wrist = 284;
+    // public double m_shoulder = 0.844;
+    // public double b_shoulder = -499;
 
     // Comp Bot slope & y-intercept for arm & wrist to calculate sensor positions
     // (requires linear sensor)
-    // public double m_wrist = -0.483;
-    // public double b_wrist = 549;
-    // public double m_shoulder = 0.839;
-    // public double b_shoulder = -248;
+    public double m_wrist = -0.483;
+    public double b_wrist = 549;
+    public double m_shoulder = 0.839;
+    public double b_shoulder = -248;
 
     private ArmPreset(int shoulder_angle, int wrist_angle) {
         this.shoulder_angle = shoulder_angle;
