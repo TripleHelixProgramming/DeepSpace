@@ -7,10 +7,15 @@
 
 package frc.robot.commands.robot_lifter;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.RobotLifter;
 
 public class ExtendLifter extends Command {
+  public boolean isFinishedVal;
+  public boolean isOperator;
+  public double isMatchEnd;
+
   public ExtendLifter() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -27,8 +32,14 @@ public class ExtendLifter extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    RobotLifter.getInstance().setPower(.75);
-    
+    // isOperator = DriverStation.getInstance().isOperatorControl();
+    // isMatchEnd = DriverStation.getInstance().getMatchTime();
+    // if((isOperator == true) && (isMatchEnd <= 30.00)) {
+        isFinishedVal = RobotLifter.getInstance().isLimitSwitchTriggered();
+        if(isFinishedVal == false){
+          RobotLifter.getInstance().setPower(.65);
+        }
+      // }
   }
 
   // Make this return true when this Command no longer needs to run execute()
