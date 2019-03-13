@@ -10,10 +10,10 @@ package frc.robot.commands.jester_wrist;
 import com.team2363.logger.HelixEvents;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.ArmPreset;
 import frc.robot.subsystems.JesterArm;
 import frc.robot.subsystems.JesterWrist;
+import frc.robot.subsystems.JesterArm.BotState;
 
 public class FollowArm extends Command {
   public FollowArm() {
@@ -32,17 +32,25 @@ public class FollowArm extends Command {
   @Override
   protected void execute() {
     // Set the wrist position based of the arm position.
-
-    // int armPos = JesterArm.getInstance().getArmPos();
-    // int wristPos = 
-    // JesterWrist.getInstance().setWristMotionMagic(wristPos);
     
-    ArmPreset armPreset = JesterArm.getInstance().getCurrentArmPreset();
-    //  Don't do anything with wrist until arm recieves a command
-    if (armPreset != ArmPreset.START) {
-      JesterWrist.getInstance().setWristPos(armPreset);
+    ArmPreset currentPreset = JesterArm.getInstance().getCurrentArmPreset();
+    BotState bot_state = JesterArm.getInstance().getState();
+    int curArmAngle;
+
+    //  Don't move wrist until arm is sent a preset.
+    if (currentPreset != ArmPreset.START) {
+        // Get angle cooresponding to current arm sensor position.
+        curArmAngle = currentPreset.CalcArmAngle(JesterArm.getInstance().getArmPos());
+        if (((curArmAngle > 120) && (curArmAngle < 180)) && bot_state == BotState.BALL) {
+          // JesterWrist.getInstance().setWristMotionMagic(230);
+          JesterWrist.getInstance().setWristMotionMagic(495);
+
+        } else {
+          JesterWrist.getInstance().setWristPos(currentPreset);
+        }
     }
-}
+  }
+
 
   // Make this return true when this Command no longer needs to run execute()
   @Override

@@ -74,7 +74,7 @@ public class JesterWrist extends Subsystem {
 
     public void setWristSoftLimits() {
 
-        int lowerLimit, upperLimit;
+        int lowerLimit, upperLimit, curPos;
         ArmPreset curArmPreset; 
 
         // Dynamially set wrist soft limits as arm positions changes.

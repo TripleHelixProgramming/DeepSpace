@@ -148,6 +148,15 @@ public class JesterArm extends Subsystem {
         return(Math.abs(getArmPos() - currentArmPreset.CalculateArmPos()) <= 2);
     }
 
+    // Keep wrist at limit until 6 position off the currentPreset dest pos.
+    public boolean ArmIsCloseToPreset() {
+         return(Math.abs(getArmPos() - currentArmPreset.CalculateArmPos()) <= 6);
+    }
+
+    public boolean OnDeliverSide(int armAngle) {
+        return (armAngle >= ArmPreset.DELIVER_SIDE.getShoulderAngle());
+    }
+
     public void upperPos() {
         switch (curBotState) {
         case BALL:
@@ -197,8 +206,8 @@ public class JesterArm extends Subsystem {
     public void lowerPos() {
         switch (curBotState) {
          case BALL:
-        //     goTo(ArmPreset.DELIVER_BALL_LOWER);
-        //     lastLowerPos = ArmPreset.DELIVER_BALL_LOWER;
+            goTo(ArmPreset.DELIVER_BALL_LOWER);
+            lastLowerPos = ArmPreset.DELIVER_BALL_LOWER;
             break;
         case HATCH:
             goTo(ArmPreset.DELIVER_HATCH_LOWER);
@@ -206,13 +215,13 @@ public class JesterArm extends Subsystem {
             break;
         case EMPTY:
         default:
-            // if (lastLowerPos == ArmPreset.DELIVER_BALL_LOWER) {
+            if (lastLowerPos == ArmPreset.DELIVER_BALL_LOWER) {
                 goTo(ArmPreset.DELIVER_HATCH_LOWER);
                 lastLowerPos = ArmPreset.DELIVER_HATCH_LOWER;
-            // } else {
-                // goTo(ArmPreset.DELIVER_BALL_LOWER);
-                // lastLowerPos = ArmPreset.DELIVER_BALL_LOWER;
-            // }
+            } else {
+                goTo(ArmPreset.DELIVER_BALL_LOWER);
+                lastLowerPos = ArmPreset.DELIVER_BALL_LOWER;
+            }
             break;
         }
     }
