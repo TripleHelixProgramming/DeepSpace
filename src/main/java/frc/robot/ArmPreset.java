@@ -18,15 +18,15 @@ public enum ArmPreset {
 
     CARGO(-30, 30), 
     DELIVER_SIDE (80, 120),
-    DELIVER_BALL_UPPER(95, 139),
+    DELIVER_BALL_UPPER(110, 139),
     DELIVER_HATCH_UPPER(110, 135), 
     BALL_TRANSITION_UPPER(123, 190),
     // DELIVER_BALL_MIDDLE(143, 182),      //original value
-    DELIVER_BALL_MIDDLE(193, 137),        //possible testing value
+    DELIVER_BALL_MIDDLE(193, 130),        //possible testing value
     BALL_TRANSITION_LOWER(163, 150),
     DELIVER_HATCH_MIDDLE(168, 180), 
     // DELIVER_BALL_LOWER(200, 180),    //original
-    DELIVER_BALL_LOWER(231, 173),    //possible testing angle
+    DELIVER_BALL_LOWER(230, 160),    //possible testing angle
     DELIVER_HATCH_LOWER(241, 180),
     STOW(250, 180),
     UNPACK_WP3(210, 270), 
