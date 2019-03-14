@@ -78,7 +78,6 @@ public class OI {
       new JoystickButton(driver, ControllerMap.LOGO_RIGHT).whenPressed(new undockJester());
 
 
-
     //Operator Buttons
 
       // new JoystickButton(operator, ControllerMap.LOGO_LEFT).whenPressed(new burstExtendLifter());
@@ -94,8 +93,12 @@ public class OI {
       // new JoystickButton(operator, ControllerMap.Y).whenPressed(new ReleaseHatch());
       // new JoystickButton(operator, ControllerMap.A).whenPressed(new GrabCargo());
 
-      new JoystickButton(operator, ControllerMap.PS4_SHARE).whileHeld(new burstExtendLifter());
+
+
+      new JoystickButton(operator, ControllerMap.PS4_SHARE).whenPressed(new burstExtendLifter());
+      new JoystickButton(operator, ControllerMap.PS4_SHARE).whenReleased(new StopLifter());
       new JoystickButton(operator, ControllerMap.PS4_OPTIONS).whenPressed(new ExtendLifter());
+      new JoystickButton(operator, ControllerMap.PS4_OPTIONS).whenReleased(new StopLifter());
       // new JoystickButton(operator, ControllerMap.A).whileHeld(new reverseLifter());
       new JoystickButton(operator, ControllerMap.PS4_R1).whenPressed(new PickUpCargo());
       new JoystickButton(operator, ControllerMap.PS4_R1).whenReleased(new resetCargoJester());
