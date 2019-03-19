@@ -28,6 +28,8 @@ import frc.robot.subsystems.JesterArm;
 import frc.robot.subsystems.JesterWrist;
 import frc.robot.subsystems.RobotLifter;
 import frc.robot.subsystems.HatchGrabber;
+import frc.robot.camera.CAMERA;
+import frc.robot.commands.drivetrain.driveByCamera;
 import frc.robot.subsystems.CargoGrabber;
 import frc.robot.subsystems.CargoIntake;
 
@@ -57,6 +59,9 @@ public class Robot extends TimedRobot {
   public void robotInit() { 
     initializeSubsystems();
     Drivetrain.getInstance().resetHeading();
+    
+    // CAMERA.FRONT.setCameraMode();
+    // CAMERA.BACK.setCameraMode();
 
   }
 
@@ -70,6 +75,7 @@ public class Robot extends TimedRobot {
     HatchGrabber.getInstance();
     CargoIntake.getInstance();
     RobotLifter.getInstance();
+    
   }
 
   /**
@@ -129,6 +135,8 @@ public class Robot extends TimedRobot {
       autonomousCommand.start();
     }
     HelixEvents.getInstance().startLogging();
+    CAMERA.FRONT.setCameraMode();
+    CAMERA.BACK.setCameraMode();
   }
 
   /**
