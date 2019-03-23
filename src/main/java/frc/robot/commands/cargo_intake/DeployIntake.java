@@ -7,10 +7,10 @@
 
 package frc.robot.commands.cargo_intake;
 
+import com.team2363.logger.HelixEvents;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.CargoIntake;
-import frc.robot.subsystems.JesterArm;
-// import frc.robot.subsystems.JesterArm.ArmPos;
 
 public class DeployIntake extends Command {
 
@@ -18,28 +18,19 @@ public class DeployIntake extends Command {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(CargoIntake.getInstance());
-    // requires(JesterArm.getInstance());
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // ArmPos currentArmPos = JesterArm.getInstance().getCurrentArmPreset();
-
-    // if (currentArmPos.getPos() < ArmPos.FRONT_HATCH_MIDDLE.getPos())
-    //   JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_HATCH_MIDDLE);
-
+    HelixEvents.getInstance().addEvent("CARGO_INTAKE", "Starting DeployIntake");
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // ArmPos currentArmPos = JesterArm.getInstance().getCurrentArmPreset();
-    // boolean armClear = (currentArmPos.getPos() >= ArmPos.FRONT_HATCH_MIDDLE.getPos());
-    // if (armClear){
       CargoIntake.getInstance().down();
       CargoIntake.getInstance().in();
-    // }
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -51,7 +42,7 @@ public class DeployIntake extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    // JesterArm.getInstance().setArmMotionMagic(CalculateArmPos.FRONT_HATCH_LOWER);
+    HelixEvents.getInstance().addEvent("CARGO_INTAKE", "Ending DeployIntake");
   }
 
   // Called when another command which requires one or more of the same

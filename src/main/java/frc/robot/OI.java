@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.camera.CAMERA;
 import frc.robot.commands.Auto.DeliverMiddleGroup;
 import frc.robot.commands.Auto.FollowArcTesting;
+import frc.robot.commands.Auto.GrabHatchCommandGroup;
 import frc.robot.commands.Auto.PickUpCargo;
+import frc.robot.commands.Auto.ReleaseHatchCommandGroup;
 import frc.robot.commands.Auto.resetCargoJester;
 import frc.robot.commands.Auto.undockJester;
 import frc.robot.commands.cargo_grabber.GrabCargo;
@@ -25,14 +27,14 @@ import frc.robot.commands.drivetrain.driveByAssistJosh;
 import frc.robot.commands.drivetrain.driveByCamera;
 import frc.robot.commands.drivetrain.driveByDocking;
 import frc.robot.commands.drivetrain.driveByDockingPID;
-import frc.robot.commands.hatch.GrabHatch;
-import frc.robot.commands.hatch.ReleaseHatch;
 import frc.robot.commands.jester_arm.MoveToLower;
 import frc.robot.commands.jester_arm.MoveToMiddle;
 import frc.robot.commands.jester_arm.MoveToPickup;
 import frc.robot.commands.jester_arm.MoveToUpper;
 import frc.robot.commands.robot_lifter.ExtendLifter;
 import frc.robot.commands.robot_lifter.burstExtendLifter;
+// import frc.robot.commands.pid_lifter.BurstLifter;
+// import frc.robot.commands.pid_lifter.ExtendLifter;
 import frc.robot.commands.robot_lifter.reverseLifter;
 import frc.robot.commands.robot_lifter.StopLifter;
 
@@ -73,7 +75,7 @@ public class OI {
       new JoystickButton(driver, ControllerMap.A).whileHeld(new driveByAssistJosh(CAMERA.BACK));
       //new JoystickButton(driver, ControllerMap.LB).whenPressed(new undockJester());
       new JoystickButton(driver, ControllerMap.B).whenPressed(new ReleaseCargo());
-      new JoystickButton(driver, ControllerMap.X).whenPressed(new ReleaseHatch());
+      new JoystickButton(driver, ControllerMap.X).whenPressed(new ReleaseHatchCommandGroup());
       new JoystickButton(driver, ControllerMap.LOGO_LEFT).whenPressed(new stopCargoGrabber());
       new JoystickButton(driver, ControllerMap.LOGO_RIGHT).whenPressed(new undockJester());
 
@@ -102,10 +104,10 @@ public class OI {
       // new JoystickButton(operator, ControllerMap.A).whileHeld(new reverseLifter());
       new JoystickButton(operator, ControllerMap.PS4_R1).whenPressed(new PickUpCargo());
       new JoystickButton(operator, ControllerMap.PS4_R1).whenReleased(new resetCargoJester());
-      new JoystickButton(operator, ControllerMap.PS4_SQUARE).whenPressed(new GrabHatch());
+      new JoystickButton(operator, ControllerMap.PS4_SQUARE).whenPressed(new GrabHatchCommandGroup());
       new JoystickButton(operator, ControllerMap.PS4_CIRCLE).whenPressed(new ReleaseCargo());
       new JoystickButton(operator, ControllerMap.PS4_L3).whenPressed(new stopCargoGrabber());
-      new JoystickButton(operator, ControllerMap.PS4_TRIANGLE).whenPressed(new ReleaseHatch());
+      new JoystickButton(operator, ControllerMap.PS4_TRIANGLE).whenPressed(new ReleaseHatchCommandGroup());
       new JoystickButton(operator, ControllerMap.PS4_X).whenPressed(new GrabCargo());
 
 
@@ -162,6 +164,15 @@ public class OI {
   
   public double getArmPower() {
     double stick = -operator.getRawAxis(ControllerMap.LEFT_STICK_Y);
+    stick *= Math.abs(stick);
+    if (Math.abs(stick) < 0.05) {
+      stick = 0;
+    }
+    return stick;
+  }
+
+  public double getWristPower() {
+    double stick = -operator.getRawAxis(ControllerMap.RIGHT_STICK_Y);
     stick *= Math.abs(stick);
     if (Math.abs(stick) < 0.05) {
       stick = 0;

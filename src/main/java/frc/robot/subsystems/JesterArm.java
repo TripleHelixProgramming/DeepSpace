@@ -64,7 +64,7 @@ public class JesterArm extends Subsystem {
 
     public JesterArm() {
         super("Jester Arm Subsystem");
-        // setupLogs();
+        setupLogs();
 
         armSlave.configFactoryDefault();
         armMaster.configFactoryDefault();
@@ -265,6 +265,10 @@ public class JesterArm extends Subsystem {
 
     public void setArmMotionMagic(int pos) {
         armMaster.set(ControlMode.MotionMagic, pos);
+    }
+
+    public void setManualMode() {
+        currentArmPreset = ArmPreset.MANUAL;
     }
 
     public void setLastMiddlePos(ArmPreset preset) {

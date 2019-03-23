@@ -11,8 +11,6 @@ import com.team2363.logger.HelixEvents;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.CargoGrabber;
 import frc.robot.subsystems.HatchGrabber;
-import frc.robot.subsystems.JesterArm;
-import frc.robot.subsystems.JesterArm.BotState;
 
 public class ReleaseHatch extends Command {
   public ReleaseHatch() {
@@ -34,13 +32,12 @@ public class ReleaseHatch extends Command {
   @Override
   protected void execute() {
     HatchGrabber.getInstance().hatchRelease();
-    JesterArm.getInstance().setState(BotState.EMPTY);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return HatchGrabber.getInstance().isInReleaseMode();
   }
 
   // Called once after isFinished returns true

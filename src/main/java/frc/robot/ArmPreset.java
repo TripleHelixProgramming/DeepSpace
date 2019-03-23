@@ -12,6 +12,7 @@ public enum ArmPreset {
     //shoulder angle, wrist angle CompBot
     PICKUP_HATCH(-72, -2), 
     CARGO_WP(0, -60), 
+    MANUAL(0,0),
     PICKUP_CARGO_FLOOR(-29, -94), 
 
     CARGO_TRANSITION_WP(-15, -50),
@@ -91,6 +92,10 @@ public enum ArmPreset {
     //Caclulate Wrist Angle given wrist sensor position
     public int CalcWristAngle(int wristPos) {
         return (int) ((wristPos - b_wrist)/ m_wrist);
+    }
+
+    public int WristAngleToPos(int angle) {
+        return (int) (m_wrist * angle + b_wrist);
     }
 
     public int CalculateArmPos() {

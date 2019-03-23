@@ -26,6 +26,7 @@ import frc.arcs.TurnScalingArc;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.JesterArm;
 import frc.robot.subsystems.JesterWrist;
+// import frc.robot.subsystems.PIDLifter;
 import frc.robot.subsystems.RobotLifter;
 import frc.robot.subsystems.HatchGrabber;
 import frc.robot.camera.CAMERA;
@@ -75,6 +76,7 @@ public class Robot extends TimedRobot {
     HatchGrabber.getInstance();
     CargoIntake.getInstance();
     RobotLifter.getInstance();
+    // PIDLifter.getInstance();
     
   }
 

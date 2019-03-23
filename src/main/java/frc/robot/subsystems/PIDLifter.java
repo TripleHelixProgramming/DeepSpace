@@ -1,0 +1,152 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
+package frc.robot.subsystems;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
+
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.team2363.logger.HelixLogger;
+
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.PIDLifter;
+import frc.robot.RobotMap;
+
+public class PIDLifter extends Subsystem {
+
+  PowerDistributionPanel pdp = new PowerDistributionPanel();
+
+  private TalonSRX lifterMaster = new TalonSRX(RobotMap.LIFTER_LEFT_ID);
+  private VictorSPX lifterSlave = new VictorSPX(RobotMap.LIFTER_RIGHT_ID);
+
+  public static int LIFTER_ACCELERATION = 500;
+  public static int LIFTER_CRUISE = 70;
+
+  private static PIDLifter INSTANCE = new PIDLifter();
+
+  public enum LiftPos {
+    BURST(30), EXTEND(400);
+
+    private final double pos;
+
+    private LiftPos(double pos) {
+      this.pos = pos;
+    }
+
+    public double getPos() {
+      return pos;
+    }
+  }
+
+  public static PIDLifter getInstance() {
+    if (INSTANCE == null) {
+      INSTANCE = new PIDLifter();
+    }
+    return INSTANCE;
+
+  }
+
+  public PIDLifter() {
+    setupLogs();
+    encoderReset();
+
+    lifterSlave.configFactoryDefault();
+    lifterMaster.configFactoryDefault();
+
+    // Set current limiting
+    lifterMaster.configContinuousCurrentLimit(40, 0);
+    lifterMaster.configPeakCurrentLimit(60, 0);
+    lifterMaster.configPeakCurrentDuration(100, 0);
+    lifterMaster.enableCurrentLimit(true);
+
+    lifterSlave.follow(lifterMaster);
+
+    lifterMaster.setNeutralMode(NeutralMode.Brake);
+    lifterSlave.setNeutralMode(NeutralMode.Brake);
+    lifterSlave.configOpenloopRamp(0.2, 0);
+
+    // Need to verify and set. With positive motor direction sensor values should
+    // increase.
+    lifterMaster.setSensorPhase(true);
+    // lifterMaster.setInverted(false);
+
+    lifterMaster.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+    lifterMaster.overrideLimitSwitchesEnable(true);
+    lifterMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+
+    // PID Settings for Competition Bot
+    lifterMaster.config_kF(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
+    lifterMaster.config_kP(0, 1.0, RobotMap.CTRE_TIMEOUT_INIT);
+    lifterMaster.config_kI(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
+    lifterMaster.config_kD(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
+    lifterMaster.configAllowableClosedloopError(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
+
+    //  5000 ACC Elevator   700 Cruise Elevator
+    // lifterMaster.configMotionAcceleration(LIFTER_ACCELERATION,RobotMap.CTRE_TIMEOUT_INIT);
+    // lifterMaster.configMotionCruiseVelocity(LIFTER_CRUISE, RobotMap.CTRE_TIMEOUT_INIT);
+  }
+
+  public double getPosition() {
+    return lifterMaster.getSensorCollection().getQuadraturePosition();
+  }
+
+  public double getVelocity() {
+    return lifterMaster.getSensorCollection().getQuadratureVelocity();
+  }
+
+  public void encoderReset() {
+    lifterMaster.getSensorCollection().setQuadraturePosition(0, 0);
+  }
+
+  public void goTo(LiftPos pos) {
+    goTo(pos.getPos());
+  }
+
+  public void goTo(double pos) {
+    lifterMaster.set(ControlMode.MotionMagic, pos);
+  }
+
+  public boolean isLimitSwitchTriggered() {
+    return lifterMaster.getSensorCollection().isRevLimitSwitchClosed();
+  }
+
+  // Used by DPAD commands to be check if movement command finished.
+  public boolean isBurstDone() {
+    return (Math.abs(getPosition() - LiftPos.BURST.getPos()) <= 2);
+  }
+
+  // Used by DPAD commands to be check if movement command finished.
+  public boolean isExtendDone() {
+    return (Math.abs(getPosition() - LiftPos.EXTEND.getPos()) <= 2);
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putNumber("Lifter Encoder Pos", getPosition());
+    SmartDashboard.putNumber("Burst Target", LiftPos.BURST.getPos());
+    SmartDashboard.putNumber("Burst Target", LiftPos.EXTEND.getPos());
+    SmartDashboard.putBoolean("LimitSwitch", isLimitSwitchTriggered());
+  }
+
+  private void setupLogs() {
+    HelixLogger.getInstance().addDoubleSource("LIFTER MASTER", lifterMaster::getOutputCurrent);
+    HelixLogger.getInstance().addDoubleSource("LIFTER SLAVE", ()-> pdp.getCurrent(RobotMap.LIFTER_RIGHT_PDP));
+  }
+
+  @Override
+  public void initDefaultCommand() {
+    // Set the default command for a subsystem here.
+    // setDefaultCommand(new MySpecialCommand());
+  }
+}
