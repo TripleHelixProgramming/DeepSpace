@@ -23,12 +23,12 @@ public class PickUpCargo extends CommandGroup {
   public PickUpCargo() {
 
     addSequential(new SetBotState(BotState.BALL));
-    addSequential(new MoveArmTo(ArmPreset.CARGO));
+    //addSequential(new MoveArmTo(ArmPreset.CARGO));
     addParallel(new GrabCargo());
-    addSequential(new DeployIntake());
-    addSequential(new WaitCommand(0.45));
+    //addSequential(new DeployIntake());
+    //addSequential(new WaitCommand(0.45));
     addSequential(new MoveArmTo(ArmPreset.PICKUP_CARGO_FLOOR));
-    addSequential(new GrabCargo());
+    //addSequential(new GrabCargo());
 
   }
 }

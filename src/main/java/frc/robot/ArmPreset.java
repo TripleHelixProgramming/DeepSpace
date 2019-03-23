@@ -12,7 +12,8 @@ public enum ArmPreset {
     //shoulder angle, wrist angle CompBot
     PICKUP_HATCH(-72, -2), 
     CARGO_WP(0, -60), 
-    PICKUP_CARGO_FLOOR(-29, -94), 
+    //PICKUP_CARGO_FLOOR(-20, -97), //was 29,94
+    PICKUP_CARGO_FLOOR(-68, -43),
 
     CARGO_TRANSITION_WP(-15, -50),
 
