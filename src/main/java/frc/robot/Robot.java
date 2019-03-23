@@ -135,8 +135,8 @@ public class Robot extends TimedRobot {
       autonomousCommand.start();
     }
     HelixEvents.getInstance().startLogging();
-    CAMERA.FRONT.setCameraMode();
-    CAMERA.BACK.setCameraMode();
+    // CAMERA.FRONT.setCameraMode();
+    // CAMERA.BACK.setCameraMode();
   }
 
   /**
