@@ -34,12 +34,12 @@ public class CargoGrabber extends Subsystem {
 
   public CargoGrabber() {
     // setupLogs();
-    leftWheel.configContinuousCurrentLimit(3, 0);
-    leftWheel.configPeakCurrentLimit(5, 0);
+    leftWheel.configContinuousCurrentLimit(4, 0);
+    leftWheel.configPeakCurrentLimit(13, 0);
     leftWheel.configPeakCurrentDuration(200, 0);
     leftWheel.enableCurrentLimit(true);
     rightWheel.configContinuousCurrentLimit(3, 0);
-    rightWheel.configPeakCurrentLimit(5, 0);
+    rightWheel.configPeakCurrentLimit(13, 0);
     rightWheel.configPeakCurrentDuration(200, 0);
     rightWheel.enableCurrentLimit(true);
   }
@@ -69,6 +69,7 @@ public class CargoGrabber extends Subsystem {
     rightWheel.set(ControlMode.PercentOutput, 0.3);
   }
 
+
   public void eject() {
     leftWheel.set(ControlMode.PercentOutput, -0.75);
     rightWheel.set(ControlMode.PercentOutput, -0.75);
@@ -97,7 +98,7 @@ public class CargoGrabber extends Subsystem {
    * @return true if over 20 amps
    */
   public boolean isOverCurrent() {
-    if (getOutputCurrent() >= 2.5) {
+    if (getOutputCurrent() >= 3) {
       return true;
     } else {
       return false;

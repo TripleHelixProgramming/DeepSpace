@@ -23,7 +23,7 @@ public class GrabCargo extends Command {
 
 
   private int stalledCount = 0;
-  private double speed = 0.30;
+  private double speed = 0.40;
 	
   Command rumbleCommand = new RumbleController();
   
@@ -61,7 +61,7 @@ public class GrabCargo extends Command {
   }
   CargoGrabber.getInstance().intake(speed);
 
-if (stalledCount > 10) {
+if (stalledCount > 15) {
   finished = true;
   CargoGrabber.getInstance().stopMotors();
   if (!rumbleCommand.isRunning()) {
