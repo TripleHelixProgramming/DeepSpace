@@ -63,7 +63,7 @@ public class GrabCargo extends Command {
 
 if (stalledCount > 15) {
   finished = true;
-  CargoGrabber.getInstance().stopMotors();
+  CargoGrabber.getInstance().slowMotors();
   if (!rumbleCommand.isRunning()) {
     rumbleCommand.start();
   }

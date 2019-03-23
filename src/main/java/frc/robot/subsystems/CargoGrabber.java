@@ -34,12 +34,12 @@ public class CargoGrabber extends Subsystem {
 
   public CargoGrabber() {
     // setupLogs();
-    leftWheel.configContinuousCurrentLimit(4, 0);
-    leftWheel.configPeakCurrentLimit(13, 0);
+    leftWheel.configContinuousCurrentLimit(3, 0);
+    leftWheel.configPeakCurrentLimit(9, 0);
     leftWheel.configPeakCurrentDuration(200, 0);
     leftWheel.enableCurrentLimit(true);
     rightWheel.configContinuousCurrentLimit(3, 0);
-    rightWheel.configPeakCurrentLimit(13, 0);
+    rightWheel.configPeakCurrentLimit(9, 0);
     rightWheel.configPeakCurrentDuration(200, 0);
     rightWheel.enableCurrentLimit(true);
   }
@@ -75,7 +75,13 @@ public class CargoGrabber extends Subsystem {
     rightWheel.set(ControlMode.PercentOutput, -0.75);
   }
 
-  //was at 0.2
+
+  public void slowMotors() {
+    leftWheel.set(ControlMode.PercentOutput, 0.1);
+    rightWheel.set(ControlMode.PercentOutput, 0.1);
+  }
+
+
   public void stopMotors() {
     leftWheel.set(ControlMode.PercentOutput, 0.00);
     rightWheel.set(ControlMode.PercentOutput, 0.00);
