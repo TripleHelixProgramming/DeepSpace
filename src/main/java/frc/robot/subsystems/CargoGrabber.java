@@ -34,13 +34,13 @@ public class CargoGrabber extends Subsystem {
 
   public CargoGrabber() {
     // setupLogs();
-    leftWheel.configContinuousCurrentLimit(40, 0);
-    leftWheel.configPeakCurrentLimit(60, 0);
-    leftWheel.configPeakCurrentDuration(100, 0);
+    leftWheel.configContinuousCurrentLimit(3, 0);
+    leftWheel.configPeakCurrentLimit(9, 0);
+    leftWheel.configPeakCurrentDuration(200, 0);
     leftWheel.enableCurrentLimit(true);
-    rightWheel.configContinuousCurrentLimit(40, 0);
-    rightWheel.configPeakCurrentLimit(60, 0);
-    rightWheel.configPeakCurrentDuration(100, 0);
+    rightWheel.configContinuousCurrentLimit(3, 0);
+    rightWheel.configPeakCurrentLimit(9, 0);
+    rightWheel.configPeakCurrentDuration(200, 0);
     rightWheel.enableCurrentLimit(true);
   }
 
@@ -69,14 +69,22 @@ public class CargoGrabber extends Subsystem {
     rightWheel.set(ControlMode.PercentOutput, 0.3);
   }
 
+
   public void eject() {
     leftWheel.set(ControlMode.PercentOutput, -0.75);
     rightWheel.set(ControlMode.PercentOutput, -0.75);
   }
 
+
+  public void slowMotors() {
+    leftWheel.set(ControlMode.PercentOutput, 0.1);
+    rightWheel.set(ControlMode.PercentOutput, 0.1);
+  }
+
+
   public void stopMotors() {
-    leftWheel.set(ControlMode.PercentOutput, 0.20);
-    rightWheel.set(ControlMode.PercentOutput, 0.20);
+    leftWheel.set(ControlMode.PercentOutput, 0.00);
+    rightWheel.set(ControlMode.PercentOutput, 0.00);
   }
 
   public boolean isOpen() {
@@ -96,7 +104,7 @@ public class CargoGrabber extends Subsystem {
    * @return true if over 20 amps
    */
   public boolean isOverCurrent() {
-    if (getOutputCurrent() > 4) {
+    if (getOutputCurrent() >= 3) {
       return true;
     } else {
       return false;

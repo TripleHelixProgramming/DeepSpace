@@ -13,16 +13,11 @@ import frc.robot.commands.cargo_grabber.GrabCargo;
 import frc.robot.commands.cargo_intake.RetractIntake;
 import frc.robot.commands.jester_arm.MoveArmTo;
 
-public class resetCargoJester extends CommandGroup {
+public class resetCargoJesterBack extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public resetCargoJester() {
-    // Add Commands here:
-    addParallel(new GrabCargo());
-    addSequential(new MoveArmTo(ArmPreset.CARGO_TRANSITION_WP));
-    addSequential(new MoveArmTo(ArmPreset.CARGO));
-    addSequential(new RetractIntake());
-
+  public resetCargoJesterBack() {
+    addSequential(new MoveArmTo(ArmPreset.PICKUP_HATCH));
   }
 }
