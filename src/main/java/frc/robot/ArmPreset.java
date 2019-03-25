@@ -13,7 +13,10 @@ public enum ArmPreset {
     PICKUP_HATCH(-72, -2), 
     CARGO_WP(0, -60), 
     MANUAL(0,0),
-    PICKUP_CARGO_FLOOR(-29, -94), 
+
+    //PICKUP_CARGO_FLOOR(-20, -97), //was 29,94
+    PICKUP_CARGO_FLOOR_BACK(-68, -43),
+    PICKUP_CARGO_FLOOR_FRONT(248, 203),
 
     CARGO_TRANSITION_WP(-15, -50),
 

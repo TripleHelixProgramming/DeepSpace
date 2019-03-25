@@ -12,38 +12,32 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.camera.CAMERA;
-import frc.robot.commands.Auto.DeliverMiddleGroup;
-import frc.robot.commands.Auto.FollowArcTesting;
+
 import frc.robot.commands.Auto.GrabHatchCommandGroup;
-import frc.robot.commands.Auto.PickUpCargo;
 import frc.robot.commands.Auto.ReleaseHatchCommandGroup;
-import frc.robot.commands.Auto.resetCargoJester;
+import frc.robot.commands.Auto.PickUpCargoBack;
+import frc.robot.commands.Auto.PickupCargoGroundFront;
+import frc.robot.commands.Auto.ResetCargoJesterFront;
+import frc.robot.commands.Auto.resetCargoJesterBack;
+
 import frc.robot.commands.Auto.undockJester;
 import frc.robot.commands.cargo_grabber.GrabCargo;
 import frc.robot.commands.cargo_grabber.ReleaseCargo;
 import frc.robot.commands.cargo_grabber.stopCargoGrabber;
-import frc.robot.commands.drivetrain.driveByAssist;
 import frc.robot.commands.drivetrain.driveByAssistJosh;
 import frc.robot.commands.drivetrain.driveByCamera;
-import frc.robot.commands.drivetrain.driveByDocking;
-import frc.robot.commands.drivetrain.driveByDockingPID;
+
 import frc.robot.commands.jester_arm.MoveToLower;
 import frc.robot.commands.jester_arm.MoveToMiddle;
 import frc.robot.commands.jester_arm.MoveToPickup;
 import frc.robot.commands.jester_arm.MoveToUpper;
 import frc.robot.commands.robot_lifter.ExtendLifter;
 import frc.robot.commands.robot_lifter.burstExtendLifter;
+
 // import frc.robot.commands.pid_lifter.BurstLifter;
 // import frc.robot.commands.pid_lifter.ExtendLifter;
 import frc.robot.commands.robot_lifter.reverseLifter;
 import frc.robot.commands.robot_lifter.StopLifter;
-
-// import frc.robot.commands.drivetrain.driveByDockingPID;
-// import frc.robot.commands.drivetrain.aimByVision;
-// import frc.robot.commands.Camera.driveByVision;
-// import frc.robot.commands.jester_arm.ToggleArmCommand;
-// import frc.robot.commands.jester_arm.ToggleHeightCommand;
-// import frc.robot.commands.Camera.driveByAssist;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -102,8 +96,11 @@ public class OI {
       new JoystickButton(operator, ControllerMap.PS4_OPTIONS).whenPressed(new ExtendLifter());
       new JoystickButton(operator, ControllerMap.PS4_OPTIONS).whenReleased(new StopLifter());
       // new JoystickButton(operator, ControllerMap.A).whileHeld(new reverseLifter());
-      new JoystickButton(operator, ControllerMap.PS4_R1).whenPressed(new PickUpCargo());
-      new JoystickButton(operator, ControllerMap.PS4_R1).whenReleased(new resetCargoJester());
+
+      new JoystickButton(operator, ControllerMap.PS4_R1).whenPressed(new PickUpCargoBack());
+      new JoystickButton(operator, ControllerMap.PS4_R1).whenReleased(new resetCargoJesterBack());
+      new JoystickButton(operator, ControllerMap.PS4_L1).whenPressed(new PickupCargoGroundFront());
+      new JoystickButton(operator, ControllerMap.PS4_L1).whenReleased(new ResetCargoJesterFront());
       new JoystickButton(operator, ControllerMap.PS4_SQUARE).whenPressed(new GrabHatchCommandGroup());
       new JoystickButton(operator, ControllerMap.PS4_CIRCLE).whenPressed(new ReleaseCargo());
       new JoystickButton(operator, ControllerMap.PS4_L3).whenPressed(new stopCargoGrabber());

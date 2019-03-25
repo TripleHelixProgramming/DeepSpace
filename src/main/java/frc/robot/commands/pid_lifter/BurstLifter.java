@@ -8,6 +8,7 @@
 package frc.robot.commands.pid_lifter;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PIDLifter;
 import frc.robot.subsystems.PIDLifter.LiftPos;;
 
@@ -21,6 +22,7 @@ public class BurstLifter extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    PIDLifter.getInstance().encoderReset();
   }
 
   // Called repeatedly when this Command is scheduled to run
