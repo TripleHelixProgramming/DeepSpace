@@ -30,13 +30,13 @@ public class PIDLifter extends Subsystem {
   private TalonSRX lifterMaster = new TalonSRX(RobotMap.LIFTER_LEFT_ID);
   private VictorSPX lifterSlave = new VictorSPX(RobotMap.LIFTER_RIGHT_ID);
 
-  public static int LIFTER_ACCELERATION = 500;
-  public static int LIFTER_CRUISE = 70;
+  public static int LIFTER_ACCELERATION = 5000;
+  public static int LIFTER_CRUISE = 700;
 
   private static PIDLifter INSTANCE = new PIDLifter();
 
   public enum LiftPos {
-    BURST(30), EXTEND(400);
+    BURST(786), EXTEND(400);
 
     private final double pos;
 
@@ -76,14 +76,15 @@ public class PIDLifter extends Subsystem {
     lifterSlave.setNeutralMode(NeutralMode.Brake);
     lifterSlave.configOpenloopRamp(0.2, 0);
 
-    // Need to verify and set. With positive motor direction sensor values should
-    // increase.
-    lifterMaster.setSensorPhase(true);
-    // lifterMaster.setInverted(false);
-
     lifterMaster.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
     lifterMaster.overrideLimitSwitchesEnable(true);
     lifterMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+    // lifterMaster.configFeedbackNotContinuous(true, RobotMap.CTRE_TIMEOUT_INIT);
+
+    // Need to verify and set. With positive motor direction sensor values should
+    // increase.
+    lifterMaster.setSensorPhase(false);
+    lifterMaster.setInverted(false);
 
     // PID Settings for Competition Bot
     lifterMaster.config_kF(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
@@ -93,8 +94,8 @@ public class PIDLifter extends Subsystem {
     lifterMaster.configAllowableClosedloopError(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
 
     //  5000 ACC Elevator   700 Cruise Elevator
-    // lifterMaster.configMotionAcceleration(LIFTER_ACCELERATION,RobotMap.CTRE_TIMEOUT_INIT);
-    // lifterMaster.configMotionCruiseVelocity(LIFTER_CRUISE, RobotMap.CTRE_TIMEOUT_INIT);
+    lifterMaster.configMotionAcceleration(LIFTER_ACCELERATION,RobotMap.CTRE_TIMEOUT_INIT);
+    lifterMaster.configMotionCruiseVelocity(LIFTER_CRUISE, RobotMap.CTRE_TIMEOUT_INIT);
   }
 
   public double getPosition() {
@@ -123,7 +124,7 @@ public class PIDLifter extends Subsystem {
 
   // Used by DPAD commands to be check if movement command finished.
   public boolean isBurstDone() {
-    return (Math.abs(getPosition() - LiftPos.BURST.getPos()) <= 2);
+    return (Math.abs(getPosition() - LiftPos.BURST.getPos()) <= 200);
   }
 
   // Used by DPAD commands to be check if movement command finished.
@@ -135,7 +136,7 @@ public class PIDLifter extends Subsystem {
   public void periodic() {
     SmartDashboard.putNumber("Lifter Encoder Pos", getPosition());
     SmartDashboard.putNumber("Burst Target", LiftPos.BURST.getPos());
-    SmartDashboard.putNumber("Burst Target", LiftPos.EXTEND.getPos());
+    SmartDashboard.putNumber("Extend Target", LiftPos.EXTEND.getPos());
     SmartDashboard.putBoolean("LimitSwitch", isLimitSwitchTriggered());
   }
 

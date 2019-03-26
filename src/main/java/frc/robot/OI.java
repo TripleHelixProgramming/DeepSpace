@@ -31,11 +31,11 @@ import frc.robot.commands.jester_arm.MoveToLower;
 import frc.robot.commands.jester_arm.MoveToMiddle;
 import frc.robot.commands.jester_arm.MoveToPickup;
 import frc.robot.commands.jester_arm.MoveToUpper;
-import frc.robot.commands.robot_lifter.ExtendLifter;
-import frc.robot.commands.robot_lifter.burstExtendLifter;
+// import frc.robot.commands.robot_lifter.ExtendLifter;
+// import frc.robot.commands.robot_lifter.burstExtendLifter;
 
-// import frc.robot.commands.pid_lifter.BurstLifter;
-// import frc.robot.commands.pid_lifter.ExtendLifter;
+import frc.robot.commands.pid_lifter.BurstLifter;
+import frc.robot.commands.pid_lifter.ExtendLifter;
 import frc.robot.commands.robot_lifter.reverseLifter;
 import frc.robot.commands.robot_lifter.StopLifter;
 
@@ -91,7 +91,7 @@ public class OI {
 
 
 
-      new JoystickButton(operator, ControllerMap.PS4_SHARE).whenPressed(new burstExtendLifter());
+      new JoystickButton(operator, ControllerMap.PS4_SHARE).whenPressed(new BurstLifter());
       new JoystickButton(operator, ControllerMap.PS4_SHARE).whenReleased(new StopLifter());
       new JoystickButton(operator, ControllerMap.PS4_OPTIONS).whenPressed(new ExtendLifter());
       new JoystickButton(operator, ControllerMap.PS4_OPTIONS).whenReleased(new StopLifter());
