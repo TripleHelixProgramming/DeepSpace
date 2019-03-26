@@ -36,7 +36,7 @@ public class PIDLifter extends Subsystem {
   private static PIDLifter INSTANCE = new PIDLifter();
 
   public enum LiftPos {
-    BURST(786), EXTEND(400);
+    BURST(786), EXTEND(12000);
 
     private final double pos;
 
@@ -61,6 +61,7 @@ public class PIDLifter extends Subsystem {
     setupLogs();
     encoderReset();
 
+    // Configure motors to factory default.
     lifterSlave.configFactoryDefault();
     lifterMaster.configFactoryDefault();
 
@@ -70,23 +71,24 @@ public class PIDLifter extends Subsystem {
     lifterMaster.configPeakCurrentDuration(100, 0);
     lifterMaster.enableCurrentLimit(true);
 
-    lifterSlave.follow(lifterMaster);
-
+    lifterMaster.configOpenloopRamp(0.2, 0);
     lifterMaster.setNeutralMode(NeutralMode.Brake);
-    lifterSlave.setNeutralMode(NeutralMode.Brake);
-    lifterSlave.configOpenloopRamp(0.2, 0);
 
+    // Configure sensor inputs
     lifterMaster.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
     lifterMaster.overrideLimitSwitchesEnable(true);
     lifterMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
     // lifterMaster.configFeedbackNotContinuous(true, RobotMap.CTRE_TIMEOUT_INIT);
 
-    // Need to verify and set. With positive motor direction sensor values should
-    // increase.
-    lifterMaster.setSensorPhase(false);
+    lifterMaster.setSensorPhase(false);  // + motor power must have increasing sensor values
     lifterMaster.setInverted(false);
 
-    // PID Settings for Competition Bot
+    lifterSlave.setInverted(true);   
+    lifterSlave.setNeutralMode(NeutralMode.Brake);
+    lifterSlave.configOpenloopRamp(0.2, 0);
+    lifterSlave.follow(lifterMaster);
+
+    // PID Settings - PB
     lifterMaster.config_kF(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
     lifterMaster.config_kP(0, 1.0, RobotMap.CTRE_TIMEOUT_INIT);
     lifterMaster.config_kI(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
@@ -124,7 +126,7 @@ public class PIDLifter extends Subsystem {
 
   // Used by DPAD commands to be check if movement command finished.
   public boolean isBurstDone() {
-    return (Math.abs(getPosition() - LiftPos.BURST.getPos()) <= 200);
+    return (Math.abs(getPosition() - LiftPos.BURST.getPos()) <= 20);
   }
 
   // Used by DPAD commands to be check if movement command finished.
