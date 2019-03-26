@@ -65,6 +65,12 @@ public class PIDLifter extends Subsystem {
     lifterSlave.configFactoryDefault();
     lifterMaster.configFactoryDefault();
 
+    lifterSlave.setInverted(true);   
+    lifterSlave.setNeutralMode(NeutralMode.Brake);
+    lifterSlave.configOpenloopRamp(0.2, 0);
+    lifterSlave.follow(lifterMaster);
+    // lifterSlave.
+
     // Set current limiting
     lifterMaster.configContinuousCurrentLimit(40, 0);
     lifterMaster.configPeakCurrentLimit(60, 0);
@@ -83,10 +89,6 @@ public class PIDLifter extends Subsystem {
     lifterMaster.setSensorPhase(false);  // + motor power must have increasing sensor values
     lifterMaster.setInverted(false);
 
-    lifterSlave.setInverted(true);   
-    lifterSlave.setNeutralMode(NeutralMode.Brake);
-    lifterSlave.configOpenloopRamp(0.2, 0);
-    lifterSlave.follow(lifterMaster);
 
     // PID Settings - PB
     lifterMaster.config_kF(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
