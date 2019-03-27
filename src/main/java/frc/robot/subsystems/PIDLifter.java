@@ -9,9 +9,12 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
+import com.ctre.phoenix.motorcontrol.*;
+
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -28,7 +31,7 @@ public class PIDLifter extends Subsystem {
   PowerDistributionPanel pdp = new PowerDistributionPanel();
 
   private TalonSRX lifterMaster = new TalonSRX(RobotMap.LIFTER_LEFT_ID);
-  private VictorSPX lifterSlave = new VictorSPX(RobotMap.LIFTER_RIGHT_ID);
+  private TalonSRX lifterSlave = new TalonSRX(RobotMap.LIFTER_RIGHT_ID);
 
   public static int LIFTER_ACCELERATION = 5000;
   public static int LIFTER_CRUISE = 700;
@@ -36,7 +39,7 @@ public class PIDLifter extends Subsystem {
   private static PIDLifter INSTANCE = new PIDLifter();
 
   public enum LiftPos {
-    BURST(786), EXTEND(12000);
+    BURST(786), EXTEND(24000);
 
     private final double pos;
 
@@ -65,10 +68,7 @@ public class PIDLifter extends Subsystem {
     lifterSlave.configFactoryDefault();
     lifterMaster.configFactoryDefault();
 
-    lifterSlave.setInverted(true);   
-    lifterSlave.setNeutralMode(NeutralMode.Brake);
-    lifterSlave.configOpenloopRamp(0.2, 0);
-    lifterSlave.follow(lifterMaster);
+    
     // lifterSlave.
 
     // Set current limiting
@@ -89,9 +89,13 @@ public class PIDLifter extends Subsystem {
     lifterMaster.setSensorPhase(false);  // + motor power must have increasing sensor values
     lifterMaster.setInverted(false);
 
+    lifterSlave.setInverted(InvertType.OpposeMaster);
+    lifterSlave.setNeutralMode(NeutralMode.Brake);
+    lifterSlave.configOpenloopRamp(0.2, 0);
+    lifterSlave.follow(lifterMaster);
 
     // PID Settings - PB
-    lifterMaster.config_kF(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
+    lifterMaster.config_kF(0, 1.0, RobotMap.CTRE_TIMEOUT_INIT);
     lifterMaster.config_kP(0, 1.0, RobotMap.CTRE_TIMEOUT_INIT);
     lifterMaster.config_kI(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
     lifterMaster.config_kD(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
