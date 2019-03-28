@@ -34,7 +34,9 @@ public class PIDLifter extends Subsystem {
   private TalonSRX lifterSlave = new TalonSRX(RobotMap.LIFTER_RIGHT_ID);
 
   public static int LIFTER_ACCELERATION = 5000;
-  public static int LIFTER_CRUISE = 700;
+  public static int LIFTER_CRUISE = 1918;
+  // public static int LIFTER_CRUISE = 700;
+
 
   private static PIDLifter INSTANCE = new PIDLifter();
 
@@ -95,7 +97,8 @@ public class PIDLifter extends Subsystem {
     lifterSlave.follow(lifterMaster);
 
     // PID Settings - PB
-    lifterMaster.config_kF(0, 1.0, RobotMap.CTRE_TIMEOUT_INIT);
+    // lifterMaster.config_kF(0, 1.0, RobotMap.CTRE_TIMEOUT_INIT);
+    lifterMaster.config_kF(0, 0.32, RobotMap.CTRE_TIMEOUT_INIT);
     lifterMaster.config_kP(0, 1.0, RobotMap.CTRE_TIMEOUT_INIT);
     lifterMaster.config_kI(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
     lifterMaster.config_kD(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
