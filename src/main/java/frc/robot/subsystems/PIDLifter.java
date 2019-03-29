@@ -79,7 +79,8 @@ public class PIDLifter extends Subsystem {
     lifterMaster.configPeakCurrentDuration(100, 0);
     lifterMaster.enableCurrentLimit(true);
 
-    lifterMaster.configOpenloopRamp(0.2, 0);
+    //lifterMaster.configOpenloopRamp(0, 0);
+    // lifterMaster.configClosedloopRamp(.1);
     lifterMaster.setNeutralMode(NeutralMode.Brake);
 
     // Configure sensor inputs
@@ -93,15 +94,17 @@ public class PIDLifter extends Subsystem {
 
     lifterSlave.setInverted(InvertType.OpposeMaster);
     lifterSlave.setNeutralMode(NeutralMode.Brake);
-    lifterSlave.configOpenloopRamp(0.2, 0);
+    lifterSlave.configOpenloopRamp(0, 0);
     lifterSlave.follow(lifterMaster);
 
     // PID Settings - PB
     // lifterMaster.config_kF(0, 1.0, RobotMap.CTRE_TIMEOUT_INIT);
-    lifterMaster.config_kF(0, 0.32, RobotMap.CTRE_TIMEOUT_INIT);
-    lifterMaster.config_kP(0, 1.0, RobotMap.CTRE_TIMEOUT_INIT);
+    // lifterMaster.config_kF(0, 30, RobotMap.CTRE_TIMEOUT_INIT);
+    // lifterMaster.config_kP(0, .1, RobotMap.CTRE_TIMEOUT_INIT);
+    lifterMaster.config_kF(0, .32, RobotMap.CTRE_TIMEOUT_INIT);
+    lifterMaster.config_kP(0, 1, RobotMap.CTRE_TIMEOUT_INIT);
     lifterMaster.config_kI(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
-    lifterMaster.config_kD(0, 0.0, RobotMap.CTRE_TIMEOUT_INIT);
+    lifterMaster.config_kD(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
     lifterMaster.configAllowableClosedloopError(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
 
     //  5000 ACC Elevator   700 Cruise Elevator
@@ -110,7 +113,9 @@ public class PIDLifter extends Subsystem {
   }
 
   public double getPosition() {
+    
     return lifterMaster.getSensorCollection().getQuadraturePosition();
+
   }
 
   public double getVelocity() {
@@ -149,6 +154,7 @@ public class PIDLifter extends Subsystem {
     SmartDashboard.putNumber("Burst Target", LiftPos.BURST.getPos());
     SmartDashboard.putNumber("Extend Target", LiftPos.EXTEND.getPos());
     SmartDashboard.putBoolean("LimitSwitch", isLimitSwitchTriggered());
+    SmartDashboard.putNumber("Error", lifterMaster.getClosedLoopError());
   }
 
   private void setupLogs() {
