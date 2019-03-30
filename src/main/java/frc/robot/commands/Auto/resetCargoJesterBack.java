@@ -18,6 +18,6 @@ public class resetCargoJesterBack extends CommandGroup {
    * Add your docs here.
    */
   public resetCargoJesterBack() {
-    addSequential(new MoveArmTo(ArmPreset.PICKUP_HATCH));
+    addSequential(new MoveArmTo(ArmPreset.CARGO));
   }
 }

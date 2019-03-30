@@ -8,6 +8,7 @@
 package frc.robot.camera;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.ArmPreset;
 
 public enum CAMERA {
     FRONT("limelight-front"), BACK("limelight-back");
@@ -32,6 +33,13 @@ public enum CAMERA {
         NetworkTableInstance.getDefault().getTable(name).getEntry("pipeline").setNumber(1);
         NetworkTableInstance.getDefault().getTable(name).getEntry("stream").setNumber(0);
 
+    }
+
+    public void setMiddleDockingMode() {
+        NetworkTableInstance.getDefault().getTable(name).getEntry("pipeline").setNumber(2);
+        NetworkTableInstance.getDefault().getTable(name).getEntry("ledMode").setNumber(0);
+        NetworkTableInstance.getDefault().getTable(name).getEntry("pipeline").setNumber(2);
+        NetworkTableInstance.getDefault().getTable(name).getEntry("stream").setNumber(0);
     }
 
     public boolean IsTargetFound() {

@@ -52,6 +52,7 @@ public class GrabCargo extends Command {
   finished = false;
 
    //when we retrieve cargo, extend hatch grabber
+   CargoGrabber.getInstance().intake(speed);
    if (CargoGrabber.getInstance().isOverCurrent()) {
     stalledCount++;
     SmartDashboard.putNumber("Cargo Stall Count", stalledCount);
@@ -59,7 +60,7 @@ public class GrabCargo extends Command {
     stalledCount = 0;
     SmartDashboard.putNumber("Cargo Stall Reset", stalledCount);
   }
-  CargoGrabber.getInstance().intake(speed);
+  
 
 if (stalledCount > 15) {
   finished = true;
@@ -83,7 +84,7 @@ if (stalledCount > 15) {
   protected void end() {
     SmartDashboard.putString("Grab Cargo", "Ending grab cargo");
     HelixEvents.getInstance().addEvent("GRAB_CARGO", "Ending grab cargo");
-    CargoGrabber.getInstance().stopMotors();
+    // CargoGrabber.getInstance().stopMotors();
     // HatchGrabber.getInstance().hatchRelease();
   }
 
