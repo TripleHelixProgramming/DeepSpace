@@ -70,9 +70,6 @@ public class PIDLifter extends Subsystem {
     lifterSlave.configFactoryDefault();
     lifterMaster.configFactoryDefault();
 
-    
-    // lifterSlave.
-
     // Set current limiting
     lifterMaster.configContinuousCurrentLimit(40, 0);
     lifterMaster.configPeakCurrentLimit(60, 0);
@@ -155,6 +152,11 @@ public class PIDLifter extends Subsystem {
     SmartDashboard.putNumber("Extend Target", LiftPos.EXTEND.getPos());
     SmartDashboard.putBoolean("LimitSwitch", isLimitSwitchTriggered());
     SmartDashboard.putNumber("Error", lifterMaster.getClosedLoopError());
+  }
+
+  public void setPower(double power){
+    lifterMaster.set(ControlMode.PercentOutput,  power);
+    // right.set(ControlMode.PercentOutput, -power);
   }
 
   private void setupLogs() {

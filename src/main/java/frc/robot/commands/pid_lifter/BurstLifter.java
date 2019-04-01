@@ -8,7 +8,6 @@
 package frc.robot.commands.pid_lifter;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PIDLifter;
 import frc.robot.subsystems.PIDLifter.LiftPos;;
 
