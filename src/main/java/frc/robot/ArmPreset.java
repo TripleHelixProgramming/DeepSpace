@@ -12,12 +12,16 @@ public enum ArmPreset {
     //shoulder angle, wrist angle CompBot
     PICKUP_HATCH(-72, -2), 
     CARGO_WP(0, -60), 
+    MANUAL(0,0),
+
     //PICKUP_CARGO_FLOOR(-20, -97), //was 29,94
-    PICKUP_CARGO_FLOOR_BACK(-68, -43),
-    PICKUP_CARGO_FLOOR_FRONT(248, 203),
+    PICKUP_CARGO_FLOOR_BACK(-55, -48),
+    PICKUP_CARGO_FLOOR_FRONT(239, 217),
+
     CARGO_TRANSITION_WP(-15, -50),
 
-    CARGO(-30, 30), 
+    // CARGO(-30, 30), 
+    CARGO(28, -31),
     DELIVER_SIDE (80, 120),
     DELIVER_BALL_UPPER(110, 139),
     DELIVER_HATCH_UPPER(110, 135), 
@@ -59,9 +63,9 @@ public enum ArmPreset {
 
     // Practice Bot slope & y-intercept for arm & wrist to calculate sensor positions
     // (requires linear sensor)
-    public double m_wrist = -0.483;
-    public double b_wrist = 284;
-    public double m_shoulder = 0.844;
+    public double m_wrist = -0.472;
+    public double b_wrist = 286;
+    public double m_shoulder = 0.833;
     public double b_shoulder = -499;
 
     // Comp Bot slope & y-intercept for arm & wrist to calculate sensor positions
@@ -92,6 +96,10 @@ public enum ArmPreset {
     //Caclulate Wrist Angle given wrist sensor position
     public int CalcWristAngle(int wristPos) {
         return (int) ((wristPos - b_wrist)/ m_wrist);
+    }
+
+    public int WristAngleToPos(int angle) {
+        return (int) (m_wrist * angle + b_wrist);
     }
 
     public int CalculateArmPos() {

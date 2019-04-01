@@ -10,63 +10,67 @@ package frc.robot.commands.jester_wrist;
 import com.team2363.logger.HelixEvents;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.ArmPreset;
+import frc.robot.OI;
 import frc.robot.subsystems.JesterArm;
 import frc.robot.subsystems.JesterWrist;
-import frc.robot.subsystems.JesterArm.BotState;
 
-public class FollowArm extends Command {
-  public FollowArm() {
+public class DriveWristByJoystick extends Command {
+
+  private JesterWrist jesterWrist = JesterWrist.getInstance();
+
+  int position;
+
+  public DriveWristByJoystick() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(JesterWrist.getInstance());
+    super("Drive wrist by joystick");
+    requires(jesterWrist);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    HelixEvents.getInstance().addEvent("JESTER_WRIST", "Starting FollowArm");
+    JesterArm.getInstance().setManualMode();
+    position = jesterWrist.getWristPos();
+    HelixEvents.getInstance().addEvent("JESTER WRIST", "Starting to drive wrist by joystick");
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Set the wrist position based of the arm position.
-    
-    ArmPreset currentPreset = JesterArm.getInstance().getCurrentArmPreset();
-    BotState bot_state = JesterArm.getInstance().getState();
-    int curArmAngle, wrist_pos;
+    int backLimit = ArmPreset.DELIVER_HATCH_LOWER.CalculateWristPos();
+    int frontLimit = ArmPreset.PICKUP_HATCH.CalculateWristPos();
 
-    //  Don't move wrist until arm is sent a preset.
-    if ((currentPreset != ArmPreset.START) && (currentPreset != ArmPreset.MANUAL)) {
-        // Get angle cooresponding to current arm sensor position.
-        curArmAngle = currentPreset.CalcArmAngle(JesterArm.getInstance().getArmPos());
-        if (((curArmAngle > 120) && (curArmAngle < 180)) && bot_state == BotState.BALL) {
-          wrist_pos = currentPreset.WristAngleToPos(112);
-          JesterWrist.getInstance().setWristMotionMagic(wrist_pos);  // wrist_pos should be 230 PB 495 CB
-        } else {
-          JesterWrist.getInstance().setWristPos(currentPreset);
-        }
+    position += OI.getInstance().getWristPower() * 10;
+    if (position > backLimit) {
+        position = backLimit;
+    } else if (position < frontLimit) {
+        position = frontLimit;
     }
-  }
 
+    jesterWrist.setWristMotionMagic(position);
+
+    SmartDashboard.putNumber("Arm Manual Position", position);
+  }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return (JesterArm.getInstance().getCurrentArmPreset() != ArmPreset.MANUAL);
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    HelixEvents.getInstance().addEvent("JESTER_WRIST", "End FollowArm");
+    HelixEvents.getInstance().addEvent("JESTER WRIST", "finished DriveWristByJoystick");
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    HelixEvents.getInstance().addEvent("JESTER WRIST", "FollowArm() interuppted");
+    HelixEvents.getInstance().addEvent("JESTER WRIST", "Interrupted DriveWristByJoystick");
   }
 }

@@ -75,7 +75,7 @@ public class Drivetrain extends Subsystem implements FollowsArc {
     setPIDFValues();
     setBrakeMode(NeutralMode.Brake);
     setupSensors();
-    // setupLogs();
+    setupLogs();
 
     left.setSensorPhase(false);
     right.setSensorPhase(false);
@@ -143,7 +143,7 @@ public class Drivetrain extends Subsystem implements FollowsArc {
 
   private void setupLogs() {
 
-    HelixLogger.getInstance().addDoubleSource("TOTAL CURRENT", pdp::getTotalCurrent);
+    // HelixLogger.getInstance().addDoubleSource("TOTAL CURRENT", pdp::getTotalCurrent);
     HelixLogger.getInstance().addDoubleSource("DT LM Current", left::getOutputCurrent);
     HelixLogger.getInstance().addDoubleSource("DT RM Current", right::getOutputCurrent);
 
@@ -153,12 +153,12 @@ public class Drivetrain extends Subsystem implements FollowsArc {
     HelixLogger.getInstance().addDoubleSource("DT RS1 Current", () -> pdp.getCurrent(RobotMap.RIGHT_SLAVE_1_PDP));
     HelixLogger.getInstance().addDoubleSource("DT RS2 Current", () -> pdp.getCurrent(RobotMap.RIGHT_SLAVE_1_PDP));
 
-    HelixLogger.getInstance().addDoubleSource("PIGEON HEADING", () -> Drivetrain.getInstance().getYaw());
+    HelixLogger.getInstance().addDoubleSource("PIGEON HEADING", () -> this.getYaw());
 
-    // HelixLogger.getInstance().addDoubleSource("DRIVETRAIN LEFT Voltage", left::getMotorOutputVoltage);
-    // HelixLogger.getInstance().addIntegerSource("DRIVETRAIN LEFT Velocity", Drivetrain.getInstance()::getLeftVelocity);
-    // HelixLogger.getInstance().addDoubleSource("DRIVETRAIN RIGHT Voltage", right::getMotorOutputVoltage);
-    // HelixLogger.getInstance().addIntegerSource("DRIVETRAIN RIGHT Velocity", Drivetrain.getInstance()::getRightVelocity);
+    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN LEFT Voltage", left::getMotorOutputVoltage);
+    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN LEFT Velocity", this::getLeftVelocity);
+    HelixLogger.getInstance().addDoubleSource("DRIVETRAIN RIGHT Voltage", right::getMotorOutputVoltage);
+    HelixLogger.getInstance().addIntegerSource("DRIVETRAIN RIGHT Velocity", this::getRightVelocity);
   }
 
   @Override
@@ -200,7 +200,15 @@ public class Drivetrain extends Subsystem implements FollowsArc {
   }
 
   public int getLeftVelocity() {
-    return left.getSelectedSensorVelocity();
+    try {
+      return left.getSelectedSensorVelocity();
+    } catch(Exception e) {
+      SmartDashboard.putString("Exception", e.getMessage());
+      return 100000000;
+    } catch(Throwable t) {
+      SmartDashboard.putString("Exception", t.getMessage());
+      return 1999999999;
+    }
   }
 
   public int getRightVelocity() {

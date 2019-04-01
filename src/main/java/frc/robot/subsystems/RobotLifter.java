@@ -16,7 +16,6 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.team2363.logger.HelixLogger;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.Utility;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -47,7 +46,7 @@ public class RobotLifter extends Subsystem {
   }
   
   public RobotLifter(){ 
-    // setupLogs();
+    setupLogs();
 
     left.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
 		left.overrideLimitSwitchesEnable(true);

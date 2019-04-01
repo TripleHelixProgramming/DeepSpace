@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.ArmPreset;
 import frc.robot.OI;
 import frc.robot.subsystems.JesterArm;
-import frc.robot.subsystems.JesterWrist;
 
 public class DriveArmByJoystick extends Command {
 
@@ -22,6 +21,7 @@ public class DriveArmByJoystick extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        jesterArm.setManualMode();
         position = jesterArm.getArmPos();
         HelixEvents.getInstance().addEvent("JESTER ARM", "Starting to drive arm by joystick");
     }
@@ -29,7 +29,6 @@ public class DriveArmByJoystick extends Command {
     @Override
     protected void execute() {
 
-        double error;
         int backLimit = ArmPreset.DELIVER_HATCH_LOWER.CalculateArmPos();
         int frontLimit = ArmPreset.PICKUP_HATCH.CalculateArmPos();
 
@@ -47,7 +46,7 @@ public class DriveArmByJoystick extends Command {
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return (JesterArm.getInstance().getCurrentArmPreset() != ArmPreset.MANUAL);
     }
 
     // Called once after isFinished returns true

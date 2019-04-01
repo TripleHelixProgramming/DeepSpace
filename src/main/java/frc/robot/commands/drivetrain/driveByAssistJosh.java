@@ -9,6 +9,8 @@ package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.JesterArm;
+import frc.robot.ArmPreset;
 import frc.robot.OI;
 import frc.robot.camera.CAMERA;
 
@@ -48,7 +50,12 @@ public class driveByAssistJosh extends Command {
   @Override
   protected void execute() {
 
-    camera.setDockingMode();
+    if (JesterArm.getInstance().getCurrentArmPreset() == ArmPreset.DELIVER_HATCH_MIDDLE) {
+      camera.setMiddleDockingMode();
+    } else {
+      camera.setDockingMode();
+    }
+    // camera.setDockingMode();
 
     double tx = camera.RotationalDegreesToTarget();
 

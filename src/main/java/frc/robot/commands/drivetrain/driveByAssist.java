@@ -7,6 +7,8 @@
 
 package frc.robot.commands.drivetrain;
 
+import com.team2363.logger.HelixEvents;
+
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
@@ -36,7 +38,7 @@ public class driveByAssist extends PIDCommand {
   protected void initialize() {
     // Always set which camera you are using. This is passed into the command
     // from OI.java.
-
+    HelixEvents.getInstance().addEvent("DRIVETRAIN", "Starting driveByAssist");
     setSetpoint(0.0);
   }
 
@@ -106,6 +108,7 @@ public class driveByAssist extends PIDCommand {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    HelixEvents.getInstance().addEvent("DRIVETRAIN", "Ending driveByAssist");
     end();
   }
 

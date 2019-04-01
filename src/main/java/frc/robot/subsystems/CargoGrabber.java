@@ -77,8 +77,8 @@ public class CargoGrabber extends Subsystem {
 
 
   public void slowMotors() {
-    leftWheel.set(ControlMode.PercentOutput, 0.1);
-    rightWheel.set(ControlMode.PercentOutput, 0.1);
+    leftWheel.set(ControlMode.PercentOutput, 0.15);
+    rightWheel.set(ControlMode.PercentOutput, 0.15);
   }
 
 

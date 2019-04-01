@@ -9,7 +9,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.hatch.GrabHatch;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 import com.team2363.logger.HelixLogger;
@@ -35,7 +34,7 @@ public class HatchGrabber extends Subsystem {
   }
 
   public HatchGrabber () {
-    // setupLogs();
+    setupLogs();
   }
   public void hatchGrab(){
     grabber.set(DoubleSolenoid.Value.kForward);
@@ -43,7 +42,15 @@ public class HatchGrabber extends Subsystem {
   public void hatchRelease(){
     grabber.set(DoubleSolenoid.Value.kReverse);
   }
-  
+ 
+  public boolean isInGrabMode() {
+    return (grabber.get() == DoubleSolenoid.Value.kForward);
+  }
+
+  public boolean isInReleaseMode() {
+    return (grabber.get() == DoubleSolenoid.Value.kReverse);
+  } 
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.

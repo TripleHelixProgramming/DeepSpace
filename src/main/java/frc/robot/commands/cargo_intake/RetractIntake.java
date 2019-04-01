@@ -7,6 +7,8 @@
 
 package frc.robot.commands.cargo_intake;
 
+import com.team2363.logger.HelixEvents;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.JesterArm;
@@ -17,27 +19,19 @@ public class RetractIntake extends Command {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(CargoIntake.getInstance());
-    // requires(JesterArm.getInstance());
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // ArmPos currentArmPos = JesterArm.getInstance().getCurrentArmPreset();
-
-    // if (currentArmPos.getPos() < ArmPos.FRONT_HATCH_MIDDLE.getPos())
-    //   JesterArm.getInstance().setArmMotionMagic(ArmPos.FRONT_HATCH_MIDDLE);
+    HelixEvents.getInstance().addEvent("CARGO_INTAKE", "Starting RetractIntake");
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // ArmPos currentArmPos = JesterArm.getInstance().getCurrentArmPreset();
-    // boolean armClear = (currentArmPos.getPos() >= ArmPos.FRONT_HATCH_MIDDLE.getPos());
-    // if (armClear){
       CargoIntake.getInstance().up();
       CargoIntake.getInstance().off();
-    // }
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -49,6 +43,7 @@ public class RetractIntake extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    HelixEvents.getInstance().addEvent("CARGO_INTAKE", "Ending RetractIntake");
   }
 
   // Called when another command which requires one or more of the same

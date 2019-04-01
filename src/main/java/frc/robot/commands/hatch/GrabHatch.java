@@ -32,7 +32,6 @@ public class GrabHatch extends Command {
   protected void initialize() {
     HelixEvents.getInstance().addEvent("GRAB_HATCH", "Starting to grab hatch");
     CargoGrabber.getInstance().openGrabber();
-    JesterArm.getInstance().setState(BotState.HATCH);
     HatchGrabber.getInstance().hatchRelease();
 
   }
@@ -40,19 +39,18 @@ public class GrabHatch extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    JesterArm.getInstance().setState(BotState.HATCH);
     HatchGrabber.getInstance().hatchGrab();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return HatchGrabber.getInstance().isInGrabMode();
   }
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    // HelixEvents.getInstance().addEvent("GRAB_HATCH", "Ending grab hatch");
+    HelixEvents.getInstance().addEvent("GRAB_HATCH", "Ending grab hatch");
   }
 
   // Called when another command which requires one or more of the same

@@ -5,32 +5,25 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.cargo_grabber;
-
-import com.team2363.logger.HelixEvents;
+package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.CargoGrabber;
+import frc.robot.subsystems.Drivetrain;
 
-public class openGrabber extends Command {
-  public openGrabber() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(CargoGrabber.getInstance());
+public class MiddleHatchAssist extends Command {
+  public MiddleHatchAssist() {
+    requires(Drivetrain.getInstance());
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    HelixEvents.getInstance().addEvent("OPEN GRABBER", "Starting to open grabber");
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    CargoGrabber.getInstance().openGrabber();
   }
-
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
@@ -41,7 +34,6 @@ public class openGrabber extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    HelixEvents.getInstance().addEvent("OPEN GRABBER", "Ending to open grabber");
   }
 
   // Called when another command which requires one or more of the same

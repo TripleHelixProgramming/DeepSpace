@@ -5,43 +5,41 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.cargo_grabber;
-
-import com.team2363.logger.HelixEvents;
+package frc.robot.commands.pid_lifter;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.CargoGrabber;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.PIDLifter;
+import frc.robot.subsystems.PIDLifter.LiftPos;;
 
-public class openGrabber extends Command {
-  public openGrabber() {
+public class BurstLifter extends Command {
+  public BurstLifter() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(CargoGrabber.getInstance());
+    requires(PIDLifter.getInstance());
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    HelixEvents.getInstance().addEvent("OPEN GRABBER", "Starting to open grabber");
+    PIDLifter.getInstance().encoderReset();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    CargoGrabber.getInstance().openGrabber();
+    PIDLifter.getInstance().goTo(LiftPos.BURST);
   }
-
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return (PIDLifter.getInstance().isBurstDone());
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    HelixEvents.getInstance().addEvent("OPEN GRABBER", "Ending to open grabber");
   }
 
   // Called when another command which requires one or more of the same
