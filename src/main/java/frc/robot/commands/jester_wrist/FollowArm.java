@@ -41,12 +41,14 @@ public class FollowArm extends Command {
     if ((currentPreset != ArmPreset.START) && (currentPreset != ArmPreset.MANUAL)) {
         // Get angle cooresponding to current arm sensor position.
         curArmAngle = currentPreset.CalcArmAngle(JesterArm.getInstance().getArmPos());
-        if (curArmAngle > 90) {
+        if ((curArmAngle > 90) && (curArmAngle <= 200)){
           offset = 68; 
+        } else if (curArmAngle > 200) {
+          offset = 20;
         } else {
           offset = -68;
         }
-        if (JesterArm.getInstance().isLastMoveDone()) {
+        if (JesterArm.getInstance().ArmIsCloseToPreset()) {
           JesterWrist.getInstance().setWristPos(currentPreset);
         } else {             
           wrist_pos = currentPreset.WristAngleToPos(curArmAngle + offset);

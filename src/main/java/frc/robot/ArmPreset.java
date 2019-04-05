@@ -32,7 +32,8 @@ public enum ArmPreset {
     BALL_TRANSITION_LOWER(163, 150),
     DELIVER_HATCH_MIDDLE(168, 180), 
     // DELIVER_BALL_LOWER(200, 180),    //original
-    DELIVER_BALL_LOWER(230, 160),    //possible testing angle
+    DELIVER_BALL_LOWER(230, 160),    //latest possible testing angle
+    // DELIVER_BALL_LOWER(184, 203),    //possible testing angle
     DELIVER_HATCH_LOWER(241, 180),
     STOW(250, 180),
     UNPACK_WP3(210, 270), 
