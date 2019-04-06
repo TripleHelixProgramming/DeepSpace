@@ -44,9 +44,9 @@ public class FollowArm extends Command {
         if ((curArmAngle > 90) && (curArmAngle <= 200)){
           offset = 68; 
         } else if (curArmAngle > 200) {
-          offset = 20;
+          offset = 0;
         } else {
-          offset = -68;
+          offset = 0;
         }
         if (JesterArm.getInstance().ArmIsCloseToPreset()) {
           JesterWrist.getInstance().setWristPos(currentPreset);

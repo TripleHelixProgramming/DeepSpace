@@ -34,7 +34,7 @@ public enum ArmPreset {
     // DELIVER_BALL_LOWER(200, 180),    //original
     DELIVER_BALL_LOWER(230, 160),    //latest possible testing angle
     // DELIVER_BALL_LOWER(184, 203),    //possible testing angle
-    DELIVER_HATCH_LOWER(241, 180),
+    DELIVER_HATCH_LOWER(249, 180),
     STOW(250, 180),
     UNPACK_WP3(210, 270), 
     // UNPACK_WP1(225, 294),    //practive bot
@@ -66,7 +66,7 @@ public enum ArmPreset {
     // Practice Bot slope & y-intercept for arm & wrist to calculate sensor positions
     // (requires linear sensor)
     public double m_wrist = -0.472;
-    public double b_wrist = 286;
+    public double b_wrist = 282;
     public double m_shoulder = 0.833;
     public double b_shoulder = -499;
 

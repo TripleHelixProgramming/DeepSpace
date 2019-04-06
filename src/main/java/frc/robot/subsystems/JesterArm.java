@@ -150,7 +150,7 @@ public class JesterArm extends Subsystem {
 
     // Keep wrist at limit until 6 position off the currentPreset dest pos.
     public boolean ArmIsCloseToPreset() {
-         return(Math.abs(getArmPos() - currentArmPreset.CalculateArmPos()) <= 4);
+         return(Math.abs(getArmPos() - currentArmPreset.CalculateArmPos()) <= 8);
     }
 
     public boolean OnDeliverSide(int armAngle) {
