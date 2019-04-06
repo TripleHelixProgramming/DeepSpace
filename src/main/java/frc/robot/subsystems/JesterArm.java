@@ -27,7 +27,7 @@ public class JesterArm extends Subsystem {
     private VictorSPX armSlave = new VictorSPX(RobotMap.ARM_SLAVE_ID);
 
     public static int ARM_ACCELERATION = 30;
-    public static int ARM_CRUISE = 3;
+    public static int ARM_CRUISE = 20;
 
     private static JesterArm INSTANCE = new JesterArm();
 

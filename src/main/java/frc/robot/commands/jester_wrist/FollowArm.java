@@ -41,10 +41,8 @@ public class FollowArm extends Command {
     if ((currentPreset != ArmPreset.START) && (currentPreset != ArmPreset.MANUAL)) {
         // Get angle cooresponding to current arm sensor position.
         curArmAngle = currentPreset.CalcArmAngle(JesterArm.getInstance().getArmPos());
-        if ((curArmAngle > 90) && (curArmAngle <= 200)){
-          offset = 68; 
-        } else if (curArmAngle > 200) {
-          offset = 0;
+        if ((curArmAngle > 90)){
+          offset = -68; 
         } else {
           offset = 0;
         }

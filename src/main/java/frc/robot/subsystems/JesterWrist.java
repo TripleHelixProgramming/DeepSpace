@@ -25,11 +25,11 @@ public class JesterWrist extends Subsystem {
 
     private TalonSRX wristMotor = new TalonSRX(RobotMap.WRIST_ID);
 
-    // public static int WRIST_ACCELERATION = 180;
-    // public static int WRIST_CRUISE = 20;
+    public static int WRIST_ACCELERATION = 250;
+    public static int WRIST_CRUISE = 100;
 
-    public static int WRIST_ACCELERATION = 80;
-    public static int WRIST_CRUISE = 10;
+    // public static int WRIST_ACCELERATION = 80;
+    // public static int WRIST_CRUISE = 10;
 
     private static JesterWrist INSTANCE = new JesterWrist();
 
