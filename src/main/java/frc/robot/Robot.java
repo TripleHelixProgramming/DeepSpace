@@ -46,9 +46,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
   //public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static OI m_oi;
-
-	private final Compressor compressor = new Compressor();
-
+	
+  private final Compressor compressor = new Compressor();
 
   Command autonomousCommand;
 

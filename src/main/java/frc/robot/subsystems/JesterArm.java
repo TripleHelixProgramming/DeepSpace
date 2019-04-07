@@ -27,7 +27,7 @@ public class JesterArm extends Subsystem {
     private VictorSPX armSlave = new VictorSPX(RobotMap.ARM_SLAVE_ID);
 
     public static int ARM_ACCELERATION = 30;
-    public static int ARM_CRUISE = 3;
+    public static int ARM_CRUISE = 20;
 
     private static JesterArm INSTANCE = new JesterArm();
 
@@ -150,7 +150,7 @@ public class JesterArm extends Subsystem {
 
     // Keep wrist at limit until 6 position off the currentPreset dest pos.
     public boolean ArmIsCloseToPreset() {
-         return(Math.abs(getArmPos() - currentArmPreset.CalculateArmPos()) <= 6);
+         return(Math.abs(getArmPos() - currentArmPreset.CalculateArmPos()) <= 8);
     }
 
     public boolean OnDeliverSide(int armAngle) {

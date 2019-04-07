@@ -20,8 +20,7 @@ public class PickupCargoGroundFront extends CommandGroup {
    */
   public PickupCargoGroundFront() {
     addSequential(new SetBotState(BotState.BALL));
-    addParallel(new GrabCargo());
     addSequential(new MoveArmTo(ArmPreset.PICKUP_CARGO_FLOOR_FRONT));
-    
+    addSequential(new GrabCargo());
   }
 }

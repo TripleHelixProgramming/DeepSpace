@@ -12,10 +12,16 @@ import frc.robot.subsystems.PIDLifter;
 import frc.robot.subsystems.PIDLifter.LiftPos;;
 
 public class ExtendLifter extends Command {
+  public boolean isFinishedVal;
+  public boolean isOperator;
+  public double isMatchEnd;
+
   public ExtendLifter() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    //setupLogs();
     requires(PIDLifter.getInstance());
+  
   }
 
   // Called just before this Command runs the first time
@@ -26,14 +32,16 @@ public class ExtendLifter extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    PIDLifter.getInstance().goTo(LiftPos.EXTEND);
+        isFinishedVal = PIDLifter.getInstance().isLimitSwitchTriggered();
+        if(isFinishedVal == false){
+          PIDLifter.getInstance().setPower(.75);
+        }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    // return (PIDLifter.getInstance().isLimitSwitchTriggered() || PIDLifter.getInstance().isExtendDone());
-    return (PIDLifter.getInstance().isLimitSwitchTriggered());
+    return PIDLifter.getInstance().isLimitSwitchTriggered();
   }
 
   // Called once after isFinished returns true
@@ -46,4 +54,6 @@ public class ExtendLifter extends Command {
   @Override
   protected void interrupted() {
   }
+
+  
 }
