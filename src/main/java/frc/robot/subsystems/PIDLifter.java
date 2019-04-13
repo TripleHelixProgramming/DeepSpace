@@ -80,7 +80,7 @@ public class PIDLifter extends Subsystem {
     // lifterMaster.configClosedloopRamp(.1);
     lifterMaster.setNeutralMode(NeutralMode.Brake);
 
-    // Configure sensor inputs
+    // Configure sensor input
     lifterMaster.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
     lifterMaster.overrideLimitSwitchesEnable(true);
     lifterMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
@@ -89,7 +89,8 @@ public class PIDLifter extends Subsystem {
     lifterMaster.setSensorPhase(false);  // + motor power must have increasing sensor values
     lifterMaster.setInverted(false);
 
-    lifterSlave.setInverted(InvertType.OpposeMaster);
+    // lifterSlave.setInverted(InvertType.OpposeMaster);
+    // lifterSlave.setInverted(true);
     lifterSlave.setNeutralMode(NeutralMode.Brake);
     lifterSlave.configOpenloopRamp(0, 0);
     lifterSlave.follow(lifterMaster);
@@ -156,7 +157,7 @@ public class PIDLifter extends Subsystem {
 
   public void setPower(double power){
     lifterMaster.set(ControlMode.PercentOutput,  power);
-    // right.set(ControlMode.PercentOutput, -power);
+    lifterSlave.set(ControlMode.PercentOutput, -power);
   }
 
   private void setupLogs() {

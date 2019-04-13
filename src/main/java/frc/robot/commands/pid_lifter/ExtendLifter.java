@@ -34,7 +34,7 @@ public class ExtendLifter extends Command {
   protected void execute() {
         isFinishedVal = PIDLifter.getInstance().isLimitSwitchTriggered();
         if(isFinishedVal == false){
-          PIDLifter.getInstance().setPower(.75);
+          PIDLifter.getInstance().setPower(.85);
         }
   }
 

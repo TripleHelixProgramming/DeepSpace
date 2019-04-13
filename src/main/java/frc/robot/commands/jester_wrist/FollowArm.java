@@ -32,26 +32,45 @@ public class FollowArm extends Command {
   @Override
   protected void execute() {
     // Set the wrist position based of the arm position.
-    
+     
     ArmPreset currentPreset = JesterArm.getInstance().getCurrentArmPreset();
     BotState bot_state = JesterArm.getInstance().getState();
-    int curArmAngle, wrist_pos, offset;
+    int curArmAngle, wrist_pos, offset = -68;
+    boolean curpos_gt_150, dest_gt_180, dest_lt_180, curpos_gt_90, dest_in_90_to_180;
 
     //  Don't move wrist until arm is sent a preset.
     if ((currentPreset != ArmPreset.START) && (currentPreset != ArmPreset.MANUAL)) {
         // Get angle cooresponding to current arm sensor position.
+
         curArmAngle = currentPreset.CalcArmAngle(JesterArm.getInstance().getArmPos());
-        if ((curArmAngle > 90)){
-          offset = -68; 
+        curpos_gt_150 = curArmAngle > 150;
+        curpos_gt_90 = curArmAngle > 90;
+        dest_gt_180 = currentPreset.getShoulderAngle() > 180;
+        dest_lt_180 = currentPreset.getShoulderAngle() < 180;
+        dest_in_90_to_180 = ((currentPreset.getShoulderAngle() > 90) && (currentPreset.getShoulderAngle() <180));
+
+        if ((curpos_gt_90) && (!JesterArm.getInstance().ArmIsCloseToPreset()) && (dest_gt_180)) {
+              wrist_pos = currentPreset.WristAngleToPos(curArmAngle + offset);
+              JesterWrist.getInstance().setWristMotionMagic(wrist_pos);
+        } else if ((currentPreset.getShoulderAngle() < 180) && (curArmAngle > 150) &&
+                  (curArmAngle >  currentPreset.getShoulderAngle()) 
+                  && (!JesterArm.getInstance().ArmIsCloseToPreset())) {
+              wrist_pos = currentPreset.WristAngleToPos(curArmAngle + offset);
+              JesterWrist.getInstance().setWristMotionMagic(wrist_pos);
         } else {
-          offset = 0;
+              JesterWrist.getInstance().setWristPos(currentPreset);
         }
-        if (JesterArm.getInstance().ArmIsCloseToPreset()) {
-          JesterWrist.getInstance().setWristPos(currentPreset);
-        } else {             
-          wrist_pos = currentPreset.WristAngleToPos(curArmAngle + offset);
-          JesterWrist.getInstance().setWristMotionMagic(wrist_pos);
-        }
+        // if (curArmAngle > 90 ){ 
+        //   offset = -68; 
+        // } else {
+        //   offset = 0;
+        // }
+        // if (JesterArm.getInstance().ArmIsCloseToPreset()) {
+        //   JesterWrist.getInstance().setWristPos(currentPreset);
+        // } else {             
+        //   wrist_pos = currentPreset.WristAngleToPos(curArmAngle + offset);
+        //   JesterWrist.getInstance().setWristMotionMagic(wrist_pos);
+        // }
         // if (((curArmAngle > 147) && (curArmAngle < 195)) && bot_state == BotState.BALL) {
         //       wrist_pos = currentPreset.WristAngleToPos(curArmAngle-65);
         //       JesterWrist.getInstance().setWristMotionMagic(wrist_pos);  // wrist_pos should be 230 PB 495 CB

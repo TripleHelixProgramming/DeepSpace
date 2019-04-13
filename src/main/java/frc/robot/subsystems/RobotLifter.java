@@ -26,7 +26,7 @@ public class RobotLifter extends Subsystem {
   PowerDistributionPanel pdp = new PowerDistributionPanel();
 
   private TalonSRX left = new TalonSRX(RobotMap.LIFTER_LEFT_ID);
-  private VictorSPX right = new VictorSPX(RobotMap.LIFTER_RIGHT_ID);
+  private TalonSRX right = new TalonSRX(RobotMap.LIFTER_RIGHT_ID);
 
   private static RobotLifter INSTANCE = new RobotLifter();
 

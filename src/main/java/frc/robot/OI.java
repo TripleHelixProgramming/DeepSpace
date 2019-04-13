@@ -18,6 +18,7 @@ import frc.robot.commands.Auto.ReleaseHatchCommandGroup;
 import frc.robot.commands.Auto.PickUpCargoBack;
 import frc.robot.commands.Auto.PickupCargoGroundFront;
 import frc.robot.commands.Auto.ResetCargoJesterFront;
+import frc.robot.commands.Auto.extendLifterGroup;
 import frc.robot.commands.Auto.resetCargoJesterBack;
 
 import frc.robot.commands.Auto.undockJester;
@@ -93,7 +94,9 @@ public class OI {
 
       new JoystickButton(operator, ControllerMap.PS4_SHARE).whenPressed(new BurstLifter());
       new JoystickButton(operator, ControllerMap.PS4_SHARE).whenReleased(new StopLifter());
-      new JoystickButton(operator, ControllerMap.PS4_OPTIONS).whenPressed(new ExtendLifter());
+      // new JoystickButton(operator, ControllerMap.PS4_OPTIONS).whenPressed(new ExtendLifter());
+      new JoystickButton(operator, ControllerMap.PS4_OPTIONS).whenPressed(new extendLifterGroup());
+
       new JoystickButton(operator, ControllerMap.PS4_OPTIONS).whenReleased(new StopLifter());
       // new JoystickButton(operator, ControllerMap.A).whileHeld(new reverseLifter());
 

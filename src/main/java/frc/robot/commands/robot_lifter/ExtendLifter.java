@@ -37,7 +37,7 @@ public class ExtendLifter extends Command {
     // if((isOperator == true) && (isMatchEnd <= 30.00)) {
         isFinishedVal = RobotLifter.getInstance().isLimitSwitchTriggered();
         if(isFinishedVal == false){
-          RobotLifter.getInstance().setPower(.75);
+          RobotLifter.getInstance().setPower(.60);
         }
       // }
   }
