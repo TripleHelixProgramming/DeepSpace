@@ -39,8 +39,8 @@ public class ArcGenerator extends AbstractBobPathCreator {
 	@Override
     protected List<BobPath> getArcs() {
 		List<BobPath> paths = new ArrayList<>();
-		paths.addAll(getConfigArcs());
-		paths.addAll(generateTeamPaths());
+		// paths.addAll(getConfigArcs());
+		// paths.addAll(generateTeamPaths());
         return paths;
 	}
 
@@ -49,41 +49,41 @@ public class ArcGenerator extends AbstractBobPathCreator {
 	 * just make sure to add the method call to the returned list in getArcs()
 	 * @return the list of team paths to generate
 	 */
-	private List<BobPath> generateTeamPaths() {
-		 // Create a path with the name of "Example", this will generate a file named ExampleArc
-		 BobPath exampleArc = new BobPath(config, "Example");
-		 // Set the first point to the starating point, this be done with any of the addWaypoint methods
-		 // positive X is forward, positive Y is left, units are in feet and degrees
-		 exampleArc.addWaypoint(startingPoint);
-		 // Add the next point that 3 ft forward, and doesn't turn, it also has a max speed of 5 FPS, 
-		 // it will arrive at this location going 2 FPS
-		 exampleArc.addWaypointRelative(3, 0, 0, 2, 5);
-		 // Add the next point to be an additional 5 feet forward and 5 feet to the left with max speed of 2 FPS,
-		 // it  will arrive at this locaton going 0 FPS 
-		 exampleArc.addWaypointRelative(5, 5, 0, 0, 2);
+	// private List<BobPath> generateTeamPaths() {
+	// 	 // Create a path with the name of "Example", this will generate a file named ExampleArc
+	// 	 BobPath exampleArc = new BobPath(config, "Example");
+	// 	 // Set the first point to the starating point, this be done with any of the addWaypoint methods
+	// 	 // positive X is forward, positive Y is left, units are in feet and degrees
+	// 	 exampleArc.addWaypoint(startingPoint);
+	// 	 // Add the next point that 3 ft forward, and doesn't turn, it also has a max speed of 5 FPS, 
+	// 	 // it will arrive at this location going 2 FPS
+	// 	 exampleArc.addWaypointRelative(3, 0, 0, 2, 5);
+	// 	 // Add the next point to be an additional 5 feet forward and 5 feet to the left with max speed of 2 FPS,
+	// 	 // it  will arrive at this locaton going 0 FPS 
+	// 	 exampleArc.addWaypointRelative(5, 5, 0, 0, 2);
 
-		 BobPath straight = new BobPath(config, "Straight10Feet");
-		 straight.addWaypoint(startingPoint);
-		 straight.addWaypointRelative(10, 0, 0, 0, 5);
+	// 	 BobPath straight = new BobPath(config, "Straight10Feet");
+	// 	 straight.addWaypoint(startingPoint);
+	// 	 straight.addWaypointRelative(10, 0, 0, 0, 5);
 
-		 BobPath backwards = new BobPath(config, "StraightBack10Feet", true);
-		 backwards.addWaypoint(startingPoint);
-		 backwards.addWaypointRelative(10, 0, 0, 0, 5);
+	// 	 BobPath backwards = new BobPath(config, "StraightBack10Feet", true);
+	// 	 backwards.addWaypoint(startingPoint);
+	// 	 backwards.addWaypointRelative(10, 0, 0, 0, 5);
 
-		 BobPath forwardLeft = new BobPath(config, "ForwardLeft");
-		 forwardLeft.addWaypoint(startingPoint);
-		 forwardLeft.addWaypoint(15, 5, 30, 5, 7);
-		 forwardLeft.addWaypoint(20, 10, 0, 0, 5);
+	// 	 BobPath forwardLeft = new BobPath(config, "ForwardLeft");
+	// 	 forwardLeft.addWaypoint(startingPoint);
+	// 	 forwardLeft.addWaypoint(15, 5, 30, 5, 7);
+	// 	 forwardLeft.addWaypoint(20, 10, 0, 0, 5);
 
-		 BobPath figure8 = new BobPath(config, "Figure8");
-		 figure8.addWaypoint(startingPoint);
-		 figure8.addWaypoint(10, 10, 45, 6, 6);
-		 figure8.addWaypoint(15, 15, 0, 6, 6);
-		 figure8.addWaypoint(20, 10, -89.99, 0, 6);
+	// 	 BobPath figure8 = new BobPath(config, "Figure8");
+	// 	 figure8.addWaypoint(startingPoint);
+	// 	 figure8.addWaypoint(10, 10, 45, 6, 6);
+	// 	 figure8.addWaypoint(15, 15, 0, 6, 6);
+	// 	 figure8.addWaypoint(20, 10, -89.99, 0, 6);
 	
 		 
-		 return asList(exampleArc, straight, backwards, forwardLeft, figure8); // return asList(path1, path2, path3, ...);
-	}
+	// 	 return asList(exampleArc, straight, backwards, forwardLeft, figure8); // return asList(path1, path2, path3, ...);
+	// }
 	
 	
 	/**
@@ -96,20 +96,20 @@ public class ArcGenerator extends AbstractBobPathCreator {
 	 * then drive another 3 feed forward and 3 feet to the left. This path will end with 
 	 * the robot 6 feet to the left of it's starting position facing the oppostite direction.
 	 */
-	private List<BobPath> getConfigArcs() {
-		BobPath distanceScaling = new BobPath(config, "DistanceScaling");
-		distanceScaling.addWaypoint(new Waypoint(2, 13.5, 0, 0, 0));
-		distanceScaling.addWaypointRelative(2, 0, 0, 0, 2);
+	// private List<BobPath> getConfigArcs() {
+	// 	BobPath distanceScaling = new BobPath(config, "DistanceScaling");
+	// 	distanceScaling.addWaypoint(new Waypoint(2, 13.5, 0, 0, 0));
+	// 	distanceScaling.addWaypointRelative(2, 0, 0, 0, 2);
 
-		BobPath turnScaling = new BobPath(config, "TurnScaling");
-		turnScaling.addWaypoint(new Waypoint(2, 13.5, 0, 0, 0));
-		turnScaling.addWaypointRelative(3, 3, 89.99, 0, 2);
+	// 	BobPath turnScaling = new BobPath(config, "TurnScaling");
+	// 	turnScaling.addWaypoint(new Waypoint(2, 13.5, 0, 0, 0));
+	// 	turnScaling.addWaypointRelative(3, 3, 89.99, 0, 2);
 
-		BobPath speedTesting = new BobPath(config, "SpeedTesting");
-		speedTesting.addWaypoint(new Waypoint(2, 13.5, 0, 0, 0));
-		speedTesting.addWaypointRelative(3, 3, 89.99, 3, 5);
-		speedTesting.addWaypointRelative(-3, 3, 89.99, 0, 3);
+	// 	BobPath speedTesting = new BobPath(config, "SpeedTesting");
+	// 	speedTesting.addWaypoint(new Waypoint(2, 13.5, 0, 0, 0));
+	// 	speedTesting.addWaypointRelative(3, 3, 89.99, 3, 5);
+	// 	speedTesting.addWaypointRelative(-3, 3, 89.99, 0, 3);
 
-		return asList(distanceScaling, turnScaling, speedTesting);
-	}
+	// 	return asList(distanceScaling, turnScaling, speedTesting);
+	// }
 }
