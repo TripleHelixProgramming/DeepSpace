@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.jester_wrist.FollowArm;
+import frc.robot.commands.jester_wrist.SimpleFollow;
 import frc.robot.commands.jester_wrist.StopWrist;
 import frc.robot.subsystems.JesterArm;
 import frc.robot.ArmPreset;
@@ -157,7 +158,8 @@ public class JesterWrist extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new FollowArm());
+        setDefaultCommand(new SimpleFollow());
+        // setDefaultCommand(new FollowArm());
         // setDefaultCommand(new StopWrist());
     }
 }

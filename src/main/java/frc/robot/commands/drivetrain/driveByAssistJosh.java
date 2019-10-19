@@ -18,7 +18,7 @@ public class driveByAssistJosh extends Command {
 
   double Kp = 0.03;
   double Ki = 0.0;
-  double Kd = 0.50;
+  double Kd = 0.2;
   double kpDistance = 0.0215;
   double min_command = 0.0;
   double left_command;
@@ -59,27 +59,16 @@ public class driveByAssistJosh extends Command {
 
     double tx = camera.RotationalDegreesToTarget();
 
-    double steering_adjust = 0.0;
-
     if (Math.abs(tx) < 1) {
       finished = true;
     }
 
-    if (tx > 0.0) {
-      steering_adjust = Kp * tx - min_command;
-    } else if (tx < 0.0) {
-      steering_adjust = Kp * tx + min_command;
-    }
+    double steering_adjust = PIDCalc2(tx);
 
     double distance_adjust = OI.getInstance().getThrottle() * 0.8;
 
-    if (camera == CAMERA.FRONT) {
-      left_command += steering_adjust - distance_adjust;
-      right_command -= steering_adjust + distance_adjust;
-    } else {
-      left_command += steering_adjust + distance_adjust;
-      right_command -= steering_adjust - distance_adjust;
-    }
+      left_command = -distance_adjust + steering_adjust;
+      right_command = -distance_adjust - steering_adjust;
 
     Drivetrain.getInstance().tankDrive(left_command, right_command);
 

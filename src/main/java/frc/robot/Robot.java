@@ -60,8 +60,8 @@ public class Robot extends TimedRobot {
     initializeSubsystems();
     Drivetrain.getInstance().resetHeading();
     
-    // CAMERA.FRONT.setCameraMode();
-    // CAMERA.BACK.setCameraMode();
+    CAMERA.FRONT.setCameraMode();
+    CAMERA.BACK.setCameraMode();
 
   }
 
@@ -136,8 +136,8 @@ public class Robot extends TimedRobot {
       autonomousCommand.start();
     }
     HelixEvents.getInstance().startLogging();
-    // CAMERA.FRONT.setCameraMode();
-    // CAMERA.BACK.setCameraMode();
+    CAMERA.FRONT.setCameraMode();
+    CAMERA.BACK.setCameraMode();
   }
 
   /**
