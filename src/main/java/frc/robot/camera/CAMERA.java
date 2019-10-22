@@ -21,9 +21,9 @@ public enum CAMERA {
 
     public void setCameraMode() {
         NetworkTableInstance.getDefault().getTable(CAMERA.FRONT.name).getEntry("pipeline").setNumber(0);
-        // NetworkTableInstance.getDefault().getTable(CAMERA.FRONT.name).getEntry("ledMode").setNumber(1);
+        NetworkTableInstance.getDefault().getTable(CAMERA.FRONT.name).getEntry("ledMode").setNumber(1);
         NetworkTableInstance.getDefault().getTable(CAMERA.BACK.name).getEntry("pipeline").setNumber(0);
-        // NetworkTableInstance.getDefault().getTable(CAMERA.BACK.name).getEntry("ledMode").setNumber(1);
+        NetworkTableInstance.getDefault().getTable(CAMERA.BACK.name).getEntry("ledMode").setNumber(1);
 
     }
 

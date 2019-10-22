@@ -107,6 +107,8 @@ public class Robot extends TimedRobot {
     JesterArm.getInstance().updateSmartDash();
     JesterWrist.getInstance().updateSmartDash();
     JesterArm.getInstance().resetArmPreset();
+    CAMERA.FRONT.setCameraMode();
+    CAMERA.BACK.setCameraMode();
 
   }
 
