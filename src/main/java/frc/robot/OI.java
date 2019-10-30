@@ -91,10 +91,10 @@ public class OI {
 
 
 
-      // new JoystickButton(operator, ControllerMap.PS4_SHARE).whenPressed(new BurstLifter());
-      // new JoystickButton(operator, ControllerMap.PS4_SHARE).whenReleased(new StopLifter());
-      // new JoystickButton(operator, ControllerMap.PS4_OPTIONS).whenPressed(new ExtendLifter());
-      // new JoystickButton(operator, ControllerMap.PS4_OPTIONS).whenReleased(new StopLifter());
+      new JoystickButton(operator, ControllerMap.PS4_SHARE).whenPressed(new BurstLifter());
+      new JoystickButton(operator, ControllerMap.PS4_SHARE).whenReleased(new StopLifter());
+      new JoystickButton(operator, ControllerMap.PS4_OPTIONS).whenPressed(new ExtendLifter());
+      new JoystickButton(operator, ControllerMap.PS4_OPTIONS).whenReleased(new StopLifter());
       // new JoystickButton(operator, ControllerMap.A).whileHeld(new reverseLifter());
 
       new JoystickButton(operator, ControllerMap.PS4_R1).whenPressed(new PickUpCargoBack());

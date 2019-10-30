@@ -109,7 +109,8 @@ public class Robot extends TimedRobot {
     JesterArm.getInstance().resetArmPreset();
     CAMERA.FRONT.setCameraMode();
     CAMERA.BACK.setCameraMode();
-
+    // CAMERA.FRONT.setDockingMode();
+    // CAMERA.BACK.setDockingMode();
   }
 
   /**
